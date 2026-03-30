@@ -105,7 +105,7 @@ export default function Home() {
           alt=""
           width={380}
           height={380}
-          className="pointer-events-none absolute right-[-250px] top-[-86px] h-auto w-[48vw] min-w-[280px] max-w-[760px] rotate-180 opacity-95 mix-blend-multiply"
+          className="pointer-events-none absolute right-[-210px] top-[-40px] h-auto w-[52vw] min-w-[360px] max-w-[900px] opacity-95 mix-blend-multiply"
           priority
         />
         <Image
@@ -116,17 +116,8 @@ export default function Home() {
           className="pointer-events-none absolute bottom-[-72px] left-[-84px] h-auto w-[30vw] min-w-[220px] max-w-[430px] opacity-95 mix-blend-multiply"
           priority
         />
-        <Image
-          src="/hero/right.png"
-          alt=""
-          width={420}
-          height={420}
-          className="pointer-events-none absolute bottom-[-126px] right-[-190px] h-auto w-[50vw] min-w-[290px] max-w-[780px] rotate-180 opacity-95 mix-blend-multiply"
-          priority
-        />
-
         <div className="relative z-10 w-full max-w-[980px]">
-          <nav className="mx-auto flex w-fit flex-wrap items-center justify-center gap-5 rounded-full bg-white px-7 py-3 shadow-[0_8px_20px_rgba(0,0,0,0.12)] md:gap-10">
+          <nav className="absolute left-1/2 top-[30px] z-20 flex w-fit -translate-x-1/2 flex-wrap items-center justify-center gap-5 rounded-full bg-white px-7 py-3 shadow-[0_8px_20px_rgba(0,0,0,0.12)] md:gap-10">
             {navItems.map((item) => (
               <a
                 key={item.label}
@@ -138,7 +129,7 @@ export default function Home() {
             ))}
           </nav>
 
-          <div className="mt-20 text-center md:mt-28">
+          <div className="mt-24 text-center md:mt-28">
             <h1 className="font-display text-[78px] font-black uppercase leading-[0.94] tracking-[0.02em] text-[#174b24] md:text-[141px]">
               ALL IN
               <br />
