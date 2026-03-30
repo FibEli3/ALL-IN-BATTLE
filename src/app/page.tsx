@@ -175,7 +175,7 @@ export default function Home() {
       </section>
 
       <section id="judges" className="mx-auto w-full max-w-[1440px] px-5 py-16 md:px-8 md:py-24">
-        <h2 className="text-center font-display text-[64px] font-black uppercase leading-none tracking-tight text-[#2a6a34] md:text-[90px]">
+        <h2 className="text-center font-display text-[80px] font-black uppercase leading-none tracking-tight text-[#2a6a34]">
           JUDGES
         </h2>
         <div className="mx-auto mt-8 grid max-w-[1320px] gap-8 md:grid-cols-3 md:items-start">
@@ -205,6 +205,9 @@ export default function Home() {
       </section>
 
       <section id="day-one" className="mx-auto w-full max-w-7xl px-0 pb-16 md:px-6 md:pb-20">
+        <h2 className="px-4 pb-4 text-[80px] font-display font-black uppercase leading-none text-[#1b1b1b] md:px-2">
+          DJ
+        </h2>
         <div className="bg-[#e3e3e3] px-4 py-8 md:rounded-3xl md:px-8 md:py-10">
           <header className="flex items-center justify-between text-[20px] font-bold uppercase tracking-tight md:text-[30px]">
             <h2 className="font-display">ДЕНЬ 1: WORKSHOP / JAM / CONTEST</h2>
@@ -240,6 +243,9 @@ export default function Home() {
       </section>
 
       <section id="day-two" className="mx-auto w-full max-w-7xl px-0 pb-16 md:px-6 md:pb-20">
+        <h2 className="px-4 pb-4 text-[80px] font-display font-black uppercase leading-none text-[#1b1b1b] md:px-2">
+          MC
+        </h2>
         <div className="bg-[#e3e3e3] px-4 py-8 md:rounded-3xl md:px-8 md:py-10">
           <header className="flex items-center justify-between text-[20px] font-bold uppercase tracking-tight md:text-[30px]">
             <h2 className="font-display">ДЕНЬ 2: ALL IN BATTLE</h2>
@@ -276,9 +282,14 @@ export default function Home() {
       </section>
 
       <section id="media" className="mx-auto w-full max-w-6xl px-5 py-8 md:px-8 md:py-12">
-        <h2 className="font-display text-5xl font-bold uppercase leading-none tracking-tight">
-          MEDIA
-        </h2>
+        <div className="flex flex-wrap items-end justify-between gap-6">
+          <h2 className="font-display text-[80px] font-black uppercase leading-none tracking-tight">
+            PHOTO
+          </h2>
+          <h2 className="font-display text-[80px] font-black uppercase leading-none tracking-tight">
+            VIDEO
+          </h2>
+        </div>
       </section>
 
       <section id="registration" className="mx-auto w-full max-w-6xl px-5 pb-20 md:px-8 md:pb-24">
