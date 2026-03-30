@@ -52,6 +52,11 @@ Fill these env vars in Vercel:
 Prices are calculated from selected checkboxes in:
 - `src/lib/event-options.ts`
 
+Pricing rules in code:
+- Day 1 fixed: `2900`, `900`, `600`, `600`.
+- Day 2 categories: first selected category `1700`, each next `800`.
+- `Зрительский билет` always `600`.
+
 In T-Bank cabinet, set notification URL to:
 - `https://<your-domain>/api/payments/tbank/webhook`
 

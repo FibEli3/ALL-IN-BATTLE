@@ -1,6 +1,10 @@
 "use client";
 
-import { EVENT_OPTIONS, getOptionsByDay } from "@/lib/event-options";
+import {
+  calculateSelection,
+  getOptionDisplayPrice,
+  getOptionsByDay,
+} from "@/lib/event-options";
 import { FormEvent, useMemo, useState } from "react";
 
 type FormValues = {
@@ -34,6 +38,18 @@ function formatRub(value: number) {
   return `${new Intl.NumberFormat("ru-RU").format(value)} ₽`;
 }
 
+function getOptionPriceHint(optionId: string) {
+  if (optionId === "day2-spectator") {
+    return "600 ₽";
+  }
+
+  if (optionId.startsWith("day2-")) {
+    return "1-й: 1700 ₽, далее: 800 ₽";
+  }
+
+  return null;
+}
+
 export function RegistrationForm() {
   const [values, setValues] = useState<FormValues>(initialForm);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -41,11 +57,7 @@ export function RegistrationForm() {
   const [successMessage, setSuccessMessage] = useState("");
 
   const selectedTotalRub = useMemo(() => {
-    const selectedSet = new Set(values.selectedOptionIds);
-    return EVENT_OPTIONS.filter((option) => selectedSet.has(option.id)).reduce(
-      (sum, option) => sum + option.priceRub,
-      0,
-    );
+    return calculateSelection(values.selectedOptionIds).totalRub;
   }, [values.selectedOptionIds]);
 
   const toggleOption = (optionId: string) => {
@@ -205,7 +217,9 @@ export function RegistrationForm() {
           <label key={option.id} className="flex items-center justify-between gap-3">
             <span className="text-sm">{option.title}</span>
             <span className="flex items-center gap-3">
-              <span className="text-sm text-amber-200">{formatRub(option.priceRub)}</span>
+              <span className="text-sm text-amber-200">
+                {formatRub(getOptionDisplayPrice(option) ?? 0)}
+              </span>
               <input
                 type="checkbox"
                 checked={values.selectedOptionIds.includes(option.id)}
@@ -223,7 +237,7 @@ export function RegistrationForm() {
           <label key={option.id} className="flex items-center justify-between gap-3">
             <span className="text-sm">{option.title}</span>
             <span className="flex items-center gap-3">
-              <span className="text-sm text-amber-200">{formatRub(option.priceRub)}</span>
+              <span className="text-xs text-amber-200">{getOptionPriceHint(option.id)}</span>
               <input
                 type="checkbox"
                 checked={values.selectedOptionIds.includes(option.id)}
