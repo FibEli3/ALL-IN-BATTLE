@@ -89,7 +89,7 @@ const sectionHeadingClass =
   "font-display text-[56px] font-black uppercase leading-none tracking-tight text-[#2a6a34] md:text-[80px]";
 
 const personNameClass =
-  "mt-6 font-display text-[40px] font-semibold uppercase leading-[0.92] tracking-[-0.01em] text-[#111]";
+  "mt-6 inline-block whitespace-nowrap font-display text-[40px] font-semibold uppercase leading-[0.92] tracking-[-0.01em] text-[#111]";
 
 const personCityClass = "mt-3 font-body text-[24px] font-bold leading-none text-[#242424]";
 
