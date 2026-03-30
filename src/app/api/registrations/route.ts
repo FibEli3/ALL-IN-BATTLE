@@ -6,6 +6,7 @@ import { z } from "zod";
 const registrationSchema = z.object({
   fullName: z.string().trim().min(2, "Укажи имя и фамилию"),
   nickname: z.string().trim().min(2, "Укажи никнейм"),
+  age: z.string().trim().max(20).optional().or(z.literal("")),
   phone: z.string().trim().min(8, "Проверь номер телефона"),
   email: z.string().trim().email("Проверь email").optional().or(z.literal("")),
   city: z.string().trim().max(120).optional().or(z.literal("")),
@@ -31,6 +32,7 @@ export async function POST(request: Request) {
     const created = await createRegistration({
       fullName: payload.fullName,
       nickname: payload.nickname,
+      age: payload.age || null,
       phone: payload.phone,
       email: payload.email || null,
       city: payload.city || null,

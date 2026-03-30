@@ -6,6 +6,7 @@ import postgres from "postgres";
 type RegistrationInput = {
   fullName: string;
   nickname: string;
+  age?: string | null;
   phone: string;
   email?: string | null;
   city?: string | null;
@@ -79,6 +80,7 @@ async function ensureSchema() {
           id TEXT PRIMARY KEY,
           full_name TEXT NOT NULL,
           nickname TEXT,
+          age TEXT,
           phone TEXT NOT NULL,
           email TEXT,
           city TEXT,
@@ -104,6 +106,10 @@ async function ensureSchema() {
       `);
       await db.exec(`
         ALTER TABLE registrations
+        ADD COLUMN IF NOT EXISTS age TEXT;
+      `);
+      await db.exec(`
+        ALTER TABLE registrations
         ADD COLUMN IF NOT EXISTS amount_rub INTEGER;
       `);
     })();
@@ -123,6 +129,7 @@ export async function createRegistration(
       id,
       full_name,
       nickname,
+      age,
       phone,
       email,
       city,
@@ -131,7 +138,7 @@ export async function createRegistration(
       comment,
       selected_option_ids,
       amount_rub
-    ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
+    ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)
     RETURNING
       id,
       payment_status as "paymentStatus",
@@ -141,6 +148,7 @@ export async function createRegistration(
       id,
       input.fullName,
       input.nickname,
+      input.age ?? null,
       input.phone,
       input.email ?? null,
       input.city ?? null,

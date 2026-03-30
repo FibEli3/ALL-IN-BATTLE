@@ -10,24 +10,18 @@ import { FormEvent, useMemo, useState } from "react";
 type FormValues = {
   fullName: string;
   nickname: string;
+  age: string;
   phone: string;
-  email: string;
-  city: string;
-  danceExperience: string;
   participationType: "participant" | "spectator";
-  comment: string;
   selectedOptionIds: string[];
 };
 
 const initialForm: FormValues = {
   fullName: "",
   nickname: "",
+  age: "",
   phone: "",
-  email: "",
-  city: "",
-  danceExperience: "",
   participationType: "participant",
-  comment: "",
   selectedOptionIds: [],
 };
 
@@ -35,19 +29,42 @@ const day1Options = getOptionsByDay("day1");
 const day2Options = getOptionsByDay("day2");
 
 function formatRub(value: number) {
-  return `${new Intl.NumberFormat("ru-RU").format(value)} ₽`;
+  return `${new Intl.NumberFormat("ru-RU").format(value)}₽`;
 }
 
-function getOptionPriceHint(optionId: string) {
+function getDay2PriceHint(optionId: string) {
   if (optionId === "day2-spectator") {
-    return "600 ₽";
+    return "600₽";
   }
 
-  if (optionId.startsWith("day2-")) {
-    return "1-й: 1700 ₽, далее: 800 ₽";
-  }
+  return "";
+}
 
-  return null;
+function checkboxClasses() {
+  return "size-6 appearance-none rounded-[5px] border-2 border-[#dcdcde] bg-white transition checked:border-[#2a6a34] checked:bg-[#2a6a34]";
+}
+
+function Field(props: {
+  label: string;
+  required?: boolean;
+  value: string;
+  placeholder: string;
+  onChange: (value: string) => void;
+}) {
+  return (
+    <label className="grid gap-2">
+      <span className="text-base leading-[1.2] tracking-[-0.32px]">
+        {props.label}
+        {props.required ? <span className="text-[#bd2d2d]">*</span> : null}
+      </span>
+      <input
+        value={props.value}
+        placeholder={props.placeholder}
+        onChange={(event) => props.onChange(event.target.value)}
+        className="h-[37px] border-b border-[rgba(0,0,0,0.6)] bg-transparent px-[10px] text-sm text-[rgba(0,0,0,0.6)] outline-none"
+      />
+    </label>
+  );
 }
 
 export function RegistrationForm() {
@@ -56,9 +73,11 @@ export function RegistrationForm() {
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
 
-  const selectedTotalRub = useMemo(() => {
-    return calculateSelection(values.selectedOptionIds).totalRub;
-  }, [values.selectedOptionIds]);
+  const selection = useMemo(
+    () => calculateSelection(values.selectedOptionIds),
+    [values.selectedOptionIds],
+  );
+  const totalRub = selection.totalRub;
 
   const toggleOption = (optionId: string) => {
     setValues((prev) => {
@@ -79,20 +98,31 @@ export function RegistrationForm() {
     setIsSubmitting(true);
 
     try {
-      const response = await fetch("/api/registrations", {
+      const registrationResponse = await fetch("/api/registrations", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(values),
+        body: JSON.stringify({
+          fullName: values.fullName,
+          nickname: values.nickname,
+          age: values.age,
+          phone: values.phone,
+          email: "",
+          city: "",
+          danceExperience: "",
+          comment: "",
+          participationType: values.participationType,
+          selectedOptionIds: values.selectedOptionIds,
+        }),
       });
-      const payload = await response.json();
 
-      if (!response.ok || !payload?.ok) {
-        throw new Error(payload?.message ?? "Ошибка отправки");
+      const registrationPayload = await registrationResponse.json();
+      if (!registrationResponse.ok || !registrationPayload?.ok) {
+        throw new Error(registrationPayload?.message ?? "Ошибка отправки");
       }
 
-      const registrationId = payload?.registration?.id;
+      const registrationId = registrationPayload?.registration?.id;
       if (!registrationId) {
-        throw new Error("Заявка создана, но id не получен");
+        throw new Error("Не удалось получить id заявки");
       }
 
       const paymentResponse = await fetch("/api/payments/tbank/init", {
@@ -104,7 +134,7 @@ export function RegistrationForm() {
 
       if (!paymentResponse.ok || !paymentPayload?.ok) {
         setSuccessMessage(
-          "Заявка сохранена. Оплата пока недоступна, проверь настройки T-Банк в Vercel.",
+          "Заявка сохранена. Проверь настройки оплаты T-Банк в Vercel.",
         );
         setValues(initialForm);
         return;
@@ -119,9 +149,7 @@ export function RegistrationForm() {
       setValues(initialForm);
     } catch (error) {
       setErrorMessage(
-        error instanceof Error
-          ? error.message
-          : "Не удалось отправить форму. Попробуй еще раз.",
+        error instanceof Error ? error.message : "Не удалось отправить форму.",
       );
     } finally {
       setIsSubmitting(false);
@@ -129,188 +157,130 @@ export function RegistrationForm() {
   };
 
   return (
-    <form className="grid gap-6 text-zinc-900" onSubmit={onSubmit}>
-      <div className="grid gap-4 md:grid-cols-2">
-        <label className="grid gap-2 text-xs font-semibold uppercase tracking-[0.12em] text-zinc-600">
-          ФИО *
-          <input
-            required
-            value={values.fullName}
-            onChange={(event) =>
-              setValues((prev) => ({ ...prev, fullName: event.target.value }))
-            }
-            className="h-12 rounded-xl border border-zinc-300 bg-white px-4 text-sm text-zinc-900 outline-none transition focus:border-zinc-900"
-            placeholder="Имя Фамилия"
-          />
-        </label>
+    <div className="w-full font-['Trebuchet_MS','Segoe_UI',sans-serif] text-black">
+      <h3 className="text-2xl leading-[1.2] tracking-[-0.48px] lowercase">регистрация</h3>
 
-        <label className="grid gap-2 text-xs font-semibold uppercase tracking-[0.12em] text-zinc-600">
-          Никнейм *
-          <input
-            required
-            value={values.nickname}
-            onChange={(event) =>
-              setValues((prev) => ({ ...prev, nickname: event.target.value }))
-            }
-            className="h-12 rounded-xl border border-zinc-300 bg-white px-4 text-sm text-zinc-900 outline-none transition focus:border-zinc-900"
-            placeholder="@nickname"
-          />
-        </label>
-
-        <label className="grid gap-2 text-xs font-semibold uppercase tracking-[0.12em] text-zinc-600">
-          Телефон *
-          <input
-            required
-            value={values.phone}
-            onChange={(event) =>
-              setValues((prev) => ({ ...prev, phone: event.target.value }))
-            }
-            className="h-12 rounded-xl border border-zinc-300 bg-white px-4 text-sm text-zinc-900 outline-none transition focus:border-zinc-900"
-            placeholder="+7 ..."
-          />
-        </label>
-
-        <label className="grid gap-2 text-xs font-semibold uppercase tracking-[0.12em] text-zinc-600">
-          Email
-          <input
-            type="email"
-            value={values.email}
-            onChange={(event) =>
-              setValues((prev) => ({ ...prev, email: event.target.value }))
-            }
-            className="h-12 rounded-xl border border-zinc-300 bg-white px-4 text-sm text-zinc-900 outline-none transition focus:border-zinc-900"
-            placeholder="name@email.com"
-          />
-        </label>
-
-        <label className="grid gap-2 text-xs font-semibold uppercase tracking-[0.12em] text-zinc-600">
-          Город
-          <input
-            value={values.city}
-            onChange={(event) =>
-              setValues((prev) => ({ ...prev, city: event.target.value }))
-            }
-            className="h-12 rounded-xl border border-zinc-300 bg-white px-4 text-sm text-zinc-900 outline-none transition focus:border-zinc-900"
-            placeholder="Краснодар"
-          />
-        </label>
-
-        <label className="grid gap-2 text-xs font-semibold uppercase tracking-[0.12em] text-zinc-600">
-          Формат участия
-          <select
-            value={values.participationType}
-            onChange={(event) =>
-              setValues((prev) => ({
-                ...prev,
-                participationType: event.target.value as FormValues["participationType"],
-              }))
-            }
-            className="h-12 rounded-xl border border-zinc-300 bg-white px-4 text-sm text-zinc-900 outline-none transition focus:border-zinc-900"
-          >
-            <option value="participant">Участник</option>
-            <option value="spectator">Зритель</option>
-          </select>
-        </label>
-      </div>
-
-      <fieldset className="grid gap-2 rounded-2xl bg-zinc-200/80 p-5">
-        <legend className="px-1 text-sm font-semibold text-zinc-800">1 день</legend>
-        {day1Options.map((option) => (
-          <label
-            key={option.id}
-            className="grid grid-cols-[1fr_auto_auto] items-center gap-3 rounded-lg px-2 py-2 hover:bg-zinc-100/80"
-          >
-            <span className="text-sm font-medium">{option.title}</span>
-            <span className="text-sm font-semibold text-zinc-700">
-              {formatRub(getOptionDisplayPrice(option) ?? 0)}
-            </span>
-            <input
-              type="checkbox"
-              checked={values.selectedOptionIds.includes(option.id)}
-              onChange={() => toggleOption(option.id)}
-              className="h-8 w-8 appearance-none rounded-lg border-2 border-zinc-300 bg-zinc-100 transition checked:border-zinc-900 checked:bg-zinc-900 checked:bg-[linear-gradient(135deg,#111,#333)]"
-            />
-          </label>
-        ))}
-      </fieldset>
-
-      <fieldset className="grid gap-5 rounded-2xl bg-zinc-200/80 p-5">
-        <legend className="px-1 text-sm font-semibold text-zinc-800">2 день</legend>
-        <div className="grid gap-x-8 gap-y-5 md:grid-cols-2">
-          {day2Options.map((option) => (
-            <label
-              key={option.id}
-              className="grid min-h-[86px] grid-cols-[1fr_auto] items-start gap-3"
-            >
-              <span className="grid gap-1">
-                <span className="text-[1.8rem] leading-none md:text-[2.1rem]">{option.title}</span>
-                {option.subtitle ? (
-                  <span className="text-[15px] leading-tight text-zinc-600">{option.subtitle}</span>
-                ) : null}
-              </span>
-              <span className="grid justify-items-end gap-2">
-                <input
-                  type="checkbox"
-                  checked={values.selectedOptionIds.includes(option.id)}
-                  onChange={() => toggleOption(option.id)}
-                  className="h-8 w-8 appearance-none rounded-lg border-2 border-zinc-300 bg-zinc-100 transition checked:border-zinc-900 checked:bg-zinc-900 checked:bg-[linear-gradient(135deg,#111,#333)]"
-                />
-                <span className="text-right text-[11px] text-zinc-500">
-                  {getOptionPriceHint(option.id)}
-                </span>
-              </span>
-            </label>
-          ))}
-        </div>
-      </fieldset>
-
-      <p className="rounded-xl bg-zinc-900 px-4 py-3 text-base font-semibold text-white">
-        Итого: {formatRub(selectedTotalRub)}
-      </p>
-
-      <label className="grid gap-2 text-xs font-semibold uppercase tracking-[0.12em] text-zinc-600">
-        Опыт в танцах
-        <input
-          value={values.danceExperience}
-          onChange={(event) =>
-            setValues((prev) => ({ ...prev, danceExperience: event.target.value }))
-          }
-          className="h-12 rounded-xl border border-zinc-300 bg-white px-4 text-sm text-zinc-900 outline-none transition focus:border-zinc-900"
-          placeholder="например: 3 года"
-        />
-      </label>
-
-      <label className="grid gap-2 text-xs font-semibold uppercase tracking-[0.12em] text-zinc-600">
-        Комментарий
-        <textarea
-          rows={4}
-          value={values.comment}
-          onChange={(event) =>
-            setValues((prev) => ({ ...prev, comment: event.target.value }))
-          }
-          className="rounded-xl border border-zinc-300 bg-white px-4 py-3 text-sm text-zinc-900 outline-none transition focus:border-zinc-900"
-          placeholder="Дополнительная информация"
-        />
-      </label>
-
-      <button
-        type="submit"
-        disabled={isSubmitting}
-        className="mt-2 h-12 rounded-xl bg-zinc-900 px-4 text-sm font-semibold uppercase tracking-[0.12em] text-white transition hover:bg-zinc-700 disabled:cursor-not-allowed disabled:bg-zinc-400"
+      <form
+        className="relative mt-8 grid gap-8 rounded-3xl border border-[rgba(213,213,213,0.6)] bg-[#fafafa] px-6 py-10 md:px-8"
+        onSubmit={onSubmit}
       >
-        {isSubmitting ? "Отправка..." : "Перейти к оплате"}
-      </button>
+        <section className="grid gap-8">
+          <h4 className="text-lg font-bold tracking-[-0.36px]">Укажите данные</h4>
+          <div className="grid gap-5">
+            <Field
+              label="ФИО"
+              required
+              value={values.fullName}
+              placeholder="Иванов Иван Иванович"
+              onChange={(value) => setValues((prev) => ({ ...prev, fullName: value }))}
+            />
+            <Field
+              label="Никнейм"
+              required
+              value={values.nickname}
+              placeholder="Baban"
+              onChange={(value) => setValues((prev) => ({ ...prev, nickname: value }))}
+            />
+            <Field
+              label="Возраст"
+              value={values.age}
+              placeholder="14"
+              onChange={(value) => setValues((prev) => ({ ...prev, age: value }))}
+            />
+            <Field
+              label="Телефон"
+              required
+              value={values.phone}
+              placeholder="+7 (918) 12-32-123"
+              onChange={(value) => setValues((prev) => ({ ...prev, phone: value }))}
+            />
+          </div>
+        </section>
 
-      {errorMessage ? (
-        <p className="rounded-lg border border-red-400/40 bg-red-500/10 px-3 py-2 text-sm text-red-700">
-          {errorMessage}
+        <section className="grid gap-[60px] lg:grid-cols-2 lg:gap-8">
+          <div className="grid gap-12">
+            <h4 className="text-lg font-bold tracking-[-0.36px]">ALL IN DAY 1</h4>
+            <div className="grid gap-5">
+              {day1Options.map((option) => (
+                <label key={option.id} className="flex items-center justify-between gap-3">
+                  <div className="flex items-center gap-3 text-base tracking-[-0.32px]">
+                    <span className="w-[156px] leading-[1.2]">{option.title}</span>
+                    <span className="w-[62px] leading-[1.2]">
+                      {formatRub(getOptionDisplayPrice(option) ?? 0)}
+                    </span>
+                  </div>
+                  <input
+                    type="checkbox"
+                    checked={values.selectedOptionIds.includes(option.id)}
+                    onChange={() => toggleOption(option.id)}
+                    className={checkboxClasses()}
+                  />
+                </label>
+              ))}
+            </div>
+          </div>
+
+          <div className="grid gap-12">
+            <h4 className="text-lg font-bold tracking-[-0.36px]">ALL IN BATTLE</h4>
+            <div className="grid gap-8">
+              {day2Options.map((option) => (
+                <label key={option.id} className="flex items-center justify-between gap-3">
+                  <div className="grid gap-1">
+                    <span className="text-base leading-[1.2] tracking-[-0.32px]">
+                      {option.title}
+                    </span>
+                    {option.subtitle ? (
+                      <span className="text-xs leading-[1.2] tracking-[-0.24px] text-[rgba(0,0,0,0.6)]">
+                        {option.subtitle}
+                      </span>
+                    ) : null}
+                  </div>
+                  <input
+                    type="checkbox"
+                    checked={values.selectedOptionIds.includes(option.id)}
+                    onChange={() => toggleOption(option.id)}
+                    className={checkboxClasses()}
+                  />
+                </label>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <p className="text-sm leading-[1.2] tracking-[-0.28px] text-[rgba(0,0,0,0.6)]">
+          Первая номинация - 1700₽
+          <br />
+          каждая следующая - 800₽
+          <br />
+          зрительский билет - {getDay2PriceHint("day2-spectator")}
         </p>
-      ) : null}
-      {successMessage ? (
-        <p className="rounded-lg border border-emerald-400/40 bg-emerald-500/10 px-3 py-2 text-sm text-emerald-700">
-          {successMessage}
-        </p>
-      ) : null}
-    </form>
+
+        <div className="h-px w-full bg-[#d9d9d9]" />
+
+        <section className="grid gap-5">
+          <p className="text-xl font-semibold tracking-[-0.36px]">
+            Итого: <span className="font-bold text-[#19411f]">{formatRub(totalRub)}</span>
+          </p>
+          <button
+            type="submit"
+            disabled={isSubmitting || totalRub <= 0}
+            className="h-10 rounded-[100px] bg-[#2a6a34] px-6 text-sm tracking-[-0.26px] text-white transition hover:brightness-95 disabled:cursor-not-allowed disabled:opacity-60"
+          >
+            {isSubmitting ? "Отправка..." : "Перейти к оплате"}
+          </button>
+        </section>
+
+        {errorMessage ? (
+          <p className="rounded-lg border border-red-300 bg-red-50 px-3 py-2 text-sm text-red-700">
+            {errorMessage}
+          </p>
+        ) : null}
+        {successMessage ? (
+          <p className="rounded-lg border border-emerald-300 bg-emerald-50 px-3 py-2 text-sm text-emerald-700">
+            {successMessage}
+          </p>
+        ) : null}
+      </form>
+    </div>
   );
 }
