@@ -178,13 +178,13 @@ export default function Home() {
         <h2 className="text-center font-display text-[80px] font-black uppercase leading-none tracking-tight text-[#2a6a34]">
           JUDGES
         </h2>
-        <div className="mx-auto mt-8 grid max-w-[1320px] gap-8 md:grid-cols-3 md:items-start">
+        <div className="mx-auto mt-8 grid max-w-[1400px] gap-8 md:grid-cols-3 md:items-start md:gap-x-16">
           {judges.map((person) => (
             <article
               key={person.name}
-              className={`text-center ${person.orderClass}`}
+              className={`mx-auto w-full max-w-[420px] text-center ${person.orderClass}`}
             >
-              <div className={`overflow-hidden rounded-[28px] ${person.imageClass}`}>
+              <div className={`mx-auto w-full max-w-[420px] overflow-hidden rounded-[28px] ${person.imageClass}`}>
                 <Image
                   src={person.image}
                   alt={person.name}
