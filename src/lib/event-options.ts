@@ -7,10 +7,22 @@ export type EventOption = {
 };
 
 export const EVENT_OPTIONS: EventOption[] = [
-  { id: "day1-option-1", day: "day1", title: "1", kind: "fixed", priceRub: 2900 },
-  { id: "day1-option-2", day: "day1", title: "2", kind: "fixed", priceRub: 900 },
-  { id: "day1-option-3", day: "day1", title: "3", kind: "fixed", priceRub: 600 },
-  { id: "day1-option-4", day: "day1", title: "4", kind: "fixed", priceRub: 600 },
+  {
+    id: "day1-option-1",
+    day: "day1",
+    title: "Мастер-Класс от RASH THE FLOW",
+    kind: "fixed",
+    priceRub: 2900,
+  },
+  { id: "day1-option-2", day: "day1", title: "Contest 3x3", kind: "fixed", priceRub: 900 },
+  { id: "day1-option-3", day: "day1", title: "JAM", kind: "fixed", priceRub: 600 },
+  {
+    id: "day1-option-4",
+    day: "day1",
+    title: "Зрительский билет (contest + jam)",
+    kind: "fixed",
+    priceRub: 600,
+  },
   { id: "day2-baby", day: "day2", title: "BABY", kind: "competitive" },
   { id: "day2-beg-16-plus", day: "day2", title: "BEG 16+", kind: "competitive" },
   { id: "day2-jun-beg", day: "day2", title: "JUN BEG", kind: "competitive" },
