@@ -45,10 +45,12 @@ You can use Neon in the same way: just provide its Postgres URI in `DATABASE_URL
 Fill these env vars in Vercel:
 - `TINKOFF_TERMINAL_KEY`
 - `TINKOFF_PASSWORD`
-- `EVENT_PRICE_RUB`
 - `TINKOFF_SUCCESS_URL`
 - `TINKOFF_FAIL_URL`
 - `TINKOFF_NOTIFICATION_URL` (must point to `/api/payments/tbank/webhook`)
+
+Prices are calculated from selected checkboxes in:
+- `src/lib/event-options.ts`
 
 In T-Bank cabinet, set notification URL to:
 - `https://<your-domain>/api/payments/tbank/webhook`

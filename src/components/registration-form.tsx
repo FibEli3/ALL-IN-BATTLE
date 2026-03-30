@@ -1,32 +1,64 @@
 "use client";
 
-import { FormEvent, useState } from "react";
+import { EVENT_OPTIONS, getOptionsByDay } from "@/lib/event-options";
+import { FormEvent, useMemo, useState } from "react";
 
 type FormValues = {
   fullName: string;
+  nickname: string;
   phone: string;
   email: string;
   city: string;
   danceExperience: string;
   participationType: "participant" | "spectator";
   comment: string;
+  selectedOptionIds: string[];
 };
 
 const initialForm: FormValues = {
   fullName: "",
+  nickname: "",
   phone: "",
   email: "",
   city: "",
   danceExperience: "",
   participationType: "participant",
   comment: "",
+  selectedOptionIds: [],
 };
+
+const day1Options = getOptionsByDay("day1");
+const day2Options = getOptionsByDay("day2");
+
+function formatRub(value: number) {
+  return `${new Intl.NumberFormat("ru-RU").format(value)} ₽`;
+}
 
 export function RegistrationForm() {
   const [values, setValues] = useState<FormValues>(initialForm);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
+
+  const selectedTotalRub = useMemo(() => {
+    const selectedSet = new Set(values.selectedOptionIds);
+    return EVENT_OPTIONS.filter((option) => selectedSet.has(option.id)).reduce(
+      (sum, option) => sum + option.priceRub,
+      0,
+    );
+  }, [values.selectedOptionIds]);
+
+  const toggleOption = (optionId: string) => {
+    setValues((prev) => {
+      const exists = prev.selectedOptionIds.includes(optionId);
+      return {
+        ...prev,
+        selectedOptionIds: exists
+          ? prev.selectedOptionIds.filter((id) => id !== optionId)
+          : [...prev.selectedOptionIds, optionId],
+      };
+    });
+  };
 
   const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -37,12 +69,9 @@ export function RegistrationForm() {
     try {
       const response = await fetch("/api/registrations", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(values),
       });
-
       const payload = await response.json();
 
       if (!response.ok || !payload?.ok) {
@@ -51,21 +80,19 @@ export function RegistrationForm() {
 
       const registrationId = payload?.registration?.id;
       if (!registrationId) {
-        throw new Error("Заявка создана, но не удалось получить id регистрации");
+        throw new Error("Заявка создана, но id не получен");
       }
 
       const paymentResponse = await fetch("/api/payments/tbank/init", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ registrationId }),
       });
-
       const paymentPayload = await paymentResponse.json();
+
       if (!paymentResponse.ok || !paymentPayload?.ok) {
         setSuccessMessage(
-          "Заявка сохранена. Оплата пока не настроена: после заполнения ключей Т-Банк она будет открываться автоматически.",
+          "Заявка сохранена. Оплата пока недоступна, проверь настройки T-Банк в Vercel.",
         );
         setValues(initialForm);
         return;
@@ -76,9 +103,7 @@ export function RegistrationForm() {
         return;
       }
 
-      setSuccessMessage(
-        "Заявка сохранена, но ссылка на оплату не пришла. Проверь настройки Т-Банк.",
-      );
+      setSuccessMessage("Заявка сохранена, но ссылка на оплату не получена.");
       setValues(initialForm);
     } catch (error) {
       setErrorMessage(
@@ -94,7 +119,7 @@ export function RegistrationForm() {
   return (
     <form className="grid gap-4" onSubmit={onSubmit}>
       <label className="grid gap-2 text-sm">
-        ФИО
+        ФИО *
         <input
           required
           value={values.fullName}
@@ -107,7 +132,20 @@ export function RegistrationForm() {
       </label>
 
       <label className="grid gap-2 text-sm">
-        Телефон
+        Никнейм *
+        <input
+          required
+          value={values.nickname}
+          onChange={(event) =>
+            setValues((prev) => ({ ...prev, nickname: event.target.value }))
+          }
+          className="rounded-xl border border-stone-500/40 bg-black/10 px-4 py-3 outline-none transition focus:border-amber-300"
+          placeholder="@nickname"
+        />
+      </label>
+
+      <label className="grid gap-2 text-sm">
+        Телефон *
         <input
           required
           value={values.phone}
@@ -123,7 +161,6 @@ export function RegistrationForm() {
         Email
         <input
           type="email"
-          required
           value={values.email}
           onChange={(event) =>
             setValues((prev) => ({ ...prev, email: event.target.value }))
@@ -157,10 +194,50 @@ export function RegistrationForm() {
           }
           className="rounded-xl border border-stone-500/40 bg-black/10 px-4 py-3 outline-none transition focus:border-amber-300"
         >
-          <option value="participant">Участник баттла</option>
+          <option value="participant">Участник</option>
           <option value="spectator">Зритель</option>
         </select>
       </label>
+
+      <fieldset className="grid gap-3 rounded-xl border border-stone-500/40 p-4">
+        <legend className="px-1 text-sm font-semibold">1 день</legend>
+        {day1Options.map((option) => (
+          <label key={option.id} className="flex items-center justify-between gap-3">
+            <span className="text-sm">{option.title}</span>
+            <span className="flex items-center gap-3">
+              <span className="text-sm text-amber-200">{formatRub(option.priceRub)}</span>
+              <input
+                type="checkbox"
+                checked={values.selectedOptionIds.includes(option.id)}
+                onChange={() => toggleOption(option.id)}
+                className="h-4 w-4 accent-amber-300"
+              />
+            </span>
+          </label>
+        ))}
+      </fieldset>
+
+      <fieldset className="grid gap-3 rounded-xl border border-stone-500/40 p-4">
+        <legend className="px-1 text-sm font-semibold">2 день</legend>
+        {day2Options.map((option) => (
+          <label key={option.id} className="flex items-center justify-between gap-3">
+            <span className="text-sm">{option.title}</span>
+            <span className="flex items-center gap-3">
+              <span className="text-sm text-amber-200">{formatRub(option.priceRub)}</span>
+              <input
+                type="checkbox"
+                checked={values.selectedOptionIds.includes(option.id)}
+                onChange={() => toggleOption(option.id)}
+                className="h-4 w-4 accent-amber-300"
+              />
+            </span>
+          </label>
+        ))}
+      </fieldset>
+
+      <p className="rounded-lg border border-amber-300/30 bg-amber-300/10 px-3 py-2 text-sm">
+        Итого: <strong>{formatRub(selectedTotalRub)}</strong>
+      </p>
 
       <label className="grid gap-2 text-sm">
         Опыт в танцах
@@ -192,7 +269,7 @@ export function RegistrationForm() {
         disabled={isSubmitting}
         className="mt-2 rounded-xl bg-amber-300 px-4 py-3 font-semibold text-black transition hover:bg-amber-200 disabled:cursor-not-allowed disabled:bg-amber-100"
       >
-        {isSubmitting ? "Отправка..." : "Оставить заявку"}
+        {isSubmitting ? "Отправка..." : "Перейти к оплате"}
       </button>
 
       {errorMessage ? (

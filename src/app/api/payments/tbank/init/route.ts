@@ -7,8 +7,6 @@ const initSchema = z.object({
   registrationId: z.string().uuid().or(z.string().min(10)),
 });
 
-const DEFAULT_EVENT_PRICE_RUB = Number(process.env.EVENT_PRICE_RUB ?? 1500);
-
 export async function POST(request: Request) {
   try {
     const body = await request.json();
@@ -22,14 +20,21 @@ export async function POST(request: Request) {
       );
     }
 
+    if (registration.amountRub <= 0) {
+      return NextResponse.json(
+        { ok: false, message: "Сумма оплаты не рассчитана" },
+        { status: 400 },
+      );
+    }
+
     const orderId = `AIB-${Date.now()}-${registration.id.slice(0, 8)}`;
     const payment = await initTbankPayment({
-      amountRub: DEFAULT_EVENT_PRICE_RUB,
+      amountRub: registration.amountRub,
       orderId,
-      description: "ALL IN BATTLE — участие в ивенте",
+      description: `ALL IN BATTLE - ${registration.nickname}`,
       registrationId: registration.id,
       fullName: registration.fullName,
-      email: registration.email,
+      email: registration.email ?? "",
       phone: registration.phone,
     });
 
@@ -37,14 +42,13 @@ export async function POST(request: Request) {
       registrationId: registration.id,
       orderId,
       paymentId: payment.paymentId,
-      amountRub: DEFAULT_EVENT_PRICE_RUB,
     });
 
     return NextResponse.json({
       ok: true,
       paymentUrl: payment.paymentUrl,
       orderId,
-      amountRub: DEFAULT_EVENT_PRICE_RUB,
+      amountRub: registration.amountRub,
     });
   } catch (error) {
     return NextResponse.json(

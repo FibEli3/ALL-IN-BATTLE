@@ -5,25 +5,31 @@ import postgres from "postgres";
 
 type RegistrationInput = {
   fullName: string;
+  nickname: string;
   phone: string;
-  email: string;
+  email?: string | null;
   city?: string | null;
   danceExperience?: string | null;
   participationType: "participant" | "spectator";
   comment?: string | null;
+  selectedOptionIds: string[];
+  amountRub: number;
 };
 
 type RegistrationRecord = {
   id: string;
   paymentStatus: string;
   createdAt: string;
+  amountRub: number;
 };
 
 type RegistrationForPayment = {
   id: string;
   fullName: string;
-  email: string;
+  nickname: string;
+  email: string | null;
   phone: string;
+  amountRub: number;
 };
 
 type DbClient = {
@@ -72,18 +78,33 @@ async function ensureSchema() {
         CREATE TABLE IF NOT EXISTS registrations (
           id TEXT PRIMARY KEY,
           full_name TEXT NOT NULL,
+          nickname TEXT,
           phone TEXT NOT NULL,
-          email TEXT NOT NULL,
+          email TEXT,
           city TEXT,
           dance_experience TEXT,
           participation_type TEXT NOT NULL,
           comment TEXT,
+          selected_option_ids TEXT,
           payment_status TEXT NOT NULL DEFAULT 'pending',
           payment_order_id TEXT,
           payment_id TEXT,
           amount_rub INTEGER,
           created_at TIMESTAMP NOT NULL DEFAULT NOW()
         );
+      `);
+
+      await db.exec(`
+        ALTER TABLE registrations
+        ADD COLUMN IF NOT EXISTS nickname TEXT;
+      `);
+      await db.exec(`
+        ALTER TABLE registrations
+        ADD COLUMN IF NOT EXISTS selected_option_ids TEXT;
+      `);
+      await db.exec(`
+        ALTER TABLE registrations
+        ADD COLUMN IF NOT EXISTS amount_rub INTEGER;
       `);
     })();
   }
@@ -99,18 +120,35 @@ export async function createRegistration(
 
   const result = await db.query<RegistrationRecord>(
     `INSERT INTO registrations (
-      id, full_name, phone, email, city, dance_experience, participation_type, comment
-    ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
-    RETURNING id, payment_status as "paymentStatus", created_at as "createdAt";`,
+      id,
+      full_name,
+      nickname,
+      phone,
+      email,
+      city,
+      dance_experience,
+      participation_type,
+      comment,
+      selected_option_ids,
+      amount_rub
+    ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
+    RETURNING
+      id,
+      payment_status as "paymentStatus",
+      created_at as "createdAt",
+      amount_rub as "amountRub";`,
     [
       id,
       input.fullName,
+      input.nickname,
       input.phone,
-      input.email,
+      input.email ?? null,
       input.city ?? null,
       input.danceExperience ?? null,
       input.participationType,
       input.comment ?? null,
+      JSON.stringify(input.selectedOptionIds),
+      input.amountRub,
     ],
   );
 
@@ -126,8 +164,10 @@ export async function getRegistrationById(
     `SELECT
       id,
       full_name as "fullName",
+      nickname,
       email,
-      phone
+      phone,
+      COALESCE(amount_rub, 0) as "amountRub"
     FROM registrations
     WHERE id = $1
     LIMIT 1;`,
@@ -141,7 +181,6 @@ export async function attachPaymentToRegistration(params: {
   registrationId: string;
   orderId: string;
   paymentId: string;
-  amountRub: number;
 }) {
   await ensureSchema();
 
@@ -150,10 +189,9 @@ export async function attachPaymentToRegistration(params: {
     SET
       payment_status = 'created',
       payment_order_id = $2,
-      payment_id = $3,
-      amount_rub = $4
+      payment_id = $3
     WHERE id = $1;`,
-    [params.registrationId, params.orderId, params.paymentId, params.amountRub],
+    [params.registrationId, params.orderId, params.paymentId],
   );
 }
 
