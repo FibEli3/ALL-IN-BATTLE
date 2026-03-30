@@ -1,6 +1,7 @@
 import { PGlite } from "@electric-sql/pglite";
 import { mkdirSync } from "node:fs";
 import { join } from "node:path";
+import postgres from "postgres";
 
 type RegistrationInput = {
   fullName: string;
@@ -25,31 +26,66 @@ type RegistrationForPayment = {
   phone: string;
 };
 
-const dataDir = join(process.cwd(), ".data");
-mkdirSync(dataDir, { recursive: true });
+type DbClient = {
+  query<T>(query: string, params?: unknown[]): Promise<{ rows: T[] }>;
+  exec(query: string): Promise<void>;
+};
 
-const db = new PGlite(join(dataDir, "all-in-battle-db"));
-let initialized: Promise<unknown> | null = null;
+function createClient(): DbClient {
+  const databaseUrl = process.env.DATABASE_URL;
+
+  if (databaseUrl) {
+    const sql = postgres(databaseUrl, { prepare: false });
+
+    return {
+      async query<T>(query: string, params: unknown[] = []) {
+        const rows = (await sql.unsafe(query, params as never[])) as T[];
+        return { rows };
+      },
+      async exec(query: string) {
+        await sql.unsafe(query);
+      },
+    };
+  }
+
+  const dataDir = join(process.cwd(), ".data");
+  mkdirSync(dataDir, { recursive: true });
+  const localDb = new PGlite(join(dataDir, "all-in-battle-db"));
+
+  return {
+    async query<T>(query: string, params: unknown[] = []) {
+      return localDb.query<T>(query, params);
+    },
+    async exec(query: string) {
+      await localDb.exec(query);
+    },
+  };
+}
+
+const db = createClient();
+let initialized: Promise<void> | null = null;
 
 async function ensureSchema() {
   if (!initialized) {
-    initialized = db.exec(`
-      CREATE TABLE IF NOT EXISTS registrations (
-        id TEXT PRIMARY KEY,
-        full_name TEXT NOT NULL,
-        phone TEXT NOT NULL,
-        email TEXT NOT NULL,
-        city TEXT,
-        dance_experience TEXT,
-        participation_type TEXT NOT NULL,
-        comment TEXT,
-        payment_status TEXT NOT NULL DEFAULT 'pending',
-        payment_order_id TEXT,
-        payment_id TEXT,
-        amount_rub INTEGER,
-        created_at TIMESTAMP NOT NULL DEFAULT NOW()
-      );
-    `);
+    initialized = (async () => {
+      await db.exec(`
+        CREATE TABLE IF NOT EXISTS registrations (
+          id TEXT PRIMARY KEY,
+          full_name TEXT NOT NULL,
+          phone TEXT NOT NULL,
+          email TEXT NOT NULL,
+          city TEXT,
+          dance_experience TEXT,
+          participation_type TEXT NOT NULL,
+          comment TEXT,
+          payment_status TEXT NOT NULL DEFAULT 'pending',
+          payment_order_id TEXT,
+          payment_id TEXT,
+          amount_rub INTEGER,
+          created_at TIMESTAMP NOT NULL DEFAULT NOW()
+        );
+      `);
+    })();
   }
 
   await initialized;

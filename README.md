@@ -1,61 +1,60 @@
 # ALL IN BATTLE Landing
 
-Лендинг для ивента по хип-хоп импровизации в Краснодаре на `Next.js` с:
-- адаптивной структурой под desktop/tablet/mobile;
-- блоками с основной информацией и составом гостей;
-- формой регистрации;
-- сохранением заявок в локальную БД (PGlite);
-- подготовкой к подключению оплаты через Т-Банк.
+Next.js landing page for a hip-hop improvisation event in Krasnodar.
 
-## Локальный запуск
+Current scope:
+- responsive landing structure;
+- participant lineup section;
+- registration form;
+- registration API;
+- T-Bank payment init + webhook scaffold;
+- database storage with production PostgreSQL support.
+
+## Run locally
 
 ```powershell
-# если в PowerShell блокируется npm.ps1, используй npm.cmd
 & 'C:\Program Files\nodejs\npm.cmd' install
 & 'C:\Program Files\nodejs\npm.cmd' run dev
 ```
 
-Приложение будет доступно на [http://localhost:3000](http://localhost:3000).
+## Database mode
 
-## Где хранятся заявки
+- If `DATABASE_URL` is set, the app uses PostgreSQL (recommended for Vercel).
+- If `DATABASE_URL` is empty, the app falls back to local file DB in `.data/`.
+- The `registrations` table is created automatically on first request.
 
-- Таблица `registrations` создаётся автоматически при первом POST-запросе в `/api/registrations`.
-- Файлы БД сохраняются в папку `.data/` в корне проекта.
+## Deploy to Vercel
 
-## Деплой на Vercel
+1. Import the repository in [Vercel](https://vercel.com/new).
+2. Keep framework as `Next.js`.
+3. Add environment variables from `.env.example`.
+4. Deploy.
 
-1. Импортируй репозиторий в [Vercel](https://vercel.com/new).
-2. Framework: `Next.js` (определится автоматически).
-3. Нажми Deploy.
+## Supabase setup (recommended)
 
-## Что нужно от тебя для полноценного Т-Банк подключения
+1. Create project at [Supabase](https://supabase.com/).
+2. Open `Project Settings -> Database`.
+3. Copy the connection string (URI format).
+4. Put it into `DATABASE_URL` in Vercel env vars.
+5. Redeploy.
 
-1. Договор эквайринга и доступ в кабинет Т-Банк.
-2. `TerminalKey`.
-3. `Password` для подписи запросов.
-4. URL успешной оплаты (например `/payment/success`).
-5. URL неуспешной оплаты (например `/payment/fail`).
-6. Публичный webhook URL на Vercel для уведомлений банка (мы дадим endpoint в проекте).
-7. Режим теста или боевой (лучше начинать с тестового).
+You can use Neon in the same way: just provide its Postgres URI in `DATABASE_URL`.
 
-После получения этих данных мы добавим:
-- создание заказа через API Т-Банк;
-- редирект пользователя на оплату;
-- обработчик webhook для изменения `payment_status` в БД.
+## T-Bank setup checklist
 
-## Подключение Т-Банк по шагам
+Fill these env vars in Vercel:
+- `TINKOFF_TERMINAL_KEY`
+- `TINKOFF_PASSWORD`
+- `EVENT_PRICE_RUB`
+- `TINKOFF_SUCCESS_URL`
+- `TINKOFF_FAIL_URL`
+- `TINKOFF_NOTIFICATION_URL` (must point to `/api/payments/tbank/webhook`)
 
-1. Скопируй `.env.example` в `.env`.
-2. Заполни:
-   - `TINKOFF_TERMINAL_KEY`
-   - `TINKOFF_PASSWORD`
-   - `EVENT_PRICE_RUB` (например, `1500`)
-   - `TINKOFF_SUCCESS_URL`
-   - `TINKOFF_FAIL_URL`
-   - `TINKOFF_NOTIFICATION_URL`
-3. Убедись, что в кабинете Т-Банк для уведомлений указан URL:
-   - `https://<your-domain>/api/payments/tbank/webhook`
-4. Проверь локально:
-   - создай заявку через форму;
-   - после submit должен открыться `PaymentURL` Т-Банка.
-5. После деплоя на Vercel добавь те же env переменные в `Project Settings -> Environment Variables`.
+In T-Bank cabinet, set notification URL to:
+- `https://<your-domain>/api/payments/tbank/webhook`
+
+## Useful routes
+
+- `POST /api/registrations`
+- `POST /api/payments/tbank/init`
+- `POST /api/payments/tbank/webhook`
