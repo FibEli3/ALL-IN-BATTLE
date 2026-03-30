@@ -121,7 +121,7 @@ export function RegistrationForm() {
       setErrorMessage(
         error instanceof Error
           ? error.message
-          : "Не удалось отправить форму. Попробуй ещё раз.",
+          : "Не удалось отправить форму. Попробуй еще раз.",
       );
     } finally {
       setIsSubmitting(false);
@@ -129,150 +129,155 @@ export function RegistrationForm() {
   };
 
   return (
-    <form className="grid gap-4" onSubmit={onSubmit}>
-      <label className="grid gap-2 text-sm">
-        ФИО *
-        <input
-          required
-          value={values.fullName}
-          onChange={(event) =>
-            setValues((prev) => ({ ...prev, fullName: event.target.value }))
-          }
-          className="rounded-xl border border-stone-500/40 bg-black/10 px-4 py-3 outline-none transition focus:border-amber-300"
-          placeholder="Имя Фамилия"
-        />
-      </label>
+    <form className="grid gap-5 text-zinc-900" onSubmit={onSubmit}>
+      <div className="grid gap-4 md:grid-cols-2">
+        <label className="grid gap-2 text-xs font-semibold uppercase tracking-[0.12em] text-zinc-600">
+          ФИО *
+          <input
+            required
+            value={values.fullName}
+            onChange={(event) =>
+              setValues((prev) => ({ ...prev, fullName: event.target.value }))
+            }
+            className="h-12 rounded-xl border border-zinc-300 bg-white px-4 text-sm text-zinc-900 outline-none transition focus:border-zinc-900"
+            placeholder="Имя Фамилия"
+          />
+        </label>
 
-      <label className="grid gap-2 text-sm">
-        Никнейм *
-        <input
-          required
-          value={values.nickname}
-          onChange={(event) =>
-            setValues((prev) => ({ ...prev, nickname: event.target.value }))
-          }
-          className="rounded-xl border border-stone-500/40 bg-black/10 px-4 py-3 outline-none transition focus:border-amber-300"
-          placeholder="@nickname"
-        />
-      </label>
+        <label className="grid gap-2 text-xs font-semibold uppercase tracking-[0.12em] text-zinc-600">
+          Никнейм *
+          <input
+            required
+            value={values.nickname}
+            onChange={(event) =>
+              setValues((prev) => ({ ...prev, nickname: event.target.value }))
+            }
+            className="h-12 rounded-xl border border-zinc-300 bg-white px-4 text-sm text-zinc-900 outline-none transition focus:border-zinc-900"
+            placeholder="@nickname"
+          />
+        </label>
 
-      <label className="grid gap-2 text-sm">
-        Телефон *
-        <input
-          required
-          value={values.phone}
-          onChange={(event) =>
-            setValues((prev) => ({ ...prev, phone: event.target.value }))
-          }
-          className="rounded-xl border border-stone-500/40 bg-black/10 px-4 py-3 outline-none transition focus:border-amber-300"
-          placeholder="+7 ..."
-        />
-      </label>
+        <label className="grid gap-2 text-xs font-semibold uppercase tracking-[0.12em] text-zinc-600">
+          Телефон *
+          <input
+            required
+            value={values.phone}
+            onChange={(event) =>
+              setValues((prev) => ({ ...prev, phone: event.target.value }))
+            }
+            className="h-12 rounded-xl border border-zinc-300 bg-white px-4 text-sm text-zinc-900 outline-none transition focus:border-zinc-900"
+            placeholder="+7 ..."
+          />
+        </label>
 
-      <label className="grid gap-2 text-sm">
-        Email
-        <input
-          type="email"
-          value={values.email}
-          onChange={(event) =>
-            setValues((prev) => ({ ...prev, email: event.target.value }))
-          }
-          className="rounded-xl border border-stone-500/40 bg-black/10 px-4 py-3 outline-none transition focus:border-amber-300"
-          placeholder="name@email.com"
-        />
-      </label>
+        <label className="grid gap-2 text-xs font-semibold uppercase tracking-[0.12em] text-zinc-600">
+          Email
+          <input
+            type="email"
+            value={values.email}
+            onChange={(event) =>
+              setValues((prev) => ({ ...prev, email: event.target.value }))
+            }
+            className="h-12 rounded-xl border border-zinc-300 bg-white px-4 text-sm text-zinc-900 outline-none transition focus:border-zinc-900"
+            placeholder="name@email.com"
+          />
+        </label>
 
-      <label className="grid gap-2 text-sm">
-        Город
-        <input
-          value={values.city}
-          onChange={(event) =>
-            setValues((prev) => ({ ...prev, city: event.target.value }))
-          }
-          className="rounded-xl border border-stone-500/40 bg-black/10 px-4 py-3 outline-none transition focus:border-amber-300"
-          placeholder="Краснодар"
-        />
-      </label>
+        <label className="grid gap-2 text-xs font-semibold uppercase tracking-[0.12em] text-zinc-600">
+          Город
+          <input
+            value={values.city}
+            onChange={(event) =>
+              setValues((prev) => ({ ...prev, city: event.target.value }))
+            }
+            className="h-12 rounded-xl border border-zinc-300 bg-white px-4 text-sm text-zinc-900 outline-none transition focus:border-zinc-900"
+            placeholder="Краснодар"
+          />
+        </label>
 
-      <label className="grid gap-2 text-sm">
-        Формат участия
-        <select
-          value={values.participationType}
-          onChange={(event) =>
-            setValues((prev) => ({
-              ...prev,
-              participationType: event.target.value as FormValues["participationType"],
-            }))
-          }
-          className="rounded-xl border border-stone-500/40 bg-black/10 px-4 py-3 outline-none transition focus:border-amber-300"
-        >
-          <option value="participant">Участник</option>
-          <option value="spectator">Зритель</option>
-        </select>
-      </label>
+        <label className="grid gap-2 text-xs font-semibold uppercase tracking-[0.12em] text-zinc-600">
+          Формат участия
+          <select
+            value={values.participationType}
+            onChange={(event) =>
+              setValues((prev) => ({
+                ...prev,
+                participationType: event.target.value as FormValues["participationType"],
+              }))
+            }
+            className="h-12 rounded-xl border border-zinc-300 bg-white px-4 text-sm text-zinc-900 outline-none transition focus:border-zinc-900"
+          >
+            <option value="participant">Участник</option>
+            <option value="spectator">Зритель</option>
+          </select>
+        </label>
+      </div>
 
-      <fieldset className="grid gap-3 rounded-xl border border-stone-500/40 p-4">
-        <legend className="px-1 text-sm font-semibold">1 день</legend>
+      <fieldset className="grid gap-2 rounded-2xl border border-zinc-300 bg-white p-4">
+        <legend className="px-1 text-sm font-semibold text-zinc-900">1 день</legend>
         {day1Options.map((option) => (
-          <label key={option.id} className="flex items-center justify-between gap-3">
-            <span className="text-sm">{option.title}</span>
-            <span className="flex items-center gap-3">
-              <span className="text-sm text-amber-200">
-                {formatRub(getOptionDisplayPrice(option) ?? 0)}
-              </span>
-              <input
-                type="checkbox"
-                checked={values.selectedOptionIds.includes(option.id)}
-                onChange={() => toggleOption(option.id)}
-                className="h-4 w-4 accent-amber-300"
-              />
+          <label
+            key={option.id}
+            className="grid grid-cols-[1fr_auto_auto] items-center gap-3 rounded-lg px-2 py-2 hover:bg-zinc-100"
+          >
+            <span className="text-sm font-medium">{option.title}</span>
+            <span className="text-sm font-semibold text-zinc-700">
+              {formatRub(getOptionDisplayPrice(option) ?? 0)}
             </span>
+            <input
+              type="checkbox"
+              checked={values.selectedOptionIds.includes(option.id)}
+              onChange={() => toggleOption(option.id)}
+              className="h-8 w-8 appearance-none rounded-lg border-2 border-zinc-300 bg-zinc-100 transition checked:border-zinc-900 checked:bg-zinc-900"
+            />
           </label>
         ))}
       </fieldset>
 
-      <fieldset className="grid gap-3 rounded-xl border border-stone-500/40 p-4">
-        <legend className="px-1 text-sm font-semibold">2 день</legend>
+      <fieldset className="grid gap-3 rounded-2xl border border-zinc-300 bg-white p-4">
+        <legend className="px-1 text-sm font-semibold text-zinc-900">2 день</legend>
         <div className="grid gap-4 md:grid-cols-2">
           {day2Options.map((option) => (
-            <label key={option.id} className="flex items-start justify-between gap-3">
+            <label key={option.id} className="grid grid-cols-[1fr_auto] items-start gap-3">
               <span className="grid gap-1">
-                <span className="text-sm font-medium">{option.title}</span>
+                <span className="text-[2rem] leading-none md:text-[2.2rem]">{option.title}</span>
                 {option.subtitle ? (
-                  <span className="text-xs text-zinc-400">{option.subtitle}</span>
+                  <span className="text-[15px] leading-tight text-zinc-600">{option.subtitle}</span>
                 ) : null}
               </span>
-              <span className="flex items-center gap-3">
-                <span className="text-xs text-amber-200">{getOptionPriceHint(option.id)}</span>
+              <span className="grid justify-items-end gap-2">
                 <input
                   type="checkbox"
                   checked={values.selectedOptionIds.includes(option.id)}
                   onChange={() => toggleOption(option.id)}
-                  className="mt-0.5 h-4 w-4 accent-amber-300"
+                  className="h-8 w-8 appearance-none rounded-lg border-2 border-zinc-300 bg-zinc-100 transition checked:border-zinc-900 checked:bg-zinc-900"
                 />
+                <span className="text-right text-[11px] text-zinc-500">
+                  {getOptionPriceHint(option.id)}
+                </span>
               </span>
             </label>
           ))}
         </div>
       </fieldset>
 
-      <p className="rounded-lg border border-amber-300/30 bg-amber-300/10 px-3 py-2 text-sm">
-        Итого: <strong>{formatRub(selectedTotalRub)}</strong>
+      <p className="rounded-xl border border-zinc-300 bg-white px-4 py-3 text-base font-semibold">
+        Итого: {formatRub(selectedTotalRub)}
       </p>
 
-      <label className="grid gap-2 text-sm">
+      <label className="grid gap-2 text-xs font-semibold uppercase tracking-[0.12em] text-zinc-600">
         Опыт в танцах
         <input
           value={values.danceExperience}
           onChange={(event) =>
             setValues((prev) => ({ ...prev, danceExperience: event.target.value }))
           }
-          className="rounded-xl border border-stone-500/40 bg-black/10 px-4 py-3 outline-none transition focus:border-amber-300"
+          className="h-12 rounded-xl border border-zinc-300 bg-white px-4 text-sm text-zinc-900 outline-none transition focus:border-zinc-900"
           placeholder="например: 3 года"
         />
       </label>
 
-      <label className="grid gap-2 text-sm">
+      <label className="grid gap-2 text-xs font-semibold uppercase tracking-[0.12em] text-zinc-600">
         Комментарий
         <textarea
           rows={4}
@@ -280,7 +285,7 @@ export function RegistrationForm() {
           onChange={(event) =>
             setValues((prev) => ({ ...prev, comment: event.target.value }))
           }
-          className="rounded-xl border border-stone-500/40 bg-black/10 px-4 py-3 outline-none transition focus:border-amber-300"
+          className="rounded-xl border border-zinc-300 bg-white px-4 py-3 text-sm text-zinc-900 outline-none transition focus:border-zinc-900"
           placeholder="Дополнительная информация"
         />
       </label>
@@ -288,18 +293,18 @@ export function RegistrationForm() {
       <button
         type="submit"
         disabled={isSubmitting}
-        className="mt-2 rounded-xl bg-amber-300 px-4 py-3 font-semibold text-black transition hover:bg-amber-200 disabled:cursor-not-allowed disabled:bg-amber-100"
+        className="mt-2 h-12 rounded-xl bg-zinc-900 px-4 text-sm font-semibold uppercase tracking-[0.12em] text-white transition hover:bg-zinc-700 disabled:cursor-not-allowed disabled:bg-zinc-400"
       >
         {isSubmitting ? "Отправка..." : "Перейти к оплате"}
       </button>
 
       {errorMessage ? (
-        <p className="rounded-lg border border-red-400/40 bg-red-500/10 px-3 py-2 text-sm text-red-200">
+        <p className="rounded-lg border border-red-400/40 bg-red-500/10 px-3 py-2 text-sm text-red-700">
           {errorMessage}
         </p>
       ) : null}
       {successMessage ? (
-        <p className="rounded-lg border border-emerald-400/40 bg-emerald-500/10 px-3 py-2 text-sm text-emerald-100">
+        <p className="rounded-lg border border-emerald-400/40 bg-emerald-500/10 px-3 py-2 text-sm text-emerald-700">
           {successMessage}
         </p>
       ) : null}

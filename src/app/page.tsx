@@ -22,10 +22,10 @@ const judges = [
 ];
 
 const schedule = [
-  "12:00 — Регистрация участников",
-  "13:00 — Отборочные круги",
-  "16:00 — Топ-16 / Баттл сетка",
-  "19:00 — Финалы и награждение",
+  "12:00 - Регистрация участников",
+  "13:00 - Отборочные круги",
+  "16:00 - Топ-16 / Баттл-сетка",
+  "19:00 - Финалы и награждение",
 ];
 
 export default function Home() {
@@ -35,7 +35,7 @@ export default function Home() {
 
       <section className="mx-auto w-full max-w-6xl px-5 pb-20 pt-12 md:px-8 md:pb-28 md:pt-16">
         <p className="fade-up text-xs uppercase tracking-[0.32em] text-amber-200/90 md:text-sm">
-          Краснодар • 2026 • Hip-Hop Improvisation Event
+          Краснодар - 2026 - Hip-Hop Improvisation Event
         </p>
         <h1 className="fade-up mt-4 max-w-4xl text-5xl font-black uppercase leading-[0.95] tracking-tight md:text-7xl">
           ALL IN BATTLE
@@ -96,26 +96,29 @@ export default function Home() {
         </div>
       </section>
 
-      <section id="registration" className="mx-auto w-full max-w-6xl px-5 pb-20 md:px-8 md:pb-24">
-        <div className="grid gap-8 rounded-3xl border border-zinc-700/50 bg-zinc-900/60 p-6 md:grid-cols-5 md:p-10">
-          <div className="fade-up md:col-span-2">
+      <section
+        id="registration"
+        className="mx-auto w-full max-w-6xl px-5 pb-20 md:px-8 md:pb-24"
+      >
+        <div className="grid gap-8 rounded-3xl border border-zinc-700/20 bg-zinc-100 p-6 text-zinc-900 shadow-[0_20px_70px_rgba(0,0,0,0.35)] md:grid-cols-5 md:p-10">
+          <div className="fade-up md:col-span-2 md:pr-2">
             <h2 className="text-3xl font-extrabold uppercase tracking-tight md:text-4xl">
               Регистрация
             </h2>
-            <p className="mt-4 text-sm leading-relaxed text-zinc-300">
-              Заполни форму, мы сохраним заявку в базе и на следующем этапе подключим
-              оплату через Т-Банк с автоматическим обновлением статуса платежа.
+            <p className="mt-4 text-sm leading-relaxed text-zinc-700">
+              Заполни форму, мы сохраним заявку в базе и направим тебя на оплату через
+              Т-Банк. Сумма считается автоматически по выбранным категориям.
             </p>
-            <div className="mt-6 rounded-2xl border border-amber-200/30 bg-amber-200/10 p-4 text-sm text-amber-100">
-              После внедрения Т-Банк:
-              <ul className="mt-2 list-disc pl-5 text-amber-50/90">
-                <li>создаём заказ в API банка;</li>
-                <li>перенаправляем на оплату;</li>
-                <li>фиксируем webhook и меняем статус в БД.</li>
+            <div className="mt-6 rounded-2xl border border-zinc-300 bg-white p-4 text-sm text-zinc-800">
+              Что происходит после отправки:
+              <ul className="mt-2 list-disc pl-5 text-zinc-700">
+                <li>создаем заявку и фиксируем выбранные категории;</li>
+                <li>считаем итоговую сумму на сервере;</li>
+                <li>открываем защищенную страницу оплаты Т-Банк.</li>
               </ul>
             </div>
           </div>
-          <div className="fade-up md:col-span-3">
+          <div className="fade-up md:col-span-3 md:pl-2">
             <RegistrationForm />
           </div>
         </div>
