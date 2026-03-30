@@ -48,6 +48,7 @@ const djs: PersonCardProps[] = [
     city: "г. Краснодар",
     image: "/dj/whydeap.jpg",
     imageClass: "-rotate-[2deg]",
+    textRotateClass: "md:-rotate-[2deg]",
     orderClass: "md:order-1 md:pt-0",
   },
   {
@@ -73,6 +74,7 @@ const mcs: PersonCardProps[] = [
     city: "г. Краснодар",
     image: "/mc/emile.jpg",
     imageClass: "-rotate-[2deg]",
+    textRotateClass: "md:-rotate-[2deg]",
   },
   {
     name: "MAVI",
@@ -229,13 +231,19 @@ export default function Home() {
                 name="VALENTINA"
                 image="/photo/valentina.jpg"
                 imageClass="-rotate-[1deg]"
+                textRotateClass="md:-rotate-[2deg]"
                 orderClass="max-w-[420px]"
               />
             </div>
           </div>
 
           <div className="md:pt-16">
-            <PersonCard name="RADON" image="/video/radon.jpg" imageClass="-rotate-[2deg]" />
+            <PersonCard
+              name="RADON"
+              image="/video/radon.jpg"
+              imageClass="-rotate-[2deg]"
+              textRotateClass="md:-rotate-[2deg]"
+            />
           </div>
 
           <div className="md:pt-10">
