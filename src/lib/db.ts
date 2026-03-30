@@ -18,6 +18,13 @@ type RegistrationRecord = {
   createdAt: string;
 };
 
+type RegistrationForPayment = {
+  id: string;
+  fullName: string;
+  email: string;
+  phone: string;
+};
+
 const dataDir = join(process.cwd(), ".data");
 mkdirSync(dataDir, { recursive: true });
 
@@ -37,6 +44,9 @@ async function ensureSchema() {
         participation_type TEXT NOT NULL,
         comment TEXT,
         payment_status TEXT NOT NULL DEFAULT 'pending',
+        payment_order_id TEXT,
+        payment_id TEXT,
+        amount_rub INTEGER,
         created_at TIMESTAMP NOT NULL DEFAULT NOW()
       );
     `);
@@ -69,4 +79,55 @@ export async function createRegistration(
   );
 
   return result.rows[0];
+}
+
+export async function getRegistrationById(
+  id: string,
+): Promise<RegistrationForPayment | null> {
+  await ensureSchema();
+
+  const result = await db.query<RegistrationForPayment>(
+    `SELECT
+      id,
+      full_name as "fullName",
+      email,
+      phone
+    FROM registrations
+    WHERE id = $1
+    LIMIT 1;`,
+    [id],
+  );
+
+  return result.rows[0] ?? null;
+}
+
+export async function attachPaymentToRegistration(params: {
+  registrationId: string;
+  orderId: string;
+  paymentId: string;
+  amountRub: number;
+}) {
+  await ensureSchema();
+
+  await db.query(
+    `UPDATE registrations
+    SET
+      payment_status = 'created',
+      payment_order_id = $2,
+      payment_id = $3,
+      amount_rub = $4
+    WHERE id = $1;`,
+    [params.registrationId, params.orderId, params.paymentId, params.amountRub],
+  );
+}
+
+export async function setRegistrationPaidByOrderId(orderId: string) {
+  await ensureSchema();
+
+  await db.query(
+    `UPDATE registrations
+    SET payment_status = 'paid'
+    WHERE payment_order_id = $1;`,
+    [orderId],
+  );
 }

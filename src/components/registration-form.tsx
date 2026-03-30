@@ -49,8 +49,35 @@ export function RegistrationForm() {
         throw new Error(payload?.message ?? "Ошибка отправки");
       }
 
+      const registrationId = payload?.registration?.id;
+      if (!registrationId) {
+        throw new Error("Заявка создана, но не удалось получить id регистрации");
+      }
+
+      const paymentResponse = await fetch("/api/payments/tbank/init", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ registrationId }),
+      });
+
+      const paymentPayload = await paymentResponse.json();
+      if (!paymentResponse.ok || !paymentPayload?.ok) {
+        setSuccessMessage(
+          "Заявка сохранена. Оплата пока не настроена: после заполнения ключей Т-Банк она будет открываться автоматически.",
+        );
+        setValues(initialForm);
+        return;
+      }
+
+      if (paymentPayload?.paymentUrl) {
+        window.location.href = paymentPayload.paymentUrl as string;
+        return;
+      }
+
       setSuccessMessage(
-        "Заявка принята. Следующим шагом подключим оплату через Т-Банк и перенаправление на платёжную страницу.",
+        "Заявка сохранена, но ссылка на оплату не пришла. Проверь настройки Т-Банк.",
       );
       setValues(initialForm);
     } catch (error) {

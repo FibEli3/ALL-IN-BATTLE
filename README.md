@@ -42,3 +42,20 @@
 - создание заказа через API Т-Банк;
 - редирект пользователя на оплату;
 - обработчик webhook для изменения `payment_status` в БД.
+
+## Подключение Т-Банк по шагам
+
+1. Скопируй `.env.example` в `.env`.
+2. Заполни:
+   - `TINKOFF_TERMINAL_KEY`
+   - `TINKOFF_PASSWORD`
+   - `EVENT_PRICE_RUB` (например, `1500`)
+   - `TINKOFF_SUCCESS_URL`
+   - `TINKOFF_FAIL_URL`
+   - `TINKOFF_NOTIFICATION_URL`
+3. Убедись, что в кабинете Т-Банк для уведомлений указан URL:
+   - `https://<your-domain>/api/payments/tbank/webhook`
+4. Проверь локально:
+   - создай заявку через форму;
+   - после submit должен открыться `PaymentURL` Т-Банка.
+5. После деплоя на Vercel добавь те же env переменные в `Project Settings -> Environment Variables`.
