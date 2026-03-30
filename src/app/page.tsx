@@ -87,7 +87,7 @@ const navItems = [
 
 export default function Home() {
   return (
-    <main className="bg-white text-[#1b1b1b]">
+    <main className="bg-white font-body text-[#1b1b1b]">
       <section className="relative isolate flex min-h-screen items-center justify-center overflow-hidden px-4 py-10">
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_center,_#f7f7f7_42%,_#c3d4c6_76%,_#8aa58f_100%)]" />
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_center,_rgba(255,255,255,0)_44%,_rgba(30,80,44,0.18)_100%)]" />
@@ -97,7 +97,7 @@ export default function Home() {
           alt=""
           width={380}
           height={380}
-          className="pointer-events-none absolute left-0 top-0 h-auto w-[32vw] min-w-[180px] max-w-[420px]"
+          className="pointer-events-none absolute left-[-90px] top-[-56px] h-auto w-[34vw] min-w-[220px] max-w-[520px] opacity-95 mix-blend-multiply"
           priority
         />
         <Image
@@ -105,7 +105,7 @@ export default function Home() {
           alt=""
           width={380}
           height={380}
-          className="pointer-events-none absolute right-0 top-0 h-auto w-[34vw] min-w-[220px] max-w-[480px]"
+          className="pointer-events-none absolute right-[-170px] top-[-86px] h-auto w-[48vw] min-w-[280px] max-w-[760px] opacity-95 mix-blend-multiply"
           priority
         />
         <Image
@@ -113,7 +113,7 @@ export default function Home() {
           alt=""
           width={360}
           height={360}
-          className="pointer-events-none absolute bottom-0 left-0 h-auto w-[30vw] min-w-[170px] max-w-[360px]"
+          className="pointer-events-none absolute bottom-[-72px] left-[-84px] h-auto w-[30vw] min-w-[220px] max-w-[430px] opacity-95 mix-blend-multiply"
           priority
         />
         <Image
@@ -121,7 +121,7 @@ export default function Home() {
           alt=""
           width={420}
           height={420}
-          className="pointer-events-none absolute bottom-0 right-0 h-auto w-[35vw] min-w-[220px] max-w-[420px] rotate-180"
+          className="pointer-events-none absolute bottom-[-126px] right-[-190px] h-auto w-[50vw] min-w-[290px] max-w-[780px] rotate-180 opacity-95 mix-blend-multiply"
           priority
         />
 
@@ -139,24 +139,24 @@ export default function Home() {
           </nav>
 
           <div className="mt-20 text-center md:mt-28">
-            <h1 className="text-[80px] font-black uppercase leading-[0.95] tracking-[0.02em] text-[#174b24] md:text-[132px]">
+            <h1 className="font-display text-[78px] font-black uppercase leading-[0.94] tracking-[0.02em] text-[#174b24] md:text-[126px]">
               ALL IN
               <br />
               BATTLE
             </h1>
-            <p className="mt-10 text-[34px] font-medium leading-none text-[#7f8082] md:text-[52px]">
+            <p className="mt-10 text-[30px] font-medium leading-none text-[#808286] md:text-[56px]">
               25-26 апреля &nbsp; г. Краснодар
             </p>
             <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
               <a
                 href="#day-one"
-                className="h-14 rounded-full bg-[#2a6a34] px-10 text-[34px] font-medium leading-[56px] text-white transition hover:bg-[#21562a] md:h-[72px] md:px-14 md:text-[38px] md:leading-[72px]"
+                className="h-14 rounded-full bg-[#2a6a34] px-10 text-[32px] font-medium leading-[56px] text-white transition hover:bg-[#21562a] md:h-[72px] md:px-14 md:text-[36px] md:leading-[72px]"
               >
                 Первый день
               </a>
               <a
                 href="#day-two"
-                className="h-14 rounded-full bg-[#2a6a34] px-10 text-[34px] font-medium leading-[56px] text-white transition hover:bg-[#21562a] md:h-[72px] md:px-14 md:text-[38px] md:leading-[72px]"
+                className="h-14 rounded-full bg-[#2a6a34] px-10 text-[32px] font-medium leading-[56px] text-white transition hover:bg-[#21562a] md:h-[72px] md:px-14 md:text-[36px] md:leading-[72px]"
               >
                 Второй день
               </a>
@@ -166,14 +166,18 @@ export default function Home() {
       </section>
 
       <section id="judges" className="mx-auto w-full max-w-6xl px-5 py-16 md:px-8 md:py-20">
-        <h2 className="text-5xl font-bold uppercase leading-none tracking-tight">JUDGES</h2>
+        <h2 className="font-display text-5xl font-bold uppercase leading-none tracking-tight">
+          JUDGES
+        </h2>
         <div className="mt-8 grid gap-4 md:grid-cols-3">
           {judges.map((person) => (
             <article
               key={person.name}
               className="rounded-3xl border border-[rgba(213,213,213,0.7)] bg-[#fafafa] p-6"
             >
-              <h3 className="text-[42px] font-semibold leading-[1] tracking-tight">{person.name}</h3>
+            <h3 className="font-display text-[42px] font-semibold leading-[1] tracking-tight">
+              {person.name}
+            </h3>
               <p className="mt-3 text-xl text-[rgba(0,0,0,0.65)]">{person.city}</p>
             </article>
           ))}
@@ -183,7 +187,7 @@ export default function Home() {
       <section id="day-one" className="mx-auto w-full max-w-7xl px-0 pb-16 md:px-6 md:pb-20">
         <div className="bg-[#e3e3e3] px-4 py-8 md:rounded-3xl md:px-8 md:py-10">
           <header className="flex items-center justify-between text-[20px] font-bold uppercase tracking-tight md:text-[30px]">
-            <h2>ДЕНЬ 1: WORKSHOP / JAM / CONTEST</h2>
+            <h2 className="font-display">ДЕНЬ 1: WORKSHOP / JAM / CONTEST</h2>
             <p>25 апреля</p>
           </header>
 
@@ -197,7 +201,9 @@ export default function Home() {
                     : ""
                 }`}
               >
-                <h3 className="text-[42px] font-semibold leading-[1] tracking-tight">{card.title}</h3>
+                <h3 className="font-display text-[42px] font-semibold leading-[1] tracking-tight">
+                  {card.title}
+                </h3>
                 <p className="mt-4 text-[56px] font-bold leading-none text-[#014807]">{card.price}</p>
                 <ul className="mt-8 grid gap-3 text-[24px] leading-[1.22]">
                   {card.points.map((item) => (
@@ -216,7 +222,7 @@ export default function Home() {
       <section id="day-two" className="mx-auto w-full max-w-7xl px-0 pb-16 md:px-6 md:pb-20">
         <div className="bg-[#e3e3e3] px-4 py-8 md:rounded-3xl md:px-8 md:py-10">
           <header className="flex items-center justify-between text-[20px] font-bold uppercase tracking-tight md:text-[30px]">
-            <h2>ДЕНЬ 2: ALL IN BATTLE</h2>
+            <h2 className="font-display">ДЕНЬ 2: ALL IN BATTLE</h2>
             <p>26 апреля</p>
           </header>
 
@@ -230,7 +236,9 @@ export default function Home() {
                     : ""
                 }`}
               >
-                <h3 className="text-[42px] font-semibold leading-[1] tracking-tight">{column.title}</h3>
+                <h3 className="font-display text-[42px] font-semibold leading-[1] tracking-tight">
+                  {column.title}
+                </h3>
                 <ul className="mt-8 grid gap-3 text-[24px] leading-[1.22]">
                   {column.items.map((item) => (
                     <li key={item}>• {item}</li>
@@ -248,7 +256,9 @@ export default function Home() {
       </section>
 
       <section id="media" className="mx-auto w-full max-w-6xl px-5 py-8 md:px-8 md:py-12">
-        <h2 className="text-5xl font-bold uppercase leading-none tracking-tight">MEDIA</h2>
+        <h2 className="font-display text-5xl font-bold uppercase leading-none tracking-tight">
+          MEDIA
+        </h2>
       </section>
 
       <section id="registration" className="mx-auto w-full max-w-6xl px-5 pb-20 md:px-8 md:pb-24">
