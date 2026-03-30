@@ -105,7 +105,7 @@ export default function Home() {
           alt=""
           width={380}
           height={380}
-          className="pointer-events-none absolute right-[-170px] top-[-86px] h-auto w-[48vw] min-w-[280px] max-w-[760px] opacity-95 mix-blend-multiply"
+          className="pointer-events-none absolute right-[-250px] top-[-86px] h-auto w-[48vw] min-w-[280px] max-w-[760px] rotate-180 opacity-95 mix-blend-multiply"
           priority
         />
         <Image
@@ -139,24 +139,24 @@ export default function Home() {
           </nav>
 
           <div className="mt-20 text-center md:mt-28">
-            <h1 className="font-display text-[78px] font-black uppercase leading-[0.94] tracking-[0.02em] text-[#174b24] md:text-[126px]">
+            <h1 className="font-display text-[78px] font-black uppercase leading-[0.94] tracking-[0.02em] text-[#174b24] md:text-[141px]">
               ALL IN
               <br />
               BATTLE
             </h1>
-            <p className="mt-10 text-[30px] font-medium leading-none text-[#808286] md:text-[56px]">
+            <p className="mt-[30px] text-[32px] font-medium leading-none text-[#808286]">
               25-26 апреля &nbsp; г. Краснодар
             </p>
-            <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
+            <div className="mt-10 flex flex-wrap items-center justify-center gap-[30px]">
               <a
                 href="#day-one"
-                className="h-14 rounded-full bg-[#2a6a34] px-10 text-[32px] font-medium leading-[56px] text-white transition hover:bg-[#21562a] md:h-[72px] md:px-14 md:text-[36px] md:leading-[72px]"
+                className="rounded-full bg-[#2a6a34] px-[40px] py-[16px] text-[20px] font-medium leading-none text-white transition hover:bg-[#21562a]"
               >
                 Первый день
               </a>
               <a
                 href="#day-two"
-                className="h-14 rounded-full bg-[#2a6a34] px-10 text-[32px] font-medium leading-[56px] text-white transition hover:bg-[#21562a] md:h-[72px] md:px-14 md:text-[36px] md:leading-[72px]"
+                className="rounded-full bg-[#2a6a34] px-[40px] py-[16px] text-[20px] font-medium leading-none text-white transition hover:bg-[#21562a]"
               >
                 Второй день
               </a>
