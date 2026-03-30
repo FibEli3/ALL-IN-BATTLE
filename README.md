@@ -1,36 +1,44 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# ALL IN BATTLE Landing
 
-## Getting Started
+Лендинг для ивента по хип-хоп импровизации в Краснодаре на `Next.js` с:
+- адаптивной структурой под desktop/tablet/mobile;
+- блоками с основной информацией и составом гостей;
+- формой регистрации;
+- сохранением заявок в локальную БД (PGlite);
+- подготовкой к подключению оплаты через Т-Банк.
 
-First, run the development server:
+## Локальный запуск
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+```powershell
+# если в PowerShell блокируется npm.ps1, используй npm.cmd
+& 'C:\Program Files\nodejs\npm.cmd' install
+& 'C:\Program Files\nodejs\npm.cmd' run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Приложение будет доступно на [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Где хранятся заявки
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- Таблица `registrations` создаётся автоматически при первом POST-запросе в `/api/registrations`.
+- Файлы БД сохраняются в папку `.data/` в корне проекта.
 
-## Learn More
+## Деплой на Vercel
 
-To learn more about Next.js, take a look at the following resources:
+1. Импортируй репозиторий в [Vercel](https://vercel.com/new).
+2. Framework: `Next.js` (определится автоматически).
+3. Нажми Deploy.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Что нужно от тебя для полноценного Т-Банк подключения
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+1. Договор эквайринга и доступ в кабинет Т-Банк.
+2. `TerminalKey`.
+3. `Password` для подписи запросов.
+4. URL успешной оплаты (например `/payment/success`).
+5. URL неуспешной оплаты (например `/payment/fail`).
+6. Публичный webhook URL на Vercel для уведомлений банка (мы дадим endpoint в проекте).
+7. Режим теста или боевой (лучше начинать с тестового).
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+После получения этих данных мы добавим:
+- создание заказа через API Т-Банк;
+- редирект пользователя на оплату;
+- обработчик webhook для изменения `payment_status` в БД.
