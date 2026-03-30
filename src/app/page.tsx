@@ -2,9 +2,27 @@ import Image from "next/image";
 import { RegistrationForm } from "@/components/registration-form";
 
 const judges = [
-  { name: "RASH THE FLOW", city: "г. Санкт-Петербург" },
-  { name: "ASHPI", city: "г. Донецк" },
-  { name: "RUBA", city: "г. Москва" },
+  {
+    name: "ASHPI",
+    city: "г. Донецк",
+    image: "/judges/ashpi.jpg",
+    imageClass: "-rotate-[2deg]",
+    orderClass: "md:order-1 md:pt-0",
+  },
+  {
+    name: "RASH THE FLOW",
+    city: "г. Санкт-Петербург",
+    image: "/judges/rash-the-flow.jpg",
+    imageClass: "rotate-0",
+    orderClass: "md:order-2 md:pt-16",
+  },
+  {
+    name: "RUBA",
+    city: "г. Москва",
+    image: "/judges/ruba.jpg",
+    imageClass: "rotate-[2deg]",
+    orderClass: "md:order-3 md:pt-0",
+  },
 ];
 
 const dayOneCards = [
@@ -156,20 +174,31 @@ export default function Home() {
         </div>
       </section>
 
-      <section id="judges" className="mx-auto w-full max-w-6xl px-5 py-16 md:px-8 md:py-20">
-        <h2 className="font-display text-5xl font-bold uppercase leading-none tracking-tight">
+      <section id="judges" className="mx-auto w-full max-w-[1440px] px-5 py-16 md:px-8 md:py-24">
+        <h2 className="text-center font-display text-[64px] font-black uppercase leading-none tracking-tight text-[#2a6a34] md:text-[90px]">
           JUDGES
         </h2>
-        <div className="mt-8 grid gap-4 md:grid-cols-3">
+        <div className="mx-auto mt-8 grid max-w-[1320px] gap-8 md:grid-cols-3 md:items-start">
           {judges.map((person) => (
             <article
               key={person.name}
-              className="rounded-3xl border border-[rgba(213,213,213,0.7)] bg-[#fafafa] p-6"
+              className={`text-center ${person.orderClass}`}
             >
-            <h3 className="font-display text-[42px] font-semibold leading-[1] tracking-tight">
-              {person.name}
-            </h3>
-              <p className="mt-3 text-xl text-[rgba(0,0,0,0.65)]">{person.city}</p>
+              <div className={`overflow-hidden rounded-[28px] ${person.imageClass}`}>
+                <Image
+                  src={person.image}
+                  alt={person.name}
+                  width={420}
+                  height={620}
+                  className="h-auto w-full object-cover"
+                />
+              </div>
+              <h3 className="mt-6 font-display text-[40px] font-semibold uppercase leading-[0.92] tracking-[-0.01em] text-[#111]">
+                {person.name}
+              </h3>
+              <p className="mt-3 font-body text-[24px] font-bold leading-none text-[#242424]">
+                {person.city}
+              </p>
             </article>
           ))}
         </div>
