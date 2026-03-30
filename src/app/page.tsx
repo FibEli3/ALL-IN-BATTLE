@@ -112,7 +112,7 @@ function PersonCard({
           className="h-auto w-full object-cover"
         />
       </div>
-      <h3 className={`${personNameClass} ${textRotateClass}`}>{name}</h3>
+      <h3 className={`${personNameClass} origin-center ${textRotateClass || imageClass}`}>{name}</h3>
       {city ? <p className={personCityClass}>{city}</p> : null}
     </article>
   );
