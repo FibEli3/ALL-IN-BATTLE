@@ -2,6 +2,7 @@ export type EventOption = {
   id: string;
   day: "day1" | "day2";
   title: string;
+  subtitle?: string;
   kind: "fixed" | "competitive" | "spectator";
   priceRub?: number;
 };
@@ -23,10 +24,62 @@ export const EVENT_OPTIONS: EventOption[] = [
     kind: "fixed",
     priceRub: 600,
   },
-  { id: "day2-baby", day: "day2", title: "BABY", kind: "competitive" },
-  { id: "day2-beg-16-plus", day: "day2", title: "BEG 16+", kind: "competitive" },
-  { id: "day2-jun-beg", day: "day2", title: "JUN BEG", kind: "competitive" },
-  { id: "day2-spectator", day: "day2", title: "Зрительский билет", kind: "spectator", priceRub: 600 },
+  {
+    id: "day2-baby",
+    day: "day2",
+    title: "BABY",
+    subtitle: "(до 7 лет)",
+    kind: "competitive",
+  },
+  {
+    id: "day2-jun-pro",
+    day: "day2",
+    title: "JUN PRO",
+    subtitle: "(12-15 лет, опыт 3+ года)",
+    kind: "competitive",
+  },
+  {
+    id: "day2-kids-beg",
+    day: "day2",
+    title: "KIDS BEG",
+    subtitle: "(7-11 лет, до 3 лет обучения)",
+    kind: "competitive",
+  },
+  {
+    id: "day2-beg-16-plus",
+    day: "day2",
+    title: "BEG 16+",
+    subtitle: "(до 3-х лет обучения)",
+    kind: "competitive",
+  },
+  {
+    id: "day2-kids-pro",
+    day: "day2",
+    title: "KIDS PRO",
+    subtitle: "(7-11 лет, опыт 3+ года)",
+    kind: "competitive",
+  },
+  {
+    id: "day2-pro-16-plus",
+    day: "day2",
+    title: "PRO 16+",
+    subtitle: "(опыт 3+ года)",
+    kind: "competitive",
+  },
+  {
+    id: "day2-jun-beg",
+    day: "day2",
+    title: "JUN BEG",
+    subtitle: "(12-15 лет, до 3-х лет обучения)",
+    kind: "competitive",
+  },
+  {
+    id: "day2-spectator",
+    day: "day2",
+    title: "Зрительский билет",
+    kind: "spectator",
+    priceRub: 600,
+  },
 ];
 
 export function getOptionsByDay(day: EventOption["day"]) {

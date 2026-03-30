@@ -233,20 +233,27 @@ export function RegistrationForm() {
 
       <fieldset className="grid gap-3 rounded-xl border border-stone-500/40 p-4">
         <legend className="px-1 text-sm font-semibold">2 день</legend>
-        {day2Options.map((option) => (
-          <label key={option.id} className="flex items-center justify-between gap-3">
-            <span className="text-sm">{option.title}</span>
-            <span className="flex items-center gap-3">
-              <span className="text-xs text-amber-200">{getOptionPriceHint(option.id)}</span>
-              <input
-                type="checkbox"
-                checked={values.selectedOptionIds.includes(option.id)}
-                onChange={() => toggleOption(option.id)}
-                className="h-4 w-4 accent-amber-300"
-              />
-            </span>
-          </label>
-        ))}
+        <div className="grid gap-4 md:grid-cols-2">
+          {day2Options.map((option) => (
+            <label key={option.id} className="flex items-start justify-between gap-3">
+              <span className="grid gap-1">
+                <span className="text-sm font-medium">{option.title}</span>
+                {option.subtitle ? (
+                  <span className="text-xs text-zinc-400">{option.subtitle}</span>
+                ) : null}
+              </span>
+              <span className="flex items-center gap-3">
+                <span className="text-xs text-amber-200">{getOptionPriceHint(option.id)}</span>
+                <input
+                  type="checkbox"
+                  checked={values.selectedOptionIds.includes(option.id)}
+                  onChange={() => toggleOption(option.id)}
+                  className="mt-0.5 h-4 w-4 accent-amber-300"
+                />
+              </span>
+            </label>
+          ))}
+        </div>
       </fieldset>
 
       <p className="rounded-lg border border-amber-300/30 bg-amber-300/10 px-3 py-2 text-sm">
