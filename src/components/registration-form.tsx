@@ -129,7 +129,7 @@ export function RegistrationForm() {
   };
 
   return (
-    <form className="grid gap-5 text-zinc-900" onSubmit={onSubmit}>
+    <form className="grid gap-6 text-zinc-900" onSubmit={onSubmit}>
       <div className="grid gap-4 md:grid-cols-2">
         <label className="grid gap-2 text-xs font-semibold uppercase tracking-[0.12em] text-zinc-600">
           ФИО *
@@ -213,12 +213,12 @@ export function RegistrationForm() {
         </label>
       </div>
 
-      <fieldset className="grid gap-2 rounded-2xl border border-zinc-300 bg-white p-4">
-        <legend className="px-1 text-sm font-semibold text-zinc-900">1 день</legend>
+      <fieldset className="grid gap-2 rounded-2xl bg-zinc-200/80 p-5">
+        <legend className="px-1 text-sm font-semibold text-zinc-800">1 день</legend>
         {day1Options.map((option) => (
           <label
             key={option.id}
-            className="grid grid-cols-[1fr_auto_auto] items-center gap-3 rounded-lg px-2 py-2 hover:bg-zinc-100"
+            className="grid grid-cols-[1fr_auto_auto] items-center gap-3 rounded-lg px-2 py-2 hover:bg-zinc-100/80"
           >
             <span className="text-sm font-medium">{option.title}</span>
             <span className="text-sm font-semibold text-zinc-700">
@@ -228,19 +228,22 @@ export function RegistrationForm() {
               type="checkbox"
               checked={values.selectedOptionIds.includes(option.id)}
               onChange={() => toggleOption(option.id)}
-              className="h-8 w-8 appearance-none rounded-lg border-2 border-zinc-300 bg-zinc-100 transition checked:border-zinc-900 checked:bg-zinc-900"
+              className="h-8 w-8 appearance-none rounded-lg border-2 border-zinc-300 bg-zinc-100 transition checked:border-zinc-900 checked:bg-zinc-900 checked:bg-[linear-gradient(135deg,#111,#333)]"
             />
           </label>
         ))}
       </fieldset>
 
-      <fieldset className="grid gap-3 rounded-2xl border border-zinc-300 bg-white p-4">
-        <legend className="px-1 text-sm font-semibold text-zinc-900">2 день</legend>
-        <div className="grid gap-4 md:grid-cols-2">
+      <fieldset className="grid gap-5 rounded-2xl bg-zinc-200/80 p-5">
+        <legend className="px-1 text-sm font-semibold text-zinc-800">2 день</legend>
+        <div className="grid gap-x-8 gap-y-5 md:grid-cols-2">
           {day2Options.map((option) => (
-            <label key={option.id} className="grid grid-cols-[1fr_auto] items-start gap-3">
+            <label
+              key={option.id}
+              className="grid min-h-[86px] grid-cols-[1fr_auto] items-start gap-3"
+            >
               <span className="grid gap-1">
-                <span className="text-[2rem] leading-none md:text-[2.2rem]">{option.title}</span>
+                <span className="text-[1.8rem] leading-none md:text-[2.1rem]">{option.title}</span>
                 {option.subtitle ? (
                   <span className="text-[15px] leading-tight text-zinc-600">{option.subtitle}</span>
                 ) : null}
@@ -250,7 +253,7 @@ export function RegistrationForm() {
                   type="checkbox"
                   checked={values.selectedOptionIds.includes(option.id)}
                   onChange={() => toggleOption(option.id)}
-                  className="h-8 w-8 appearance-none rounded-lg border-2 border-zinc-300 bg-zinc-100 transition checked:border-zinc-900 checked:bg-zinc-900"
+                  className="h-8 w-8 appearance-none rounded-lg border-2 border-zinc-300 bg-zinc-100 transition checked:border-zinc-900 checked:bg-zinc-900 checked:bg-[linear-gradient(135deg,#111,#333)]"
                 />
                 <span className="text-right text-[11px] text-zinc-500">
                   {getOptionPriceHint(option.id)}
@@ -261,7 +264,7 @@ export function RegistrationForm() {
         </div>
       </fieldset>
 
-      <p className="rounded-xl border border-zinc-300 bg-white px-4 py-3 text-base font-semibold">
+      <p className="rounded-xl bg-zinc-900 px-4 py-3 text-base font-semibold text-white">
         Итого: {formatRub(selectedTotalRub)}
       </p>
 

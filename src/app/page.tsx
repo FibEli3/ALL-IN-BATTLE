@@ -100,7 +100,7 @@ export default function Home() {
         id="registration"
         className="mx-auto w-full max-w-6xl px-5 pb-20 md:px-8 md:pb-24"
       >
-        <div className="grid gap-8 rounded-3xl border border-zinc-700/20 bg-zinc-100 p-6 text-zinc-900 shadow-[0_20px_70px_rgba(0,0,0,0.35)] md:grid-cols-5 md:p-10">
+        <div className="grid gap-8 rounded-[2rem] border border-zinc-700/20 bg-[#ececec] p-6 text-zinc-900 shadow-[0_20px_70px_rgba(0,0,0,0.35)] md:grid-cols-5 md:p-10">
           <div className="fade-up md:col-span-2 md:pr-2">
             <h2 className="text-3xl font-extrabold uppercase tracking-tight md:text-4xl">
               Регистрация
@@ -109,7 +109,7 @@ export default function Home() {
               Заполни форму, мы сохраним заявку в базе и направим тебя на оплату через
               Т-Банк. Сумма считается автоматически по выбранным категориям.
             </p>
-            <div className="mt-6 rounded-2xl border border-zinc-300 bg-white p-4 text-sm text-zinc-800">
+            <div className="mt-6 rounded-2xl border border-zinc-300 bg-zinc-100 p-4 text-sm text-zinc-800">
               Что происходит после отправки:
               <ul className="mt-2 list-disc pl-5 text-zinc-700">
                 <li>создаем заявку и фиксируем выбранные категории;</li>
