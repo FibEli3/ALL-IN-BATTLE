@@ -454,7 +454,7 @@ export default function Home() {
                   card.variant === "center"
                     ? "order-2 z-20 w-full bg-[#fafafa] px-6 py-8 shadow-[0_0_30px_3px_rgba(41,108,51,0.15)] md:w-[464px] md:min-h-[760px] md:px-[40px] md:py-[60px]"
                     : card.title === "JAM"
-                      ? "order-3 z-10 mt-[-56px] w-[calc(100%-20px)] self-end bg-[#fafafa] px-6 pb-8 pt-[84px] md:mt-[20px] md:w-[444px] md:min-h-[720px] md:px-[50px] md:py-[40px]"
+                      ? "order-3 z-10 mt-[-56px] w-[calc(100%-20px)] self-center bg-[#fafafa] px-6 pb-8 pt-[84px] md:mt-[20px] md:w-[444px] md:min-h-[720px] md:px-[50px] md:py-[40px]"
                       : "order-1 z-10 w-full bg-[#fafafa] px-6 py-8 md:mt-[20px] md:w-[444px] md:min-h-[720px] md:px-[50px] md:py-[40px]"
                 } ${
                   card.variant === "center"
@@ -531,7 +531,7 @@ export default function Home() {
                     ? "order-1 z-10 w-full bg-[#fafafa] px-6 py-8 md:mt-[20px] md:w-[444px] md:min-h-[720px] md:px-[50px] md:py-[40px]"
                     : column.title === "Номинации"
                       ? "order-2 z-20 w-full bg-[#fafafa] px-6 py-8 shadow-[0_0_30px_3px_rgba(41,108,51,0.15)] md:w-[464px] md:min-h-[760px] md:px-[40px] md:py-[60px]"
-                      : "order-3 z-10 mt-[-56px] w-[calc(100%-20px)] self-end bg-[#fafafa] px-6 pb-8 pt-[84px] md:mt-[20px] md:w-[444px] md:min-h-[720px] md:px-[50px] md:py-[40px]"
+                      : "order-3 z-10 mt-[-56px] w-[calc(100%-20px)] self-center bg-[#fafafa] px-6 pb-8 pt-[84px] md:mt-[20px] md:w-[444px] md:min-h-[720px] md:px-[50px] md:py-[40px]"
                 } ${
                   column.title === "Номинации"
                     ? "md:mx-[-24px]"

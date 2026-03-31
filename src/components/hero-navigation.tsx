@@ -63,8 +63,17 @@ export function HeroNavigation({ items }: { items: NavItem[] }) {
         <Image src="/icons/menu.svg" alt="" width={32} height={32} />
       </button>
 
-      {open ? (
-        <div className="fixed inset-0 z-[120] md:hidden">
+      <div
+        className={`fixed inset-0 z-[120] transition-opacity duration-300 ease-out md:hidden ${
+          open ? "pointer-events-auto opacity-100" : "pointer-events-none opacity-0"
+        }`}
+        aria-hidden={!open}
+      >
+        <div
+          className={`absolute inset-0 transition-transform duration-300 ease-out ${
+            open ? "translate-y-0" : "-translate-y-2"
+          }`}
+        >
           <div className="absolute inset-0 bg-[#e6eee6]" />
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_rgba(255,255,255,0.62)_0%,_rgba(230,238,230,0.92)_58%,_rgba(164,191,167,0.88)_100%)]" />
           <Image
@@ -75,31 +84,31 @@ export function HeroNavigation({ items }: { items: NavItem[] }) {
             className="pointer-events-none absolute inset-0 z-[2] object-cover"
           />
 
-          <button
-            type="button"
-            onClick={() => setOpen(false)}
-            className="absolute right-4 top-4 z-30 inline-flex h-11 w-11 items-center justify-center"
-            aria-label="Close menu"
-          >
-            <Image src="/icons/cross.svg" alt="" width={32} height={32} />
-          </button>
+            <button
+              type="button"
+              onClick={() => setOpen(false)}
+              className="absolute right-4 top-4 z-30 inline-flex h-11 w-11 items-center justify-center"
+              aria-label="Close menu"
+            >
+              <Image src="/icons/cross.svg" alt="" width={32} height={32} />
+            </button>
 
-          <div className="relative z-10 flex min-h-full items-center justify-center">
-            <div className="flex flex-col items-center gap-8 text-center">
-              {items.map((item) => (
-                <a
-                  key={item.label}
-                  href={item.href}
-                  onClick={() => setOpen(false)}
-                  className="text-[28px] font-semibold leading-none tracking-[-0.02em] text-[#174b24]"
-                >
-                  {item.label}
-                </a>
-              ))}
+            <div className="relative z-10 flex min-h-full items-center justify-center">
+              <div className="flex flex-col items-center gap-8 text-center">
+                {items.map((item) => (
+                  <a
+                    key={item.label}
+                    href={item.href}
+                    onClick={() => setOpen(false)}
+                    className="text-[28px] font-semibold leading-none tracking-[-0.02em] text-[#174b24]"
+                  >
+                    {item.label}
+                  </a>
+                ))}
+              </div>
             </div>
           </div>
-        </div>
-      ) : null}
+      </div>
     </>
   );
 }
