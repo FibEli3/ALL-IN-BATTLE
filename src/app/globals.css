@@ -54,6 +54,10 @@
   --font-sans: var(--font-body);
 }
 
+@theme {
+  --breakpoint-md: 501px;
+}
+
 html {
   scroll-behavior: smooth;
   overflow-x: clip;

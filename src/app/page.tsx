@@ -239,12 +239,12 @@ function PersonCard({
 }: PersonCardProps) {
   return (
     <article
-      className={`lineup-card mx-auto w-full max-w-[335px] text-center min-[423px]:max-w-[395px] ${orderClass} ${offsetClass}`}
+      className={`lineup-card mx-auto w-full max-w-[335px] text-center min-[501px]:max-w-[395px] ${orderClass} ${offsetClass}`}
       data-reveal={revealIndex}
     >
       <div className="lineup-card-reveal">
-        <div className={`mx-auto w-full max-w-[335px] origin-top min-[423px]:max-w-[395px] ${tiltClass}`}>
-          <div className="mx-auto w-full max-w-[335px] overflow-hidden rounded-[28px] min-[423px]:max-w-[395px]">
+        <div className={`mx-auto w-full max-w-[335px] origin-top min-[501px]:max-w-[395px] ${tiltClass}`}>
+          <div className="mx-auto w-full max-w-[335px] overflow-hidden rounded-[28px] min-[501px]:max-w-[395px]">
             <Image
               src={image}
               alt={name}
@@ -340,12 +340,12 @@ export default function Home() {
 
         <div className="relative z-10 w-full max-w-[980px] px-4">
           <div className="mt-24 text-center md:mt-28">
-            <h1 className="font-display text-[58px] font-black uppercase leading-[0.94] tracking-[0.01em] text-[#174b24] min-[375px]:text-[64px] min-[423px]:text-[78px] md:text-[141px]">
+            <h1 className="font-display text-[58px] font-black uppercase leading-[0.94] tracking-[0.01em] text-[#174b24] min-[375px]:text-[64px] min-[501px]:text-[78px] md:text-[141px]">
               ALL IN
               <br />
               BATTLE
             </h1>
-            <p className="mt-[26px] inline-flex flex-row items-center justify-center gap-3 text-[20px] font-medium leading-[1.05] text-[#808286] min-[375px]:text-[24px] min-[423px]:text-[32px] min-[423px]:leading-none">
+            <p className="mt-[26px] inline-flex flex-row items-center justify-center gap-3 text-[20px] font-medium leading-[1.05] text-[#808286] min-[375px]:text-[24px] min-[501px]:text-[32px] min-[501px]:leading-none">
               <span className="whitespace-nowrap">25-26 апреля</span>
               <span className="whitespace-nowrap">г. Краснодар</span>
             </p>
