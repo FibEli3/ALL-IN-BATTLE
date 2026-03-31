@@ -64,7 +64,7 @@ function formatRub(value: number) {
 }
 
 function checkboxClasses() {
-  return "h-6 w-6 shrink-0 appearance-none rounded-[6px] border-2 border-[#c9c9c9] bg-transparent transition checked:border-[#2a6a34] checked:bg-[#2a6a34] checked:bg-[url('/decor/check-mark.svg')] checked:bg-no-repeat checked:bg-center checked:bg-[length:14px_14px]";
+  return "checkbox-mark h-6 w-6 shrink-0 appearance-none rounded-[6px]";
 }
 
 function Field(props: {

@@ -94,3 +94,18 @@ body {
     transform: translateY(0);
   }
 }
+
+.checkbox-mark {
+  border: 2px solid #c9c9c9;
+  background-color: transparent;
+  transition: background-color 120ms ease, border-color 120ms ease;
+}
+
+.checkbox-mark:checked {
+  border-color: #2a6a34;
+  background-color: #2a6a34;
+  background-image: url("/decor/check-mark.svg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 14px 14px;
+}
