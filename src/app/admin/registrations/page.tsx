@@ -1,4 +1,6 @@
+import type { RegistrationAdminRecord } from "@/lib/db";
 import { listRegistrations } from "@/lib/db";
+import { getOptionsByDay } from "@/lib/event-options";
 import Link from "next/link";
 
 type AdminPageProps = {
@@ -6,6 +8,13 @@ type AdminPageProps = {
     token?: string;
     status?: string;
   }>;
+};
+
+type OptionStat = {
+  id: string;
+  title: string;
+  registered: number;
+  paid: number;
 };
 
 function rub(value: number) {
@@ -25,6 +34,35 @@ function parseOptions(raw: string | null) {
   }
 }
 
+function buildStats(registrations: RegistrationAdminRecord[], day: "day1" | "day2"): OptionStat[] {
+  const options = getOptionsByDay(day);
+
+  return options.map((option) => {
+    let registered = 0;
+    let paid = 0;
+
+    for (const record of registrations) {
+      const selected = parseOptions(record.selectedOptionIds);
+      const contains = selected.includes(option.id);
+      if (!contains) {
+        continue;
+      }
+
+      registered += 1;
+      if (record.paymentStatus === "paid") {
+        paid += 1;
+      }
+    }
+
+    return {
+      id: option.id,
+      title: option.title,
+      registered,
+      paid,
+    };
+  });
+}
+
 export default async function AdminRegistrationsPage({ searchParams }: AdminPageProps) {
   const params = await searchParams;
   const token = (params.token ?? "").trim();
@@ -40,7 +78,7 @@ export default async function AdminRegistrationsPage({ searchParams }: AdminPage
   if (!expectedToken) {
     return (
       <main className="mx-auto w-full max-w-[900px] px-5 py-10 md:px-8">
-        <h1 className="font-display text-[44px] font-black uppercase">Admin Registrations</h1>
+        <h1 className="font-display text-[44px] font-black uppercase">Админка Регистраций</h1>
         <p className="mt-6 text-lg">
           Установи <code>ADMIN_DASHBOARD_TOKEN</code> в Vercel, чтобы открыть доступ.
         </p>
@@ -51,7 +89,7 @@ export default async function AdminRegistrationsPage({ searchParams }: AdminPage
   if (!isAuthorized) {
     return (
       <main className="mx-auto w-full max-w-[900px] px-5 py-10 md:px-8">
-        <h1 className="font-display text-[44px] font-black uppercase">Admin Registrations</h1>
+        <h1 className="font-display text-[44px] font-black uppercase">Админка Регистраций</h1>
         <p className="mt-6 text-lg">
           Нет доступа. Открой страницу с <code>?token=ТВОЙ_ТОКЕН</code>.
         </p>
@@ -59,7 +97,12 @@ export default async function AdminRegistrationsPage({ searchParams }: AdminPage
     );
   }
 
-  const registrations = await listRegistrations(activeStatus);
+  const allRegistrations = await listRegistrations();
+  const registrations = activeStatus
+    ? allRegistrations.filter((item) => item.paymentStatus === activeStatus)
+    : allRegistrations;
+  const day1Stats = buildStats(allRegistrations, "day1");
+  const day2Stats = buildStats(allRegistrations, "day2");
 
   const statuses: Array<{ id: "all" | "pending" | "created" | "paid"; label: string }> = [
     { id: "all", label: "Все" },
@@ -68,14 +111,16 @@ export default async function AdminRegistrationsPage({ searchParams }: AdminPage
     { id: "paid", label: "Paid" },
   ];
 
+  const exportHref = `/api/admin/registrations/export?token=${encodeURIComponent(token)}`;
+
   return (
     <main className="mx-auto w-full max-w-[1440px] px-5 py-10 md:px-8">
       <h1 className="font-display text-[44px] font-black uppercase tracking-tight md:text-[62px]">
-        Registrations Admin
+        Регистрации
       </h1>
-      <p className="mt-3 text-lg text-[#575757]">Всего записей: {registrations.length}</p>
+      <p className="mt-3 text-lg text-[#575757]">Всего заявок: {allRegistrations.length}</p>
 
-      <div className="mt-6 flex flex-wrap gap-3">
+      <div className="mt-6 flex flex-wrap items-center gap-3">
         {statuses.map((item) => {
           const href =
             item.id === "all"
@@ -98,9 +143,66 @@ export default async function AdminRegistrationsPage({ searchParams }: AdminPage
             </Link>
           );
         })}
+
+        <a
+          href={exportHref}
+          className="rounded-full border border-[#2a6a34] bg-white px-4 py-2 text-sm font-semibold text-[#2a6a34] transition hover:bg-[#2a6a34] hover:text-white"
+        >
+          Скачать Excel (CSV)
+        </a>
       </div>
 
-      <div className="mt-6 overflow-x-auto rounded-2xl border border-[#dadada] bg-white">
+      <section className="mt-8 grid gap-6 md:grid-cols-2">
+        <div className="rounded-2xl border border-[#dadada] bg-white p-4 md:p-6">
+          <h2 className="text-xl font-bold">День 1 — номинации</h2>
+          <div className="mt-4 overflow-x-auto">
+            <table className="min-w-full text-sm">
+              <thead>
+                <tr className="border-b border-[#ececec] text-left">
+                  <th className="py-2 pr-3">Номинация</th>
+                  <th className="py-2 pr-3">Зарегистрировано</th>
+                  <th className="py-2">Оплачено</th>
+                </tr>
+              </thead>
+              <tbody>
+                {day1Stats.map((item) => (
+                  <tr key={item.id} className="border-b border-[#f3f3f3]">
+                    <td className="py-2 pr-3">{item.title}</td>
+                    <td className="py-2 pr-3 font-semibold">{item.registered}</td>
+                    <td className="py-2 font-semibold text-[#2a6a34]">{item.paid}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div className="rounded-2xl border border-[#dadada] bg-white p-4 md:p-6">
+          <h2 className="text-xl font-bold">День 2 — номинации</h2>
+          <div className="mt-4 overflow-x-auto">
+            <table className="min-w-full text-sm">
+              <thead>
+                <tr className="border-b border-[#ececec] text-left">
+                  <th className="py-2 pr-3">Номинация</th>
+                  <th className="py-2 pr-3">Зарегистрировано</th>
+                  <th className="py-2">Оплачено</th>
+                </tr>
+              </thead>
+              <tbody>
+                {day2Stats.map((item) => (
+                  <tr key={item.id} className="border-b border-[#f3f3f3]">
+                    <td className="py-2 pr-3">{item.title}</td>
+                    <td className="py-2 pr-3 font-semibold">{item.registered}</td>
+                    <td className="py-2 font-semibold text-[#2a6a34]">{item.paid}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <div className="mt-8 overflow-x-auto rounded-2xl border border-[#dadada] bg-white">
         <table className="min-w-[1280px] border-collapse text-left text-sm">
           <thead className="bg-[#f4f4f4] text-[#303030]">
             <tr>
@@ -145,3 +247,4 @@ export default async function AdminRegistrationsPage({ searchParams }: AdminPage
     </main>
   );
 }
+
