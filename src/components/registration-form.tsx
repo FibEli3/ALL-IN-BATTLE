@@ -125,7 +125,11 @@ export function RegistrationForm() {
       requestAnimationFrame(() => {
         const input = document.getElementById("registration-full-name");
         if (input instanceof HTMLInputElement) {
-          input.focus();
+          try {
+            input.focus({ preventScroll: true });
+          } catch {
+            input.focus();
+          }
         }
       });
     }
@@ -156,7 +160,11 @@ export function RegistrationForm() {
       requestAnimationFrame(() => {
         const input = document.getElementById("registration-full-name");
         if (input instanceof HTMLInputElement) {
-          input.focus();
+          try {
+            input.focus({ preventScroll: true });
+          } catch {
+            input.focus();
+          }
         }
       });
     };

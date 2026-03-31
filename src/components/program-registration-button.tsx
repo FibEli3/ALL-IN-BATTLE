@@ -36,7 +36,11 @@ export function ProgramRegistrationButton({
     window.setTimeout(() => {
       const input = document.getElementById("registration-full-name");
       if (input instanceof HTMLInputElement) {
-        input.focus();
+        try {
+          input.focus({ preventScroll: true });
+        } catch {
+          input.focus();
+        }
       }
     }, 320);
   };
@@ -47,4 +51,3 @@ export function ProgramRegistrationButton({
     </button>
   );
 }
-
