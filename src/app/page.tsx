@@ -454,7 +454,7 @@ export default function Home() {
                   card.variant === "center"
                     ? "order-2 z-20 w-full bg-[#fafafa] px-6 py-8 shadow-[0_0_30px_3px_rgba(41,108,51,0.15)] md:w-[464px] md:min-h-[760px] md:px-[40px] md:py-[60px]"
                     : card.title === "JAM"
-                      ? "order-3 z-10 mt-[-56px] w-[calc(100%-10px)] self-center bg-[#fafafa] px-6 pb-8 pt-[84px] md:mt-[20px] md:w-[444px] md:min-h-[720px] md:px-[50px] md:py-[40px]"
+                      ? "order-3 z-10 mt-[-56px] w-[calc(100%-20px)] self-center bg-[#fafafa] px-6 pb-8 pt-[84px] md:mt-[20px] md:w-[444px] md:min-h-[720px] md:px-[50px] md:py-[40px]"
                       : "order-1 z-10 w-full bg-[#fafafa] px-6 py-8 md:mt-[20px] md:w-[444px] md:min-h-[720px] md:px-[50px] md:py-[40px]"
                 } ${
                   card.variant === "center"
@@ -464,7 +464,7 @@ export default function Home() {
                       : "md:ml-[-24px]"
                 }`}
               >
-                <h3 className="h-[40px] font-body text-[18px] font-bold leading-[1.1] md:h-[68px] md:text-[28px]">
+                <h3 className="h-[40px] font-body text-[22px] font-bold leading-[1.1] md:h-[68px] md:text-[32px]">
                   {card.title}
                 </h3>
                 <p className="mt-4 text-[32px] font-bold leading-none text-[#095d13] md:mt-6 md:text-[42px]">
@@ -531,7 +531,7 @@ export default function Home() {
                     ? "order-1 z-10 w-full bg-[#fafafa] px-6 py-8 md:mt-[20px] md:w-[444px] md:min-h-[720px] md:px-[50px] md:py-[40px]"
                     : column.title === "Номинации"
                       ? "order-2 z-20 w-full bg-[#fafafa] px-6 py-8 shadow-[0_0_30px_3px_rgba(41,108,51,0.15)] md:w-[464px] md:min-h-[760px] md:px-[40px] md:py-[60px]"
-                      : "order-3 z-10 mt-[-56px] w-[calc(100%-10px)] self-center bg-[#fafafa] px-6 pb-8 pt-[84px] md:mt-[20px] md:w-[444px] md:min-h-[720px] md:px-[50px] md:py-[40px]"
+                      : "order-3 z-10 mt-[-56px] w-[calc(100%-20px)] self-center bg-[#fafafa] px-6 pb-8 pt-[84px] md:mt-[20px] md:w-[444px] md:min-h-[720px] md:px-[50px] md:py-[40px]"
                 } ${
                   column.title === "Номинации"
                     ? "md:mx-[-24px]"
@@ -540,7 +540,7 @@ export default function Home() {
                       : "md:ml-[-24px]"
                 }`}
               >
-                <h3 className="h-[40px] font-body text-[18px] font-bold leading-[1.1] md:h-auto md:text-[28px]">
+                <h3 className="h-[40px] font-body text-[22px] font-bold leading-[1.1] md:h-auto md:text-[32px]">
                   {column.title}
                 </h3>
                 <div className="mt-8 space-y-4 text-[16px] font-semibold leading-[1.2] text-[#1f1f1f] md:mt-12 md:text-[20px]">
@@ -595,14 +595,14 @@ export default function Home() {
           alt=""
           width={520}
           height={420}
-          className="pointer-events-none absolute bottom-0 left-[-40px] h-auto w-[44vw] min-w-[320px] max-w-[700px]"
+          className="pointer-events-none absolute bottom-0 left-[-64px] h-auto w-[44vw] min-w-[320px] max-w-[700px] md:left-[-56px]"
         />
         <Image
           src="/decor/footer-right.jpg"
           alt=""
           width={420}
           height={420}
-          className="pointer-events-none absolute bottom-0 right-[-20px] h-auto w-[34vw] min-w-[270px] max-w-[580px]"
+          className="pointer-events-none absolute bottom-0 right-[-44px] h-auto w-[34vw] min-w-[270px] max-w-[580px] md:right-[-36px]"
         />
 
         <div className="relative z-10 mx-auto flex w-full max-w-[1440px] justify-center">
