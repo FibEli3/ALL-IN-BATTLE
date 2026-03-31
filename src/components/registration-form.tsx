@@ -210,9 +210,9 @@ export function RegistrationForm() {
         </section>
 
         <section className="relative z-10 mt-12 grid gap-10 lg:grid-cols-2 lg:gap-14">
-          <div className="grid gap-12 justify-items-center">
-            <h4 className="h-[34px] w-full text-center text-[28px] font-bold leading-[34px]">ALL IN DAY 1</h4>
-            <div className="mx-auto w-fit space-y-8">
+          <div className="grid gap-12 content-start">
+            <h4 className="h-[34px] w-[294px] text-center text-[28px] font-bold leading-[34px]">ALL IN DAY 1</h4>
+            <div className="w-[294px] min-h-[360px] space-y-8">
               {day1Options.map((option) => (
                 <label key={option.id} className="grid grid-cols-[184px_62px_24px] items-center gap-x-3">
                   <span className="text-[20px] font-semibold leading-[1.1]">
@@ -234,7 +234,7 @@ export function RegistrationForm() {
 
           <div className="grid gap-12">
             <h4 className="h-[34px] text-center text-[28px] font-bold leading-[34px]">ALL IN BATTLE</h4>
-            <div className="grid gap-x-12 gap-y-8 md:grid-cols-2">
+            <div className="grid min-h-[360px] gap-x-12 gap-y-8 md:grid-cols-2">
               <div className="space-y-8">
                 {day2LeftOptions.map((option) => (
                   <label
