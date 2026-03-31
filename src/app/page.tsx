@@ -224,9 +224,9 @@ const sectionHeadingClass =
   "font-display text-[56px] font-black uppercase leading-none tracking-tight text-[#2a6a34] md:text-[80px]";
 
 const personNameClass =
-  "inline-block whitespace-nowrap font-display text-[40px] font-semibold uppercase leading-[0.92] tracking-[-0.01em] text-[#111]";
+  "mx-auto inline-block max-w-[14ch] whitespace-normal break-words font-display text-[32px] font-semibold uppercase leading-[0.92] tracking-[-0.01em] text-[#111]";
 
-const personCityClass = "mt-3 font-body text-[24px] font-bold leading-none text-[#242424]";
+const personCityClass = "mt-3 font-body text-[20px] font-bold leading-none text-[#242424]";
 
 function PersonCard({
   name,
