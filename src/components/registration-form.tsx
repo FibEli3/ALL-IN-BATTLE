@@ -29,6 +29,16 @@ const initialForm: FormValues = {
 
 const day1Options = getOptionsByDay("day1");
 const day2Options = getOptionsByDay("day2");
+const day2DisplayOrder = [
+  "day2-baby",
+  "day2-kids-beg",
+  "day2-kids-pro",
+  "day2-jun-beg",
+  "day2-jun-pro",
+  "day2-beg-16-plus",
+  "day2-pro-16-plus",
+  "day2-spectator",
+] as const;
 
 function maskPhoneInput(value: string) {
   const digitsOnly = value.replace(/\D/g, "");
@@ -105,8 +115,11 @@ export function RegistrationForm() {
     [values.selectedOptionIds],
   );
   const totalRub = selection.totalRub;
-  const day2LeftOptions = day2Options.slice(0, 4);
-  const day2RightOptions = day2Options.slice(4, 8);
+  const orderedDay2Options = day2DisplayOrder
+    .map((id) => day2Options.find((option) => option.id === id))
+    .filter((option): option is (typeof day2Options)[number] => Boolean(option));
+  const day2LeftOptions = orderedDay2Options.slice(0, 4);
+  const day2RightOptions = orderedDay2Options.slice(4, 8);
   const registerPreset = searchParams.get("register");
   const focusPreset = searchParams.get("focus");
 
