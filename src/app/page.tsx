@@ -309,7 +309,7 @@ export default function Home() {
     <main className="min-w-[375px] bg-white font-body text-[#1b1b1b]">
       <ScrollEffectsController />
 
-      <section className="relative isolate flex min-h-[100svh] items-center justify-center overflow-hidden px-4 py-10 md:min-h-screen">
+      <section className="relative isolate flex min-h-[100svh] items-center justify-center overflow-hidden py-10 md:min-h-screen">
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_center,_#f7f7f7_42%,_#c3d4c6_76%,_#8aa58f_100%)]" />
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_center,_rgba(255,255,255,0)_44%,_rgba(30,80,44,0.18)_100%)]" />
 
@@ -339,7 +339,7 @@ export default function Home() {
         />
         <HeroNavigation items={navItems} />
 
-        <div className="relative z-10 w-full max-w-[980px]">
+        <div className="relative z-10 w-full max-w-[980px] px-4">
           <div className="mt-24 text-center md:mt-28">
             <h1 className="font-display text-[72px] font-black uppercase leading-[0.94] tracking-[0.02em] text-[#174b24] min-[375px]:text-[78px] md:text-[141px]">
               ALL IN
