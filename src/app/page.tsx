@@ -316,10 +316,7 @@ export default function Home() {
     <main className="bg-white font-body text-[#1b1b1b]">
       <ScrollEffectsController />
 
-      <section
-        data-snap-section
-        className="snap-section relative isolate flex min-h-screen items-center justify-center overflow-hidden px-4 py-10"
-      >
+      <section className="relative isolate flex min-h-screen items-center justify-center overflow-hidden px-4 py-10">
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_center,_#f7f7f7_42%,_#c3d4c6_76%,_#8aa58f_100%)]" />
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_center,_rgba(255,255,255,0)_44%,_rgba(30,80,44,0.18)_100%)]" />
 
@@ -463,11 +460,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section
-        id="day-one"
-        data-snap-section
-        className="snap-section mx-auto w-full max-w-[1440px] px-5 py-10 md:px-8 md:py-16"
-      >
+      <section id="day-one" className="mx-auto w-full max-w-[1440px] px-5 py-10 md:px-8 md:py-16">
         <div className="relative px-2 py-6 md:px-0">
           <header className="mb-12 flex items-start justify-between gap-4 text-[30px] font-display font-black uppercase leading-[0.9] tracking-tight text-[#1b1b1b]">
             <h2>День 1: Workshop / Jam / Contest</h2>
@@ -548,11 +541,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section
-        id="day-two"
-        data-snap-section
-        className="snap-section mx-auto w-full max-w-[1440px] px-5 py-10 md:px-8 md:py-16"
-      >
+      <section id="day-two" className="mx-auto w-full max-w-[1440px] px-5 py-10 md:px-8 md:py-16">
         <div className="relative px-2 py-6 md:px-0">
           <header className="mb-12 flex items-start justify-between gap-4 text-[30px] font-display font-black uppercase leading-[0.9] tracking-tight text-[#1b1b1b]">
             <h2>День 2: ALL IN BATTLE</h2>
