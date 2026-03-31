@@ -334,6 +334,8 @@ export default function Home() {
           className="pointer-events-none absolute inset-0 hidden object-cover lg:block"
           priority
         />
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_center,_rgba(255,255,255,0)_42%,_rgba(30,80,44,0.18)_100%)]" />
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_center,_rgba(255,255,255,0)_58%,_rgba(71,116,80,0.22)_100%)]" />
         <HeroNavigation items={navItems} />
 
         <div className="relative z-10 w-full max-w-[980px] px-4">
@@ -343,8 +345,9 @@ export default function Home() {
               <br />
               BATTLE
             </h1>
-            <p className="mt-[26px] text-[20px] font-medium leading-[1.05] text-[#808286] min-[375px]:text-[24px] min-[423px]:text-[32px] min-[423px]:leading-none">
-              25-26 апреля &nbsp; г. Краснодар
+            <p className="mt-[26px] inline-flex flex-row items-center justify-center gap-3 text-[20px] font-medium leading-[1.05] text-[#808286] min-[375px]:text-[24px] min-[423px]:text-[32px] min-[423px]:leading-none">
+              <span className="whitespace-nowrap">25-26 апреля</span>
+              <span className="whitespace-nowrap">г. Краснодар</span>
             </p>
             <div className="mt-10 flex flex-row items-center justify-center gap-3 min-[375px]:gap-4">
               <a
@@ -401,12 +404,12 @@ export default function Home() {
                 image="/photo/valentina.jpg"
                 tiltClass="md:-rotate-[2deg]"
                 orderClass="max-w-[395px]"
-                revealIndex={2}
+                revealIndex={1}
               />
             </div>
           </div>
 
-          <div className="order-3 md:hidden">
+          <div className="order-3 mt-12 md:hidden">
             <h2 className="lineup-video-title text-center font-display text-[56px] font-black uppercase leading-none tracking-tight text-[#2a6a34]">
               VIDEO
             </h2>
