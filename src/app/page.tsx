@@ -442,18 +442,20 @@ export default function Home() {
 
       <section id="day-one" className="mx-auto w-full max-w-[1440px] px-5 py-10 md:px-8 md:py-16">
         <div className="relative px-2 py-6 md:px-0">
-          <header className="mb-12 flex items-start justify-between gap-4 text-[30px] font-display font-black uppercase leading-[0.9] tracking-tight text-[#1b1b1b]">
+          <header className="mb-10 flex flex-col items-start gap-3 text-[24px] font-display font-black uppercase leading-[0.9] tracking-tight text-[#1b1b1b] md:mb-12 md:flex-row md:items-start md:justify-between md:gap-4 md:text-[30px]">
             <h2>День 1: Workshop / Jam / Contest</h2>
             <p>25 апреля</p>
           </header>
-          <div className="relative mt-12 flex flex-col gap-6 md:mt-12 md:flex-row md:items-start md:justify-center">
+          <div className="relative mt-8 flex flex-col gap-4 md:mt-12 md:flex-row md:items-start md:justify-center md:gap-6">
             {dayOneCards.map((card) => (
               <article
                 key={card.title}
                 className={`relative flex flex-col overflow-hidden rounded-[28px] border border-[#dde1de] ${
                   card.variant === "center"
-                    ? "z-20 w-full bg-[#fafafa] px-[40px] py-[60px] md:w-[464px] md:min-h-[760px] md:shadow-[0_0_30px_3px_rgba(41,108,51,0.15)]"
-                    : "z-10 w-full bg-[#fafafa] px-[50px] py-[40px] md:mt-[20px] md:w-[444px] md:min-h-[720px]"
+                    ? "order-2 z-20 w-full bg-[#fafafa] px-6 py-8 shadow-[0_0_30px_3px_rgba(41,108,51,0.15)] md:w-[464px] md:min-h-[760px] md:px-[40px] md:py-[60px]"
+                    : card.title === "JAM"
+                      ? "order-3 z-10 mt-[-56px] w-[calc(100%-20px)] self-end bg-[#fafafa] px-6 pb-8 pt-[84px] md:mt-[20px] md:w-[444px] md:min-h-[720px] md:px-[50px] md:py-[40px]"
+                      : "order-1 z-10 w-full bg-[#fafafa] px-6 py-8 md:mt-[20px] md:w-[444px] md:min-h-[720px] md:px-[50px] md:py-[40px]"
                 } ${
                   card.variant === "center"
                     ? "md:mx-[-24px]"
@@ -462,11 +464,13 @@ export default function Home() {
                       : "md:ml-[-24px]"
                 }`}
               >
-                <h3 className="h-[68px] text-[28px] leading-[1.1]">
+                <h3 className="h-[68px] text-[18px] leading-[1.1] md:text-[28px]">
                   <span className="font-body font-bold">{card.title}</span>
                 </h3>
-                <p className="mt-6 text-[42px] font-bold leading-none text-[#095d13]">{card.price}</p>
-                <div className="mt-12 space-y-4 text-[20px] font-semibold leading-[1.2] text-[#1f1f1f]">
+                <p className="mt-4 text-[32px] font-bold leading-none text-[#095d13] md:mt-6 md:text-[42px]">
+                  {card.price}
+                </p>
+                <div className="mt-8 space-y-4 text-[16px] font-semibold leading-[1.2] text-[#1f1f1f] md:mt-12 md:text-[20px]">
                   {card.items.map((item, itemIndex) => (
                     <div key={`${item.title}-${itemIndex}`} className="flex gap-3">
                       <FlowerMark warning={item.bullet === "red"} />
@@ -504,7 +508,7 @@ export default function Home() {
                 <ProgramRegistrationButton
                   presetId={card.registrationPresetId}
                   clearSelection
-                  className="mt-auto block w-full rounded-full bg-[#2a6a34] px-6 py-4 text-center text-[18px] font-semibold leading-none text-white transition hover:bg-[#21562a] whitespace-nowrap"
+                  className="mt-auto block w-full rounded-full bg-[#2a6a34] px-6 py-4 text-center text-[14px] font-semibold leading-none text-white transition hover:bg-[#21562a] whitespace-nowrap md:text-[18px]"
                 >
                   {card.button}
                 </ProgramRegistrationButton>
@@ -523,28 +527,30 @@ export default function Home() {
 
       <section id="day-two" className="mx-auto w-full max-w-[1440px] px-5 py-10 md:px-8 md:py-16">
         <div className="relative px-2 py-6 md:px-0">
-          <header className="mb-12 flex items-start justify-between gap-4 text-[30px] font-display font-black uppercase leading-[0.9] tracking-tight text-[#1b1b1b]">
+          <header className="mb-10 flex flex-col items-start gap-3 text-[24px] font-display font-black uppercase leading-[0.9] tracking-tight text-[#1b1b1b] md:mb-12 md:flex-row md:items-start md:justify-between md:gap-4 md:text-[30px]">
             <h2>День 2: ALL IN BATTLE</h2>
             <p>26 апреля</p>
           </header>
-          <div className="relative mt-12 flex flex-col gap-6 md:flex-row md:items-start md:justify-center">
+          <div className="relative mt-8 flex flex-col gap-4 md:mt-12 md:flex-row md:items-start md:justify-center md:gap-6">
             {dayTwoColumns.map((column) => (
               <article
                 key={column.title}
                 className={`relative flex flex-col overflow-hidden rounded-[28px] border border-[#dde1de] ${
-                  column.variant === "center"
-                    ? "z-20 w-full bg-[#fafafa] px-[40px] py-[60px] md:w-[464px] md:min-h-[760px] md:shadow-[0_0_30px_3px_rgba(41,108,51,0.15)]"
-                    : "z-10 w-full bg-[#fafafa] px-[50px] py-[40px] md:mt-[20px] md:w-[444px] md:min-h-[720px]"
-                } ${
-                  column.variant === "center"
-                    ? "md:mx-[-24px]"
+                  column.title === "Стоимость"
+                    ? "order-1 z-10 w-full bg-[#fafafa] px-6 py-8 md:mt-[20px] md:w-[444px] md:min-h-[720px] md:px-[50px] md:py-[40px]"
                     : column.title === "Номинации"
+                      ? "order-2 z-20 w-full bg-[#fafafa] px-6 py-8 shadow-[0_0_30px_3px_rgba(41,108,51,0.15)] md:w-[464px] md:min-h-[760px] md:px-[40px] md:py-[60px]"
+                      : "order-3 z-10 mt-[-56px] w-[calc(100%-20px)] self-end bg-[#fafafa] px-6 pb-8 pt-[84px] md:mt-[20px] md:w-[444px] md:min-h-[720px] md:px-[50px] md:py-[40px]"
+                } ${
+                  column.title === "Номинации"
+                    ? "md:mx-[-24px]"
+                    : column.title === "Стоимость"
                       ? "md:mr-[-24px]"
                       : "md:ml-[-24px]"
                 }`}
               >
-                <h3 className="font-body text-[28px] font-bold leading-[1.1]">{column.title}</h3>
-                <div className="mt-12 space-y-4 text-[20px] font-semibold leading-[1.2] text-[#1f1f1f]">
+                <h3 className="font-body text-[18px] font-bold leading-[1.1] md:text-[28px]">{column.title}</h3>
+                <div className="mt-8 space-y-4 text-[16px] font-semibold leading-[1.2] text-[#1f1f1f] md:mt-12 md:text-[20px]">
                   {column.items.map((item, itemIndex) => (
                     <div key={`${item.title}-${itemIndex}`} className="flex gap-3">
                       <FlowerMark warning={item.bullet === "red"} />
@@ -573,7 +579,7 @@ export default function Home() {
                 {column.button ? (
                   <ProgramRegistrationButton
                     clearSelection
-                    className="mt-auto block w-full rounded-full bg-[#2a6a34] px-6 py-4 text-center text-[18px] font-semibold leading-none text-white transition hover:bg-[#21562a] whitespace-nowrap"
+                    className="mt-auto block w-full rounded-full bg-[#2a6a34] px-6 py-4 text-center text-[14px] font-semibold leading-none text-white transition hover:bg-[#21562a] whitespace-nowrap md:text-[18px]"
                   >
                     {column.button}
                   </ProgramRegistrationButton>
