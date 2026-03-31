@@ -396,7 +396,7 @@ export default function Home() {
                 className={`relative flex flex-col overflow-hidden rounded-[28px] border border-[#dde1de] ${
                   card.variant === "center"
                     ? "z-20 w-full bg-[#f3f4f3] px-[40px] py-[60px] md:w-[464px] md:min-h-[760px] md:shadow-[0_0_30px_3px_rgba(41,108,51,0.15)]"
-                    : "z-10 w-full bg-[#ececec] px-[50px] py-[40px] md:mt-[20px] md:w-[444px] md:min-h-[720px]"
+                    : "z-10 w-full bg-[#fafafa] px-[50px] py-[40px] md:mt-[20px] md:w-[444px] md:min-h-[720px]"
                 } ${
                   card.variant === "center"
                     ? "md:mx-[-24px]"
@@ -432,7 +432,7 @@ export default function Home() {
                     alt=""
                     width={110}
                     height={110}
-                    className="pointer-events-none absolute -left-2 bottom-24 w-[98px] opacity-85"
+                    className="pointer-events-none absolute left-[8px] bottom-20 w-[132px] opacity-85"
                   />
                 ) : null}
                 {card.decor === "right-mid" ? (
@@ -441,7 +441,7 @@ export default function Home() {
                     alt=""
                     width={110}
                     height={110}
-                    className="pointer-events-none absolute -right-3 bottom-[170px] w-[100px] opacity-85"
+                    className="pointer-events-none absolute right-[8px] bottom-[170px] w-[132px] opacity-85"
                   />
                 ) : null}
                 <button className="mt-auto w-full rounded-full bg-[#2a6a34] px-6 py-4 text-[18px] font-semibold leading-none text-white transition hover:bg-[#21562a] whitespace-nowrap">
@@ -449,6 +449,13 @@ export default function Home() {
                 </button>
               </article>
             ))}
+          </div>
+          <div className="mt-8 flex items-start gap-3">
+            <FlowerMark warning />
+            <p className="text-[20px] font-semibold leading-[1.2] text-[#1f1f1f]">
+              Возврат денежных средств за участие в jam/contest/workshop возможен до 17.04.2026
+              включительно
+            </p>
           </div>
         </div>
       </section>
@@ -466,7 +473,7 @@ export default function Home() {
                 className={`relative flex flex-col overflow-hidden rounded-[28px] border border-[#dde1de] ${
                   column.variant === "center"
                     ? "z-20 w-full bg-[#f3f4f3] px-[40px] py-[60px] md:w-[464px] md:min-h-[760px] md:shadow-[0_0_30px_3px_rgba(41,108,51,0.15)]"
-                    : "z-10 w-full bg-[#ececec] px-[50px] py-[40px] md:mt-[20px] md:w-[444px] md:min-h-[720px]"
+                    : "z-10 w-full bg-[#fafafa] px-[50px] py-[40px] md:mt-[20px] md:w-[444px] md:min-h-[720px]"
                 } ${
                   column.variant === "center"
                     ? "md:mx-[-24px]"
@@ -499,7 +506,7 @@ export default function Home() {
                     alt=""
                     width={116}
                     height={116}
-                    className="pointer-events-none absolute -right-2 top-0 w-[108px] opacity-85"
+                    className="pointer-events-none absolute right-[8px] top-[10px] w-[136px] opacity-85"
                   />
                 ) : null}
                 {column.button ? (
