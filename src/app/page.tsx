@@ -1,5 +1,4 @@
 ﻿import Image from "next/image";
-import Link from "next/link";
 import { Suspense } from "react";
 import { RegistrationForm } from "@/components/registration-form";
 
@@ -452,12 +451,12 @@ export default function Home() {
                     className="pointer-events-none absolute right-[8px] bottom-[170px] w-[132px] opacity-85"
                   />
                 ) : null}
-                <Link
+                <a
                   href={`/?register=${card.registrationPresetId}&focus=fullName#registration`}
                   className="mt-auto block w-full rounded-full bg-[#2a6a34] px-6 py-4 text-center text-[18px] font-semibold leading-none text-white transition hover:bg-[#21562a] whitespace-nowrap"
                 >
                   {card.button}
-                </Link>
+                </a>
               </article>
             ))}
           </div>
@@ -521,12 +520,13 @@ export default function Home() {
                   />
                 ) : null}
                 {column.button ? (
-                  <Link
-                    href="/?focus=fullName#registration"
+                  // eslint-disable-next-line @next/next/no-html-link-for-pages
+                  <a
+                    href="/?register=clear&focus=fullName#registration"
                     className="mt-auto block w-full rounded-full bg-[#2a6a34] px-6 py-4 text-center text-[18px] font-semibold leading-none text-white transition hover:bg-[#21562a] whitespace-nowrap"
                   >
                     {column.button}
-                  </Link>
+                  </a>
                 ) : null}
               </article>
             ))}
@@ -542,6 +542,8 @@ export default function Home() {
     </main>
   );
 }
+
+
 
 
 
