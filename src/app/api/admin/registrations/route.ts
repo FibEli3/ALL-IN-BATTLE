@@ -4,7 +4,7 @@ import { NextResponse } from "next/server";
 const allowedStatuses = new Set(["pending", "created", "paid"]);
 
 function checkAccess(request: Request) {
-  const adminToken = process.env.ADMIN_DASHBOARD_TOKEN;
+  const adminToken = process.env.ADMIN_DASHBOARD_TOKEN?.trim();
   if (!adminToken) {
     return {
       ok: false,
@@ -16,7 +16,7 @@ function checkAccess(request: Request) {
   const url = new URL(request.url);
   const tokenFromQuery = url.searchParams.get("token");
   const tokenFromHeader = request.headers.get("x-admin-token");
-  const providedToken = tokenFromHeader ?? tokenFromQuery;
+  const providedToken = (tokenFromHeader ?? tokenFromQuery ?? "").trim();
 
   if (providedToken !== adminToken) {
     return { ok: false, message: "Unauthorized", status: 401 };
@@ -62,4 +62,3 @@ export async function GET(request: Request) {
     );
   }
 }
-

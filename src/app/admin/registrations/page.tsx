@@ -27,14 +27,14 @@ function parseOptions(raw: string | null) {
 
 export default async function AdminRegistrationsPage({ searchParams }: AdminPageProps) {
   const params = await searchParams;
-  const token = params.token ?? "";
+  const token = (params.token ?? "").trim();
   const statusParam = params.status;
   const activeStatus =
     statusParam === "pending" || statusParam === "created" || statusParam === "paid"
       ? statusParam
       : undefined;
 
-  const expectedToken = process.env.ADMIN_DASHBOARD_TOKEN;
+  const expectedToken = process.env.ADMIN_DASHBOARD_TOKEN?.trim();
   const isAuthorized = Boolean(expectedToken) && token === expectedToken;
 
   if (!expectedToken) {
@@ -145,4 +145,3 @@ export default async function AdminRegistrationsPage({ searchParams }: AdminPage
     </main>
   );
 }
-
