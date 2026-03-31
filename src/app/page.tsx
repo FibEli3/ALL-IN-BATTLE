@@ -77,8 +77,8 @@ const djs: PersonCardProps[] = [
     name: "WHYDEAP",
     city: "г. Краснодар",
     image: "/dj/whydeap.jpg",
-    imageClass: "-rotate-[2deg]",
-    textRotateClass: "md:-rotate-[2deg]",
+    imageClass: "-rotate-[2.5deg]",
+    textRotateClass: "md:-rotate-[2.5deg]",
     orderClass: "md:order-1 md:pt-0",
   },
   {
@@ -92,8 +92,8 @@ const djs: PersonCardProps[] = [
     name: "BAMBOOK",
     city: "г. Краснодар",
     image: "/dj/bambook.jpg",
-    imageClass: "rotate-[2deg]",
-    textRotateClass: "md:-rotate-[2deg]",
+    imageClass: "rotate-[3deg]",
+    textRotateClass: "md:rotate-[3deg]",
     orderClass: "md:order-3 md:pt-0",
   },
 ];
@@ -103,15 +103,15 @@ const mcs: PersonCardProps[] = [
     name: "EMILE",
     city: "г. Краснодар",
     image: "/mc/emile.jpg",
-    imageClass: "-rotate-[2deg]",
-    textRotateClass: "md:-rotate-[2deg]",
+    imageClass: "-rotate-[2.5deg]",
+    textRotateClass: "md:-rotate-[2.5deg]",
   },
   {
     name: "MAVI",
     city: "г. Симферополь",
     image: "/mc/mavi.jpg",
-    imageClass: "rotate-[2deg]",
-    textRotateClass: "md:-rotate-[2deg]",
+    imageClass: "rotate-[3deg]",
+    textRotateClass: "md:rotate-[3deg]",
   },
 ];
 
@@ -371,7 +371,7 @@ export default function Home() {
                 name="VALENTINA"
                 image="/photo/valentina.jpg"
                 imageClass="-rotate-[1deg]"
-                textRotateClass="md:-rotate-[2deg]"
+                textRotateClass="md:-rotate-[1.5deg]"
                 orderClass="max-w-[420px]"
               />
             </div>
@@ -381,8 +381,8 @@ export default function Home() {
             <PersonCard
               name="RADON"
               image="/video/radon.jpg"
-              imageClass="-rotate-[2deg]"
-              textRotateClass="md:-rotate-[2deg]"
+              imageClass="-rotate-[3deg]"
+              textRotateClass="md:-rotate-[3deg]"
             />
           </div>
 
@@ -390,8 +390,8 @@ export default function Home() {
             <PersonCard
               name="DIMA SOKOLOV"
               image="/video/dima-sokolov.jpg"
-              imageClass="rotate-[2deg]"
-              textRotateClass="md:-rotate-[2deg]"
+              imageClass="rotate-[3deg]"
+              textRotateClass="md:rotate-[3deg]"
             />
             <h2 className="mt-10 text-center font-display text-[56px] font-black uppercase leading-none tracking-tight text-[#2a6a34] md:text-[80px] md:text-left">
               VIDEO
