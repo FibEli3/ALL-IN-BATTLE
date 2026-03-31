@@ -57,6 +57,7 @@ const judges: PersonCardProps[] = [
     image: "/judges/ashpi.jpg",
     tiltClass: "md:-rotate-[5deg]",
     orderClass: "md:order-1 md:pt-0",
+    revealIndex: 1,
   },
   {
     name: "RASH THE FLOW",
@@ -64,6 +65,7 @@ const judges: PersonCardProps[] = [
     image: "/judges/rash-the-flow.jpg",
     tiltClass: "",
     orderClass: "md:order-2 md:pt-16",
+    revealIndex: 3,
   },
   {
     name: "RUBA",
@@ -71,6 +73,7 @@ const judges: PersonCardProps[] = [
     image: "/judges/ruba.jpg",
     tiltClass: "md:rotate-[5deg]",
     orderClass: "md:order-3 md:pt-0",
+    revealIndex: 2,
   },
 ];
 
@@ -81,6 +84,7 @@ const djs: PersonCardProps[] = [
     image: "/dj/whydeap.jpg",
     tiltClass: "md:-rotate-[5deg]",
     orderClass: "md:order-1 md:pt-0",
+    revealIndex: 1,
   },
   {
     name: "ELMI",
@@ -88,6 +92,7 @@ const djs: PersonCardProps[] = [
     image: "/dj/elmi.jpg",
     tiltClass: "",
     orderClass: "md:order-2 md:pt-16",
+    revealIndex: 3,
   },
   {
     name: "BAMBOOK",
@@ -95,6 +100,7 @@ const djs: PersonCardProps[] = [
     image: "/dj/bambook.jpg",
     tiltClass: "md:rotate-[5deg]",
     orderClass: "md:order-3 md:pt-0",
+    revealIndex: 2,
   },
 ];
 
@@ -104,12 +110,14 @@ const mcs: PersonCardProps[] = [
     city: "г. Краснодар",
     image: "/mc/emile.jpg",
     tiltClass: "md:-rotate-[5deg]",
+    revealIndex: 1,
   },
   {
     name: "MAVI",
     city: "г. Симферополь",
     image: "/mc/mavi.jpg",
     tiltClass: "md:rotate-[5deg]",
+    revealIndex: 2,
   },
 ];
 
@@ -271,16 +279,20 @@ function TrioSection({
       className="snap-section relative mx-auto w-full max-w-[1440px] overflow-hidden px-5 py-16 md:px-8 md:py-24"
     >
       <Image
-        src="/decor/flower-side-right.png"
+        src="/bg.png"
         alt=""
-        width={300}
-        height={300}
-        className="lineup-rotating-bg pointer-events-none absolute left-1/2 top-1/2 z-0 h-auto w-[320px] -translate-x-1/2 -translate-y-1/2 opacity-25"
+        width={560}
+        height={560}
+        className="lineup-rotating-bg pointer-events-none absolute left-1/2 top-1/2 z-0 h-auto w-[34vw] min-w-[260px] max-w-[560px] -translate-x-1/2 -translate-y-1/2 opacity-20"
       />
       <h2 className={`lineup-title relative z-10 text-center ${sectionHeadingClass}`}>{title}</h2>
       <div className="mx-auto mt-8 grid max-w-[1400px] gap-8 md:grid-cols-3 md:items-start md:gap-x-16">
         {people.map((person, index) => (
-          <PersonCard key={person.name} revealIndex={(index + 1) as 1 | 2 | 3} {...person} />
+          <PersonCard
+            key={person.name}
+            revealIndex={person.revealIndex ?? ((index + 1) as 1 | 2 | 3)}
+            {...person}
+          />
         ))}
       </div>
     </section>
@@ -385,11 +397,11 @@ export default function Home() {
         className="snap-section relative mx-auto w-full max-w-[1440px] overflow-hidden px-5 py-16 md:px-8 md:py-24"
       >
         <Image
-          src="/decor/flower-side-right.png"
+          src="/bg.png"
           alt=""
-          width={300}
-          height={300}
-          className="lineup-rotating-bg pointer-events-none absolute left-1/2 top-1/2 z-0 h-auto w-[320px] -translate-x-1/2 -translate-y-1/2 opacity-25"
+          width={560}
+          height={560}
+          className="lineup-rotating-bg pointer-events-none absolute left-1/2 top-1/2 z-0 h-auto w-[34vw] min-w-[260px] max-w-[560px] -translate-x-1/2 -translate-y-1/2 opacity-20"
         />
         <h2 className={`lineup-title relative z-10 text-center ${sectionHeadingClass}`}>MC</h2>
         <div className="mx-auto mt-8 grid max-w-[1240px] gap-10 md:grid-cols-2 md:gap-x-28">
@@ -406,11 +418,11 @@ export default function Home() {
         className="snap-section relative mx-auto w-full max-w-[1440px] overflow-hidden px-5 py-16 md:px-8 md:py-24"
       >
         <Image
-          src="/decor/flower-side-right.png"
+          src="/bg.png"
           alt=""
-          width={300}
-          height={300}
-          className="lineup-rotating-bg pointer-events-none absolute left-1/2 top-1/2 z-0 h-auto w-[320px] -translate-x-1/2 -translate-y-1/2 opacity-25"
+          width={560}
+          height={560}
+          className="lineup-rotating-bg pointer-events-none absolute left-1/2 top-1/2 z-0 h-auto w-[34vw] min-w-[260px] max-w-[560px] -translate-x-1/2 -translate-y-1/2 opacity-20"
         />
         <div className="grid items-start gap-10 md:grid-cols-3">
           <div className="md:pt-10">
@@ -431,7 +443,7 @@ export default function Home() {
               name="RADON"
               image="/video/radon.jpg"
               tiltClass="md:-rotate-[5.5deg]"
-              offsetClass="md:-translate-x-6"
+              offsetClass="md:-translate-x-12"
               revealIndex={2}
             />
           </div>
@@ -441,10 +453,10 @@ export default function Home() {
               name="DIMA SOKOLOV"
               image="/video/dima-sokolov.jpg"
               tiltClass="md:rotate-[6deg]"
-              offsetClass="md:translate-x-6"
+              offsetClass="md:translate-x-12"
               revealIndex={3}
             />
-            <h2 className="lineup-video-title mt-10 text-center font-display text-[56px] font-black uppercase leading-none tracking-tight text-[#2a6a34] md:relative md:left-[-190px] md:text-center md:text-[80px]">
+            <h2 className="lineup-video-title mt-10 text-center font-display text-[56px] font-black uppercase leading-none tracking-tight text-[#2a6a34] md:relative md:left-[-240px] md:text-center md:text-[80px]">
               VIDEO
             </h2>
           </div>

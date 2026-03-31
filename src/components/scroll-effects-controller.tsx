@@ -3,11 +3,11 @@
 import { useEffect } from "react";
 
 function getPhase(progress: number) {
-  if (progress >= 0.76) return 5;
-  if (progress >= 0.6) return 4;
-  if (progress >= 0.44) return 3;
-  if (progress >= 0.28) return 2;
-  if (progress >= 0.12) return 1;
+  if (progress >= 0.95) return 5;
+  if (progress >= 0.8) return 4;
+  if (progress >= 0.6) return 3;
+  if (progress >= 0.4) return 2;
+  if (progress >= 0.2) return 1;
   return 0;
 }
 
@@ -68,4 +68,3 @@ export function ScrollEffectsController() {
 
   return null;
 }
-

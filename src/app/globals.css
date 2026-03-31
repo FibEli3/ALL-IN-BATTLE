@@ -111,7 +111,7 @@ body {
 }
 
 html.snap-mode {
-  scroll-snap-type: y mandatory;
+  scroll-snap-type: y proximity;
 }
 
 .snap-section {
@@ -123,12 +123,13 @@ html.snap-mode {
 [data-lineup-anim] .lineup-card-reveal,
 [data-lineup-anim] .lineup-video-title {
   opacity: 0;
-  transform: translateY(72px);
-  transition: transform 520ms cubic-bezier(0.2, 0.8, 0.22, 1), opacity 420ms ease;
+  transform: translateY(90px);
+  transition: transform 760ms cubic-bezier(0.2, 0.8, 0.22, 1), opacity 620ms ease;
 }
 
 [data-lineup-anim] .lineup-rotating-bg {
-  animation: lineup-spin 20s linear infinite;
+  transform-origin: center center;
+  animation: lineup-spin 28s linear infinite;
 }
 
 [data-lineup-anim].phase-1 .lineup-title,
