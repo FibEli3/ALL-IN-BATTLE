@@ -398,7 +398,7 @@ export default function Home() {
             <h2 className={`lineup-title relative z-10 text-center ${sectionHeadingClass} md:text-left`}>
               PHOTO
             </h2>
-            <div className="mt-16 max-w-[395px]">
+            <div className="mt-16 mx-auto max-w-[395px] md:mx-0">
               <PersonCard
                 name="VALENTINA"
                 image="/photo/valentina.jpg"

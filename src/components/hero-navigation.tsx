@@ -68,25 +68,11 @@ export function HeroNavigation({ items }: { items: NavItem[] }) {
           <div className="absolute inset-0 bg-[#e6eee6]" />
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_rgba(255,255,255,0.62)_0%,_rgba(230,238,230,0.92)_58%,_rgba(164,191,167,0.88)_100%)]" />
           <Image
-            src="/menu/full.png"
+            src="/bg/bg-menu.png"
             alt=""
             fill
             sizes="100vw"
             className="pointer-events-none absolute inset-0 z-[2] object-cover"
-          />
-          <Image
-            src="/menu/top.png"
-            alt=""
-            width={420}
-            height={240}
-            className="pointer-events-none absolute left-0 top-0 z-[3] h-auto w-[72vw] max-w-[320px]"
-          />
-          <Image
-            src="/menu/bot.png"
-            alt=""
-            width={420}
-            height={280}
-            className="pointer-events-none absolute bottom-0 left-0 z-[3] h-auto w-[88vw] max-w-[420px]"
           />
 
           <button
