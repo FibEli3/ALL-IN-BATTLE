@@ -431,7 +431,7 @@ export default function Home() {
               image="/video/dima-sokolov.jpg"
               tiltClass="md:rotate-[6deg]"
               offsetClass="md:translate-x-12"
-              revealIndex={5}
+              revealIndex={4}
             />
             <h2 className="lineup-video-title mt-10 hidden text-center font-display text-[56px] font-black uppercase leading-none tracking-tight text-[#2a6a34] md:relative md:left-[-240px] md:block md:text-center md:text-[80px]">
               VIDEO
