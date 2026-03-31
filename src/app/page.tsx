@@ -239,12 +239,12 @@ function PersonCard({
 }: PersonCardProps) {
   return (
     <article
-      className={`lineup-card mx-auto w-full max-w-[395px] text-center ${orderClass} ${offsetClass}`}
+      className={`lineup-card mx-auto w-full max-w-[335px] text-center min-[423px]:max-w-[395px] ${orderClass} ${offsetClass}`}
       data-reveal={revealIndex}
     >
       <div className="lineup-card-reveal">
-        <div className={`mx-auto w-full max-w-[395px] origin-top ${tiltClass}`}>
-          <div className="mx-auto w-full max-w-[395px] overflow-hidden rounded-[28px]">
+        <div className={`mx-auto w-full max-w-[335px] origin-top min-[423px]:max-w-[395px] ${tiltClass}`}>
+          <div className="mx-auto w-full max-w-[335px] overflow-hidden rounded-[28px] min-[423px]:max-w-[395px]">
             <Image
               src={image}
               alt={name}
@@ -283,7 +283,7 @@ function TrioSection({
       className="snap-section relative mx-auto w-full max-w-[1440px] overflow-hidden px-5 py-16 md:px-8 md:py-24"
     >
       <h2 className={`lineup-title relative z-10 text-center ${sectionHeadingClass}`}>{title}</h2>
-      <div className="mx-auto mt-8 grid w-full max-w-[1400px] gap-8 md:grid-cols-3 md:items-start md:gap-x-16">
+      <div className="mx-auto mt-8 grid w-full max-w-[1400px] justify-items-center gap-8 md:grid-cols-3 md:items-start md:gap-x-16">
         {people.map((person, index) => (
           <PersonCard key={person.name} revealIndex={person.revealIndex ?? index + 1} {...person} />
         ))}
@@ -318,7 +318,7 @@ export default function Home() {
           alt=""
           width={380}
           height={380}
-          className="pointer-events-none absolute left-[-72px] top-[-26px] h-auto w-[56vw] min-w-[190px] max-w-[240px] opacity-95 mix-blend-multiply md:left-[-90px] md:top-[-56px] md:w-[34vw] md:min-w-[220px] md:max-w-[520px]"
+          className="pointer-events-none absolute left-[-64px] top-[-14px] h-auto w-[210px] opacity-95 mix-blend-multiply min-[375px]:left-[-70px] min-[375px]:top-[-18px] min-[375px]:w-[230px] min-[423px]:w-[250px] md:left-[-90px] md:top-[-56px] md:w-[34vw] md:min-w-[220px] md:max-w-[520px]"
           priority
         />
         <Image
@@ -326,7 +326,7 @@ export default function Home() {
           alt=""
           width={380}
           height={380}
-          className="pointer-events-none absolute right-[-96px] top-[-24px] h-auto w-[74vw] min-w-[250px] max-w-[300px] opacity-95 mix-blend-multiply md:right-[-150px] md:top-[-40px] md:w-[52vw] md:min-w-[360px] md:max-w-[900px]"
+          className="pointer-events-none absolute right-[-84px] top-[-12px] h-auto w-[260px] opacity-95 mix-blend-multiply min-[375px]:right-[-90px] min-[375px]:w-[290px] min-[423px]:w-[320px] md:right-[-150px] md:top-[-40px] md:w-[52vw] md:min-w-[360px] md:max-w-[900px]"
           priority
         />
         <Image
@@ -334,7 +334,7 @@ export default function Home() {
           alt=""
           width={360}
           height={360}
-          className="pointer-events-none absolute bottom-[-58px] left-[-68px] h-auto w-[56vw] min-w-[190px] max-w-[236px] opacity-95 mix-blend-multiply md:bottom-[-72px] md:left-[-84px] md:w-[30vw] md:min-w-[220px] md:max-w-[430px]"
+          className="pointer-events-none absolute bottom-[-54px] left-[-62px] h-auto w-[210px] opacity-95 mix-blend-multiply min-[375px]:left-[-70px] min-[375px]:bottom-[-58px] min-[375px]:w-[228px] min-[423px]:w-[244px] md:bottom-[-72px] md:left-[-84px] md:w-[30vw] md:min-w-[220px] md:max-w-[430px]"
           priority
         />
         <HeroNavigation items={navItems} />
@@ -398,7 +398,7 @@ export default function Home() {
             <h2 className={`lineup-title relative z-10 text-center ${sectionHeadingClass} md:text-left`}>
               PHOTO
             </h2>
-            <div className="mt-16 max-w-[420px]">
+            <div className="mt-16 max-w-[395px]">
               <PersonCard
                 name="VALENTINA"
                 image="/photo/valentina.jpg"
