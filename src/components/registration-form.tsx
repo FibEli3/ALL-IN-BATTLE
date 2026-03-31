@@ -34,7 +34,7 @@ function formatRub(value: number) {
 }
 
 function checkboxClasses() {
-  return "h-8 w-8 shrink-0 appearance-none rounded-[8px] border-2 border-[#c9c9c9] bg-transparent transition checked:border-[#2a6a34] checked:bg-[#2a6a34]";
+  return "h-6 w-6 shrink-0 appearance-none rounded-[6px] border-2 border-[#c9c9c9] bg-transparent transition checked:border-[#2a6a34] checked:bg-[#2a6a34]";
 }
 
 function Field(props: {
@@ -173,14 +173,6 @@ export function RegistrationForm() {
           height={130}
           className="pointer-events-none absolute right-0 top-0 w-[122px] opacity-80"
         />
-        <Image
-          src="/decor/flower-side-left.png"
-          alt=""
-          width={168}
-          height={168}
-          className="pointer-events-none absolute bottom-[-58px] left-1/2 w-[168px] -translate-x-1/2 opacity-80"
-        />
-
         <section className="relative z-10 grid gap-8">
           <h4 className="text-[28px] font-bold leading-none">
             Укажите данные
@@ -218,11 +210,11 @@ export function RegistrationForm() {
         </section>
 
         <section className="relative z-10 mt-12 grid gap-10 lg:grid-cols-2 lg:gap-14">
-          <div className="grid gap-8">
-            <h4 className="text-center text-[28px] font-bold leading-none">ALL IN DAY 1</h4>
+          <div className="grid gap-12">
+            <h4 className="h-[34px] text-center text-[28px] font-bold leading-[34px]">ALL IN DAY 1</h4>
             <div className="space-y-8">
               {day1Options.map((option) => (
-                <label key={option.id} className="grid grid-cols-[minmax(0,1fr)_auto_auto] items-center gap-x-3">
+                <label key={option.id} className="grid grid-cols-[184px_62px_24px] items-center gap-x-3">
                   <span className="text-[20px] font-semibold leading-[1.1]">
                     {option.title}
                   </span>
@@ -240,14 +232,14 @@ export function RegistrationForm() {
             </div>
           </div>
 
-          <div className="grid gap-8">
-            <h4 className="text-center text-[28px] font-bold leading-none">ALL IN BATTLE</h4>
+          <div className="grid gap-12">
+            <h4 className="h-[34px] text-center text-[28px] font-bold leading-[34px]">ALL IN BATTLE</h4>
             <div className="grid gap-x-12 gap-y-8 md:grid-cols-2">
               <div className="space-y-8">
                 {day2LeftOptions.map((option) => (
                   <label
                     key={option.id}
-                    className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-x-3"
+                    className="grid grid-cols-[184px_24px] items-center gap-x-3"
                   >
                     <div className="grid gap-[10px]">
                       <span className="text-[20px] font-semibold leading-none">
@@ -273,7 +265,7 @@ export function RegistrationForm() {
                 {day2RightOptions.map((option) => (
                   <label
                     key={option.id}
-                    className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-x-3"
+                    className="grid grid-cols-[184px_24px] items-center gap-x-3"
                   >
                     <div className="grid gap-[10px]">
                       <span className="text-[20px] font-semibold leading-none">
