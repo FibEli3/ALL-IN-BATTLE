@@ -110,14 +110,6 @@ body {
   background-size: 14px 14px;
 }
 
-html.snap-mode {
-  scroll-snap-type: y proximity;
-}
-
-.snap-section {
-  scroll-snap-align: start;
-}
-
 [data-lineup-anim] .lineup-title,
 [data-lineup-anim] .lineup-card-reveal,
 [data-lineup-anim] .lineup-video-title {

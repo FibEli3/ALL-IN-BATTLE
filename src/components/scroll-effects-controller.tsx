@@ -13,8 +13,6 @@ function getPhase(progress: number) {
 
 export function ScrollEffectsController() {
   useEffect(() => {
-    const root = document.documentElement;
-    const registration = document.getElementById("registration");
     const lineupSections = Array.from(
       document.querySelectorAll<HTMLElement>("[data-lineup-anim]")
     );
@@ -23,12 +21,6 @@ export function ScrollEffectsController() {
 
     const update = () => {
       frame = 0;
-
-      if (registration) {
-        const registrationTop = registration.offsetTop;
-        const shouldSnap = window.scrollY + 8 < registrationTop;
-        root.classList.toggle("snap-mode", shouldSnap);
-      }
 
       const vh = window.innerHeight;
       for (const section of lineupSections) {
@@ -78,7 +70,6 @@ export function ScrollEffectsController() {
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", onScroll);
       document.removeEventListener("click", onDocumentClick);
-      root.classList.remove("snap-mode");
     };
   }, []);
 
