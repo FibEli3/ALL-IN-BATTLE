@@ -39,6 +39,15 @@ const navItems = [
   { label: "Регистрация", href: "#registration" },
 ];
 
+const footerLinks = [
+  { label: "TELEGRAM", href: "https://t.me/all_in_battle" },
+  { label: "VKONTAKTE", href: "https://vk.ru/allinbattlehop" },
+  {
+    label: "INSTAGRAMM",
+    href: "https://www.instagram.com/all_in_battlehop?igsh=MTZtODN6YmlnbTdyNg==",
+  },
+];
+
 const judges: PersonCardProps[] = [
   {
     name: "ASHPI",
@@ -540,6 +549,46 @@ export default function Home() {
           <RegistrationForm />
         </Suspense>
       </section>
+
+      <footer className="relative overflow-hidden px-5 pb-16 pt-10 md:px-8 md:pb-20 md:pt-16">
+        <Image
+          src="/decor/footer-left.jpg"
+          alt=""
+          width={520}
+          height={420}
+          className="pointer-events-none absolute bottom-0 left-[-120px] h-auto w-[34vw] min-w-[240px] max-w-[540px]"
+        />
+        <Image
+          src="/decor/footer-right.jpg"
+          alt=""
+          width={420}
+          height={420}
+          className="pointer-events-none absolute bottom-0 right-[-80px] h-auto w-[26vw] min-w-[200px] max-w-[430px]"
+        />
+
+        <div className="relative z-10 mx-auto flex w-full max-w-[1440px] justify-center">
+          <div className="flex flex-col items-start gap-5 md:gap-7">
+            {footerLinks.map((link) => (
+              <a
+                key={link.label}
+                href={link.href}
+                target="_blank"
+                rel="noreferrer"
+                className="group inline-flex items-center gap-3 font-display text-[32px] font-black uppercase leading-none text-[#131417] transition hover:opacity-80 md:text-[50px]"
+              >
+                <span>{link.label}</span>
+                <Image
+                  src="/decor/arrow.svg"
+                  alt=""
+                  width={32}
+                  height={32}
+                  className="h-[22px] w-[22px] md:h-[34px] md:w-[34px]"
+                />
+              </a>
+            ))}
+          </div>
+        </div>
+      </footer>
     </main>
   );
 }

@@ -5,6 +5,11 @@ export const metadata: Metadata = {
   title: "ALL IN BATTLE | Hip-Hop Event in Krasnodar",
   description:
     "Landing page for the ALL IN BATTLE hip-hop improvisation event in Krasnodar.",
+  icons: {
+    icon: "/logo/IMG_6184.PNG",
+    shortcut: "/logo/IMG_6184.PNG",
+    apple: "/logo/IMG_6184.PNG",
+  },
 };
 
 export default function RootLayout({
