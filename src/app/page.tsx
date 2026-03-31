@@ -349,7 +349,7 @@ export default function Home() {
 
       <section id="day-one" className="mx-auto w-full max-w-[1440px] px-5 py-10 md:px-8 md:py-16">
         <div className="rounded-[36px] bg-[#e8e8e8] px-5 py-8 md:px-8 md:py-10">
-          <header className="mb-8 flex items-center justify-between gap-4 text-[42px] font-display font-black uppercase leading-none tracking-tight text-[#1b1b1b]">
+          <header className="mb-8 flex items-start justify-between gap-4 text-[28px] font-display font-black uppercase leading-[0.9] tracking-tight text-[#1b1b1b] md:text-[58px]">
             <h2>День 1: Workshop / Jam / Contest</h2>
             <p>25 апреля</p>
           </header>
@@ -357,15 +357,15 @@ export default function Home() {
             {dayOneCards.map((card) => (
               <article
                 key={card.title}
-                className={`rounded-[28px] border border-[#d0d0d0] bg-[#ececec] p-8 ${
-                  card.featured ? "md:-mt-6 md:shadow-[0_10px_36px_rgba(0,0,0,0.1)]" : ""
+                className={`rounded-[28px] border border-[#d0d0d0] bg-[#ececec] p-7 md:p-10 ${
+                  card.featured ? "md:-mt-6 md:shadow-[0_10px_36px_rgba(0,0,0,0.1)] md:min-h-[760px]" : "md:min-h-[724px]"
                 }`}
               >
-                <h3 className="text-[50px] leading-[0.95]">
-                  <span className="font-body text-[50px] font-medium">{card.title}</span>
+                <h3 className="text-[28px] leading-[1.05] md:text-[54px]">
+                  <span className="font-body font-medium">{card.title}</span>
                 </h3>
-                <p className="mt-6 text-[58px] font-semibold leading-none text-[#095d13]">{card.price}</p>
-                <div className="mt-8 space-y-4 text-[24px] leading-[1.18] text-[#1f1f1f]">
+                <p className="mt-5 text-[44px] font-semibold leading-none text-[#095d13] md:text-[64px]">{card.price}</p>
+                <div className="mt-7 space-y-3 text-[19px] leading-[1.2] text-[#1f1f1f] md:text-[24px]">
                   {card.points.map((line, lineIndex) => (
                     <div key={`${line}-${lineIndex}`} className="flex gap-3">
                       {line.endsWith(":") || line.startsWith("Участникам") ? (
@@ -377,7 +377,7 @@ export default function Home() {
                     </div>
                   ))}
                 </div>
-                <button className="mt-10 h-[62px] w-full rounded-full bg-[#2a6a34] px-6 text-[36px] font-medium text-white transition hover:bg-[#21562a]">
+                <button className="mt-8 h-[56px] w-full rounded-full bg-[#2a6a34] px-6 text-[20px] font-medium text-white transition hover:bg-[#21562a] md:mt-10 md:h-[72px] md:text-[26px]">
                   {card.button}
                 </button>
               </article>
@@ -388,7 +388,7 @@ export default function Home() {
 
       <section id="day-two" className="mx-auto w-full max-w-[1440px] px-5 py-10 md:px-8 md:py-16">
         <div className="rounded-[36px] bg-[#e8e8e8] px-5 py-8 md:px-8 md:py-10">
-          <header className="mb-8 flex items-center justify-between gap-4 text-[42px] font-display font-black uppercase leading-none tracking-tight text-[#1b1b1b]">
+          <header className="mb-8 flex items-start justify-between gap-4 text-[28px] font-display font-black uppercase leading-[0.9] tracking-tight text-[#1b1b1b] md:text-[58px]">
             <h2>День 2: ALL IN BATTLE</h2>
             <p>26 апреля</p>
           </header>
@@ -396,12 +396,12 @@ export default function Home() {
             {dayTwoColumns.map((column) => (
               <article
                 key={column.title}
-                className={`rounded-[28px] border border-[#d0d0d0] bg-[#ececec] p-8 ${
-                  column.featured ? "md:-mt-6 md:shadow-[0_10px_36px_rgba(0,0,0,0.1)]" : ""
+                className={`rounded-[28px] border border-[#d0d0d0] bg-[#ececec] p-7 md:p-10 ${
+                  column.featured ? "md:-mt-6 md:shadow-[0_10px_36px_rgba(0,0,0,0.1)] md:min-h-[760px]" : "md:min-h-[724px]"
                 }`}
               >
-                <h3 className="font-body text-[50px] font-medium leading-none">{column.title}</h3>
-                <div className="mt-8 space-y-4 text-[24px] leading-[1.2] text-[#1f1f1f]">
+                <h3 className="font-body text-[28px] font-medium leading-none md:text-[54px]">{column.title}</h3>
+                <div className="mt-7 space-y-3 text-[19px] leading-[1.2] text-[#1f1f1f] md:text-[24px]">
                   {column.points.map((line, index) => (
                     <div key={`${line}-${index}`} className="flex gap-3">
                       {index % 2 === 0 ? (
@@ -414,7 +414,7 @@ export default function Home() {
                   ))}
                 </div>
                 {column.button ? (
-                  <button className="mt-10 h-[62px] w-full rounded-full bg-[#2a6a34] px-6 text-[36px] font-medium text-white transition hover:bg-[#21562a]">
+                  <button className="mt-8 h-[56px] w-full rounded-full bg-[#2a6a34] px-6 text-[20px] font-medium text-white transition hover:bg-[#21562a] md:mt-10 md:h-[72px] md:text-[26px]">
                     {column.button}
                   </button>
                 ) : null}
