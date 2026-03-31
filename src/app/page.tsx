@@ -310,31 +310,28 @@ export default function Home() {
       <ScrollEffectsController />
 
       <section className="relative isolate flex min-h-[100svh] items-center justify-center overflow-hidden py-10 md:min-h-screen">
-        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_center,_#f7f7f7_42%,_#c3d4c6_76%,_#8aa58f_100%)]" />
-        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_center,_rgba(255,255,255,0)_44%,_rgba(30,80,44,0.18)_100%)]" />
-
         <Image
-          src="/hero/left-top.png"
+          src="/bg/bg-mob.png"
           alt=""
-          width={380}
-          height={380}
-          className="pointer-events-none absolute left-[-64px] top-[-14px] h-auto w-[210px] opacity-95 mix-blend-multiply min-[375px]:left-[-70px] min-[375px]:top-[-18px] min-[375px]:w-[230px] min-[423px]:w-[250px] md:left-[-90px] md:top-[-56px] md:w-[34vw] md:min-w-[220px] md:max-w-[520px]"
+          fill
+          sizes="100vw"
+          className="pointer-events-none absolute inset-0 object-cover md:hidden"
           priority
         />
         <Image
-          src="/hero/right.png"
+          src="/bg/bg-tab.png"
           alt=""
-          width={380}
-          height={380}
-          className="pointer-events-none absolute right-[-170px] top-[-12px] h-auto w-[260px] opacity-95 mix-blend-multiply min-[375px]:right-[-185px] min-[375px]:w-[290px] min-[423px]:right-[-200px] min-[423px]:w-[320px] md:right-[clamp(-380px,-26vw,-210px)] md:top-[-40px] md:w-[clamp(560px,62vw,900px)]"
+          fill
+          sizes="100vw"
+          className="pointer-events-none absolute inset-0 hidden object-cover md:block lg:hidden"
           priority
         />
         <Image
-          src="/hero/left-bot.png"
+          src="/bg/bg-desk.png"
           alt=""
-          width={360}
-          height={360}
-          className="pointer-events-none absolute bottom-[-54px] left-[-62px] h-auto w-[210px] opacity-95 mix-blend-multiply min-[375px]:left-[-70px] min-[375px]:bottom-[-58px] min-[375px]:w-[228px] min-[423px]:w-[244px] md:bottom-[-72px] md:left-[-84px] md:w-[30vw] md:min-w-[220px] md:max-w-[430px]"
+          fill
+          sizes="100vw"
+          className="pointer-events-none absolute inset-0 hidden object-cover lg:block"
           priority
         />
         <HeroNavigation items={navItems} />
