@@ -54,7 +54,7 @@ function Field(props: {
         value={props.value}
         placeholder={props.placeholder}
         onChange={(event) => props.onChange(event.target.value)}
-        className="h-[56px] border-b border-[rgba(0,0,0,0.38)] bg-transparent px-[10px] text-[38px] font-semibold leading-none text-[rgba(0,0,0,0.58)] outline-none placeholder:text-[rgba(0,0,0,0.48)] md:text-[22px]"
+        className="h-[56px] border-b border-[rgba(0,0,0,0.38)] bg-transparent px-[10px] text-[38px] font-semibold leading-none text-[#131417] outline-none placeholder:text-[rgba(0,0,0,0.48)] md:text-[22px]"
       />
     </label>
   );
@@ -214,10 +214,7 @@ export function RegistrationForm() {
             <h4 className="h-[34px] w-full text-center text-[28px] font-bold leading-[34px]">ALL IN DAY 1</h4>
             <div className="grid w-full grid-rows-4 gap-6">
               {day1Options.map((option) => (
-                <label
-                  key={option.id}
-                  className="grid h-[72px] grid-cols-[minmax(0,1fr)_84px_24px] items-center gap-x-3"
-                >
+                <label key={option.id} className="grid h-[72px] grid-cols-[250px_84px_24px] items-center gap-x-3">
                   <span className="text-[20px] font-semibold leading-[1.1]">
                     {option.title}
                   </span>
