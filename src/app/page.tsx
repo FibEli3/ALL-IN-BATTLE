@@ -226,15 +226,15 @@ function PersonCard({
   offsetClass = "",
 }: PersonCardProps) {
   return (
-    <article className={`mx-auto w-full max-w-[420px] text-center ${orderClass} ${offsetClass}`}>
-      <div className={`mx-auto w-full max-w-[420px] origin-top ${tiltClass}`}>
-        <div className="mx-auto w-full max-w-[420px] overflow-hidden rounded-[28px]">
+    <article className={`mx-auto w-full max-w-[395px] text-center ${orderClass} ${offsetClass}`}>
+      <div className={`mx-auto w-full max-w-[395px] origin-top ${tiltClass}`}>
+        <div className="mx-auto w-full max-w-[395px] overflow-hidden rounded-[28px]">
           <Image
             src={image}
             alt={name}
-            width={420}
-            height={620}
-            className="h-auto w-full object-cover"
+            width={395}
+            height={519}
+            className="aspect-[395/519] h-auto w-full object-cover"
           />
         </div>
         <div className="mt-6">
@@ -371,7 +371,7 @@ export default function Home() {
                 name="VALENTINA"
                 image="/photo/valentina.jpg"
                 tiltClass="md:-rotate-[2deg]"
-                orderClass="max-w-[420px]"
+                orderClass="max-w-[395px]"
               />
             </div>
           </div>
@@ -390,7 +390,7 @@ export default function Home() {
               image="/video/dima-sokolov.jpg"
               tiltClass="md:rotate-[6deg]"
             />
-            <h2 className="mt-10 text-center font-display text-[56px] font-black uppercase leading-none tracking-tight text-[#2a6a34] md:text-[80px] md:text-left">
+            <h2 className="mt-10 text-center font-display text-[56px] font-black uppercase leading-none tracking-tight text-[#2a6a34] md:relative md:left-[-120px] md:text-center md:text-[80px]">
               VIDEO
             </h2>
           </div>
