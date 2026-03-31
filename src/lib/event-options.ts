@@ -1,4 +1,4 @@
-export type EventOption = {
+﻿export type EventOption = {
   id: string;
   day: "day1" | "day2";
   title: string;
@@ -22,7 +22,7 @@ export const EVENT_OPTIONS: EventOption[] = [
     day: "day1",
     title: "Зрительский билет (contest + jam)",
     kind: "fixed",
-    priceRub: 600,
+    priceRub: 700,
   },
   {
     id: "day2-baby",
@@ -78,7 +78,7 @@ export const EVENT_OPTIONS: EventOption[] = [
     day: "day2",
     title: "Зрительский билет",
     kind: "spectator",
-    priceRub: 600,
+    priceRub: 700,
   },
 ];
 

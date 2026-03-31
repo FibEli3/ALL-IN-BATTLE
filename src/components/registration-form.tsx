@@ -64,7 +64,7 @@ function formatRub(value: number) {
 }
 
 function checkboxClasses() {
-  return "h-6 w-6 shrink-0 appearance-none rounded-[6px] border-2 border-[#c9c9c9] bg-transparent transition checked:border-[#2a6a34] checked:bg-[#2a6a34]";
+  return "h-6 w-6 shrink-0 appearance-none rounded-[6px] border-2 border-[#c9c9c9] bg-transparent transition checked:border-[#2a6a34] checked:bg-[#2a6a34] checked:bg-[url('/decor/check-mark.svg')] checked:bg-no-repeat checked:bg-center checked:bg-[length:14px_14px]";
 }
 
 function Field(props: {
@@ -322,7 +322,7 @@ export function RegistrationForm() {
             <p className="justify-self-end text-right text-[16px] font-medium leading-[1.2] text-[rgba(0,0,0,0.55)]">
               Первая номинация - 1700₽, каждая следующая - 800₽,
               <br />
-              зрительский билет - 600₽
+              зрительский билет - 700₽
             </p>
           </div>
         </section>

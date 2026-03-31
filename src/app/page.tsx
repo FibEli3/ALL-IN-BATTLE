@@ -128,7 +128,7 @@ const dayOneCards: DayCard[] = [
         title: "Номинации:",
         details: ["KIDS (до 12 лет)", "JUN (13-18 лет)", "OLD (18+)"],
       },
-      { bullet: "black", title: "Зрительский билет:", details: ["600₽"] },
+      { bullet: "black", title: "Зрительский билет:", details: ["700₽"] },
     ],
     button: "Зарегистрироваться на контест",
     variant: "center",
@@ -168,7 +168,7 @@ const dayTwoColumns: DayCard[] = [
     items: [
       { bullet: "black", title: "Первая номинация:", details: ["1700₽"] },
       { bullet: "black", title: "Каждая следующая:", details: ["800₽"] },
-      { bullet: "black", title: "Зрительский билет:", details: ["600₽"] },
+      { bullet: "black", title: "Зрительский билет:", details: ["700₽"] },
     ],
     variant: "center",
     button: "Зарегистрироваться на баттл",
