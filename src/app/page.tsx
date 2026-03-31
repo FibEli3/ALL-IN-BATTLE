@@ -464,8 +464,8 @@ export default function Home() {
                       : "md:ml-[-24px]"
                 }`}
               >
-                <h3 className="h-[68px] text-[18px] leading-[1.1] md:text-[28px]">
-                  <span className="font-body font-bold">{card.title}</span>
+                <h3 className="h-[68px] font-body text-[18px] font-bold leading-[1.1] md:text-[28px]">
+                  {card.title}
                 </h3>
                 <p className="mt-4 text-[32px] font-bold leading-none text-[#095d13] md:mt-6 md:text-[42px]">
                   {card.price}
@@ -487,15 +487,6 @@ export default function Home() {
                     </div>
                   ))}
                 </div>
-                {card.decor === "left-bottom" ? (
-                  <Image
-                    src="/decor/flower-side-left.png"
-                    alt=""
-                    width={110}
-                    height={110}
-                    className="pointer-events-none absolute left-[8px] bottom-20 w-[132px] opacity-85"
-                  />
-                ) : null}
                 {card.decor === "right-mid" ? (
                   <Image
                     src="/decor/flower-side-right.png"
@@ -508,7 +499,7 @@ export default function Home() {
                 <ProgramRegistrationButton
                   presetId={card.registrationPresetId}
                   clearSelection
-                  className="mt-auto block w-full rounded-full bg-[#2a6a34] px-6 py-4 text-center text-[14px] font-semibold leading-none text-white transition hover:bg-[#21562a] whitespace-nowrap md:text-[18px]"
+                  className="mt-12 block w-full rounded-full bg-[#2a6a34] px-6 py-4 text-center text-[14px] font-semibold leading-none text-white transition hover:bg-[#21562a] whitespace-nowrap md:mt-auto md:text-[18px]"
                 >
                   {card.button}
                 </ProgramRegistrationButton>
@@ -517,7 +508,7 @@ export default function Home() {
           </div>
           <div className="mt-8 flex items-start gap-3">
             <FlowerMark warning />
-            <p className="text-[20px] font-semibold leading-[1.2] text-[#1f1f1f]">
+            <p className="text-[16px] font-semibold leading-[1.2] text-[#1f1f1f] md:text-[20px]">
               Возврат денежных средств за участие в jam/contest/workshop возможен до 17.04.2026
               включительно
             </p>
@@ -579,7 +570,7 @@ export default function Home() {
                 {column.button ? (
                   <ProgramRegistrationButton
                     clearSelection
-                    className="mt-auto block w-full rounded-full bg-[#2a6a34] px-6 py-4 text-center text-[14px] font-semibold leading-none text-white transition hover:bg-[#21562a] whitespace-nowrap md:text-[18px]"
+                    className="mt-12 block w-full rounded-full bg-[#2a6a34] px-6 py-4 text-center text-[14px] font-semibold leading-none text-white transition hover:bg-[#21562a] whitespace-nowrap md:mt-auto md:text-[18px]"
                   >
                     {column.button}
                   </ProgramRegistrationButton>
