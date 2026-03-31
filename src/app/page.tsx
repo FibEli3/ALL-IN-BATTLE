@@ -2,6 +2,7 @@
 import { Suspense } from "react";
 import { RegistrationForm } from "@/components/registration-form";
 import { ProgramRegistrationButton } from "@/components/program-registration-button";
+import { ScrollEffectsController } from "@/components/scroll-effects-controller";
 
 type PersonCardProps = {
   name: string;
@@ -10,6 +11,7 @@ type PersonCardProps = {
   tiltClass?: string;
   orderClass?: string;
   offsetClass?: string;
+  revealIndex?: 1 | 2 | 3;
 };
 
 type BulletTone = "black" | "red";
@@ -224,22 +226,28 @@ function PersonCard({
   tiltClass = "",
   orderClass = "",
   offsetClass = "",
+  revealIndex,
 }: PersonCardProps) {
   return (
-    <article className={`mx-auto w-full max-w-[395px] text-center ${orderClass} ${offsetClass}`}>
-      <div className={`mx-auto w-full max-w-[395px] origin-top ${tiltClass}`}>
-        <div className="mx-auto w-full max-w-[395px] overflow-hidden rounded-[28px]">
-          <Image
-            src={image}
-            alt={name}
-            width={395}
-            height={519}
-            className="aspect-[395/519] h-auto w-full object-cover"
-          />
-        </div>
-        <div className="mt-6">
-          <h3 className={personNameClass}>{name}</h3>
-          {city ? <p className={personCityClass}>{city}</p> : null}
+    <article
+      className={`lineup-card mx-auto w-full max-w-[395px] text-center ${orderClass} ${offsetClass}`}
+      data-reveal={revealIndex}
+    >
+      <div className="lineup-card-reveal">
+        <div className={`mx-auto w-full max-w-[395px] origin-top ${tiltClass}`}>
+          <div className="mx-auto w-full max-w-[395px] overflow-hidden rounded-[28px]">
+            <Image
+              src={image}
+              alt={name}
+              width={395}
+              height={519}
+              className="aspect-[395/519] h-auto w-full object-cover"
+            />
+          </div>
+          <div className="mt-6">
+            <h3 className={personNameClass}>{name}</h3>
+            {city ? <p className={personCityClass}>{city}</p> : null}
+          </div>
         </div>
       </div>
     </article>
@@ -256,11 +264,23 @@ function TrioSection({
   people: PersonCardProps[];
 }) {
   return (
-    <section id={id} className="mx-auto w-full max-w-[1440px] px-5 py-16 md:px-8 md:py-24">
-      <h2 className={`text-center ${sectionHeadingClass}`}>{title}</h2>
+    <section
+      id={id}
+      data-snap-section
+      data-lineup-anim
+      className="snap-section relative mx-auto w-full max-w-[1440px] overflow-hidden px-5 py-16 md:px-8 md:py-24"
+    >
+      <Image
+        src="/decor/flower-side-right.png"
+        alt=""
+        width={300}
+        height={300}
+        className="lineup-rotating-bg pointer-events-none absolute left-1/2 top-1/2 z-0 h-auto w-[320px] -translate-x-1/2 -translate-y-1/2 opacity-25"
+      />
+      <h2 className={`lineup-title relative z-10 text-center ${sectionHeadingClass}`}>{title}</h2>
       <div className="mx-auto mt-8 grid max-w-[1400px] gap-8 md:grid-cols-3 md:items-start md:gap-x-16">
-        {people.map((person) => (
-          <PersonCard key={person.name} {...person} />
+        {people.map((person, index) => (
+          <PersonCard key={person.name} revealIndex={(index + 1) as 1 | 2 | 3} {...person} />
         ))}
       </div>
     </section>
@@ -282,7 +302,12 @@ function FlowerMark({ warning = false }: { warning?: boolean }) {
 export default function Home() {
   return (
     <main className="bg-white font-body text-[#1b1b1b]">
-      <section className="relative isolate flex min-h-screen items-center justify-center overflow-hidden px-4 py-10">
+      <ScrollEffectsController />
+
+      <section
+        data-snap-section
+        className="snap-section relative isolate flex min-h-screen items-center justify-center overflow-hidden px-4 py-10"
+      >
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_center,_#f7f7f7_42%,_#c3d4c6_76%,_#8aa58f_100%)]" />
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_center,_rgba(255,255,255,0)_44%,_rgba(30,80,44,0.18)_100%)]" />
 
@@ -353,25 +378,50 @@ export default function Home() {
       <TrioSection id="judges" title="JUDGES" people={judges} />
       <TrioSection id="dj" title="DJ" people={djs} />
 
-      <section id="mc" className="mx-auto w-full max-w-[1440px] px-5 py-16 md:px-8 md:py-24">
-        <h2 className={`text-center ${sectionHeadingClass}`}>MC</h2>
+      <section
+        id="mc"
+        data-snap-section
+        data-lineup-anim
+        className="snap-section relative mx-auto w-full max-w-[1440px] overflow-hidden px-5 py-16 md:px-8 md:py-24"
+      >
+        <Image
+          src="/decor/flower-side-right.png"
+          alt=""
+          width={300}
+          height={300}
+          className="lineup-rotating-bg pointer-events-none absolute left-1/2 top-1/2 z-0 h-auto w-[320px] -translate-x-1/2 -translate-y-1/2 opacity-25"
+        />
+        <h2 className={`lineup-title relative z-10 text-center ${sectionHeadingClass}`}>MC</h2>
         <div className="mx-auto mt-8 grid max-w-[1240px] gap-10 md:grid-cols-2 md:gap-x-28">
-          {mcs.map((person) => (
-            <PersonCard key={person.name} {...person} />
+          {mcs.map((person, index) => (
+            <PersonCard key={person.name} revealIndex={(index + 1) as 1 | 2 | 3} {...person} />
           ))}
         </div>
       </section>
 
-      <section id="media" className="mx-auto w-full max-w-[1440px] px-5 py-16 md:px-8 md:py-24">
+      <section
+        id="media"
+        data-snap-section
+        data-lineup-anim
+        className="snap-section relative mx-auto w-full max-w-[1440px] overflow-hidden px-5 py-16 md:px-8 md:py-24"
+      >
+        <Image
+          src="/decor/flower-side-right.png"
+          alt=""
+          width={300}
+          height={300}
+          className="lineup-rotating-bg pointer-events-none absolute left-1/2 top-1/2 z-0 h-auto w-[320px] -translate-x-1/2 -translate-y-1/2 opacity-25"
+        />
         <div className="grid items-start gap-10 md:grid-cols-3">
           <div className="md:pt-10">
-            <h2 className={`${sectionHeadingClass} text-left`}>PHOTO</h2>
+            <h2 className={`lineup-title relative z-10 ${sectionHeadingClass} text-left`}>PHOTO</h2>
             <div className="mt-16 max-w-[420px]">
               <PersonCard
                 name="VALENTINA"
                 image="/photo/valentina.jpg"
                 tiltClass="md:-rotate-[2deg]"
                 orderClass="max-w-[395px]"
+                revealIndex={1}
               />
             </div>
           </div>
@@ -382,6 +432,7 @@ export default function Home() {
               image="/video/radon.jpg"
               tiltClass="md:-rotate-[5.5deg]"
               offsetClass="md:-translate-x-6"
+              revealIndex={2}
             />
           </div>
 
@@ -391,15 +442,20 @@ export default function Home() {
               image="/video/dima-sokolov.jpg"
               tiltClass="md:rotate-[6deg]"
               offsetClass="md:translate-x-6"
+              revealIndex={3}
             />
-            <h2 className="mt-10 text-center font-display text-[56px] font-black uppercase leading-none tracking-tight text-[#2a6a34] md:relative md:left-[-190px] md:text-center md:text-[80px]">
+            <h2 className="lineup-video-title mt-10 text-center font-display text-[56px] font-black uppercase leading-none tracking-tight text-[#2a6a34] md:relative md:left-[-190px] md:text-center md:text-[80px]">
               VIDEO
             </h2>
           </div>
         </div>
       </section>
 
-      <section id="day-one" className="mx-auto w-full max-w-[1440px] px-5 py-10 md:px-8 md:py-16">
+      <section
+        id="day-one"
+        data-snap-section
+        className="snap-section mx-auto w-full max-w-[1440px] px-5 py-10 md:px-8 md:py-16"
+      >
         <div className="relative px-2 py-6 md:px-0">
           <header className="mb-12 flex items-start justify-between gap-4 text-[30px] font-display font-black uppercase leading-[0.9] tracking-tight text-[#1b1b1b]">
             <h2>День 1: Workshop / Jam / Contest</h2>
@@ -480,7 +536,11 @@ export default function Home() {
         </div>
       </section>
 
-      <section id="day-two" className="mx-auto w-full max-w-[1440px] px-5 py-10 md:px-8 md:py-16">
+      <section
+        id="day-two"
+        data-snap-section
+        className="snap-section mx-auto w-full max-w-[1440px] px-5 py-10 md:px-8 md:py-16"
+      >
         <div className="relative px-2 py-6 md:px-0">
           <header className="mb-12 flex items-start justify-between gap-4 text-[30px] font-display font-black uppercase leading-[0.9] tracking-tight text-[#1b1b1b]">
             <h2>День 2: ALL IN BATTLE</h2>

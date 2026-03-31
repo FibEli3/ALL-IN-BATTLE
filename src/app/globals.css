@@ -109,3 +109,56 @@ body {
   background-position: center;
   background-size: 14px 14px;
 }
+
+html.snap-mode {
+  scroll-snap-type: y mandatory;
+}
+
+.snap-section {
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+}
+
+[data-lineup-anim] .lineup-title,
+[data-lineup-anim] .lineup-card-reveal,
+[data-lineup-anim] .lineup-video-title {
+  opacity: 0;
+  transform: translateY(72px);
+  transition: transform 520ms cubic-bezier(0.2, 0.8, 0.22, 1), opacity 420ms ease;
+}
+
+[data-lineup-anim] .lineup-rotating-bg {
+  animation: lineup-spin 20s linear infinite;
+}
+
+[data-lineup-anim].phase-1 .lineup-title,
+[data-lineup-anim].phase-2 .lineup-title,
+[data-lineup-anim].phase-3 .lineup-title,
+[data-lineup-anim].phase-4 .lineup-title,
+[data-lineup-anim].phase-5 .lineup-title {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+[data-lineup-anim].phase-2 .lineup-card[data-reveal="1"] .lineup-card-reveal,
+[data-lineup-anim].phase-3 .lineup-card[data-reveal="1"] .lineup-card-reveal,
+[data-lineup-anim].phase-4 .lineup-card[data-reveal="1"] .lineup-card-reveal,
+[data-lineup-anim].phase-5 .lineup-card[data-reveal="1"] .lineup-card-reveal,
+[data-lineup-anim].phase-3 .lineup-card[data-reveal="2"] .lineup-card-reveal,
+[data-lineup-anim].phase-4 .lineup-card[data-reveal="2"] .lineup-card-reveal,
+[data-lineup-anim].phase-5 .lineup-card[data-reveal="2"] .lineup-card-reveal,
+[data-lineup-anim].phase-4 .lineup-card[data-reveal="3"] .lineup-card-reveal,
+[data-lineup-anim].phase-5 .lineup-card[data-reveal="3"] .lineup-card-reveal,
+[data-lineup-anim].phase-5 .lineup-video-title {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@keyframes lineup-spin {
+  from {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  to {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
