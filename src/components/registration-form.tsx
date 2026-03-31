@@ -1,10 +1,11 @@
-"use client";
+﻿"use client";
 
 import {
   calculateSelection,
   getOptionDisplayPrice,
   getOptionsByDay,
 } from "@/lib/event-options";
+import Image from "next/image";
 import { FormEvent, useMemo, useState } from "react";
 
 type FormValues = {
@@ -32,16 +33,8 @@ function formatRub(value: number) {
   return `${new Intl.NumberFormat("ru-RU").format(value)}₽`;
 }
 
-function getDay2PriceHint(optionId: string) {
-  if (optionId === "day2-spectator") {
-    return "600₽";
-  }
-
-  return "";
-}
-
 function checkboxClasses() {
-  return "size-6 appearance-none rounded-[5px] border-2 border-[#dcdcde] bg-white transition checked:border-[#2a6a34] checked:bg-[#2a6a34]";
+  return "h-8 w-8 shrink-0 appearance-none rounded-[8px] border-2 border-[#d3d3d3] bg-transparent transition checked:border-[#2a6a34] checked:bg-[#2a6a34]";
 }
 
 function Field(props: {
@@ -52,8 +45,8 @@ function Field(props: {
   onChange: (value: string) => void;
 }) {
   return (
-    <label className="grid gap-2">
-      <span className="text-base leading-[1.2] tracking-[-0.32px]">
+    <label className="grid gap-3">
+      <span className="text-[44px] font-semibold leading-none tracking-[-0.02em] text-[#131417] md:text-[22px]">
         {props.label}
         {props.required ? <span className="text-[#bd2d2d]">*</span> : null}
       </span>
@@ -61,7 +54,7 @@ function Field(props: {
         value={props.value}
         placeholder={props.placeholder}
         onChange={(event) => props.onChange(event.target.value)}
-        className="h-[37px] border-b border-[rgba(0,0,0,0.6)] bg-transparent px-[10px] text-sm text-[rgba(0,0,0,0.6)] outline-none"
+        className="h-[62px] border-b border-[rgba(0,0,0,0.38)] bg-transparent px-[12px] text-[40px] font-medium leading-none text-[rgba(0,0,0,0.58)] outline-none placeholder:text-[rgba(0,0,0,0.48)] md:h-[56px] md:text-[38px] lg:text-[22px]"
       />
     </label>
   );
@@ -133,9 +126,7 @@ export function RegistrationForm() {
       const paymentPayload = await paymentResponse.json();
 
       if (!paymentResponse.ok || !paymentPayload?.ok) {
-        setSuccessMessage(
-          "Заявка сохранена. Проверь настройки оплаты T-Банк в Vercel.",
-        );
+        setSuccessMessage("Заявка сохранена. Проверь настройки оплаты T-Банк в Vercel.");
         setValues(initialForm);
         return;
       }
@@ -157,16 +148,43 @@ export function RegistrationForm() {
   };
 
   return (
-    <div className="w-full font-['Trebuchet_MS','Segoe_UI',sans-serif] text-black">
-      <h3 className="text-2xl leading-[1.2] tracking-[-0.48px] lowercase">регистрация</h3>
+    <div className="w-full text-[#131417]">
+      <h3 className="font-display text-[64px] font-black uppercase leading-none tracking-tight md:text-[72px]">
+        РЕГИСТРАЦИЯ
+      </h3>
 
       <form
-        className="relative mt-8 grid gap-8 rounded-3xl border border-[rgba(213,213,213,0.6)] bg-[#fafafa] px-6 py-10 md:px-8"
+        className="relative mt-8 overflow-hidden rounded-[34px] border border-[#d7d7d7] bg-[#f1f1f1] px-6 py-10 md:px-14 md:py-12"
         onSubmit={onSubmit}
       >
-        <section className="grid gap-8">
-          <h4 className="text-lg font-bold tracking-[-0.36px]">Укажите данные</h4>
-          <div className="grid gap-5">
+        <Image
+          src="/decor/flower-side-left.png"
+          alt=""
+          width={130}
+          height={130}
+          className="pointer-events-none absolute -left-2 top-[230px] w-[110px] opacity-80 md:w-[122px]"
+        />
+        <Image
+          src="/decor/flower-side-right.png"
+          alt=""
+          width={130}
+          height={130}
+          className="pointer-events-none absolute right-0 top-0 w-[122px] opacity-80"
+        />
+        <Image
+          src="/decor/flower-side-left.png"
+          alt=""
+          width={168}
+          height={168}
+          className="pointer-events-none absolute bottom-[-58px] left-1/2 w-[168px] -translate-x-1/2 opacity-80"
+        />
+
+        <section className="relative z-10 grid gap-8">
+          <h4 className="text-[56px] font-semibold leading-none md:text-[52px] lg:text-[48px]">
+            Укажите данные
+          </h4>
+
+          <div className="grid gap-7 md:grid-cols-2 md:gap-x-8 md:gap-y-9">
             <Field
               label="ФИО"
               required
@@ -197,15 +215,17 @@ export function RegistrationForm() {
           </div>
         </section>
 
-        <section className="grid gap-[60px] lg:grid-cols-2 lg:gap-8">
-          <div className="grid gap-12">
-            <h4 className="text-lg font-bold tracking-[-0.36px]">ALL IN DAY 1</h4>
+        <section className="relative z-10 mt-12 grid gap-10 lg:grid-cols-2 lg:gap-14">
+          <div className="grid gap-8">
+            <h4 className="text-[54px] font-bold leading-none md:text-[50px] lg:text-[46px]">ALL IN DAY 1</h4>
             <div className="grid gap-5">
               {day1Options.map((option) => (
-                <label key={option.id} className="flex items-center justify-between gap-3">
-                  <div className="flex items-center gap-3 text-base tracking-[-0.32px]">
-                    <span className="w-[156px] leading-[1.2]">{option.title}</span>
-                    <span className="w-[62px] leading-[1.2]">
+                <label key={option.id} className="flex items-center justify-between gap-4">
+                  <div className="grid min-w-0 grid-cols-[minmax(0,1fr)_auto] items-center gap-5">
+                    <span className="text-[42px] font-medium leading-[1.04] md:text-[36px] lg:text-[40px]">
+                      {option.title}
+                    </span>
+                    <span className="text-[42px] font-medium leading-none md:text-[36px] lg:text-[40px]">
                       {formatRub(getOptionDisplayPrice(option) ?? 0)}
                     </span>
                   </div>
@@ -220,17 +240,20 @@ export function RegistrationForm() {
             </div>
           </div>
 
-          <div className="grid gap-12">
-            <h4 className="text-lg font-bold tracking-[-0.36px]">ALL IN BATTLE</h4>
-            <div className="grid gap-8">
+          <div className="grid gap-8">
+            <h4 className="text-[54px] font-bold leading-none md:text-[50px] lg:text-[46px]">ALL IN BATTLE</h4>
+            <div className="grid gap-7">
               {day2Options.map((option) => (
-                <label key={option.id} className="flex items-center justify-between gap-3">
-                  <div className="grid gap-1">
-                    <span className="text-base leading-[1.2] tracking-[-0.32px]">
+                <label
+                  key={option.id}
+                  className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-x-5"
+                >
+                  <div className="grid gap-2">
+                    <span className="text-[42px] font-semibold leading-[1.02] md:text-[34px] lg:text-[40px]">
                       {option.title}
                     </span>
                     {option.subtitle ? (
-                      <span className="text-xs leading-[1.2] tracking-[-0.24px] text-[rgba(0,0,0,0.6)]">
+                      <span className="text-[30px] leading-[1.08] text-[rgba(0,0,0,0.55)] md:text-[26px] lg:text-[30px]">
                         {option.subtitle}
                       </span>
                     ) : null}
@@ -244,39 +267,36 @@ export function RegistrationForm() {
                 </label>
               ))}
             </div>
+            <p className="justify-self-end text-right text-[30px] leading-[1.1] text-[rgba(0,0,0,0.55)] md:text-[24px] lg:text-[36px]">
+              Первая номинация - 1700₽, каждая следующая - 800₽,
+              <br />
+              зрительский билет - 600₽
+            </p>
           </div>
         </section>
 
-        <p className="text-sm leading-[1.2] tracking-[-0.28px] text-[rgba(0,0,0,0.6)]">
-          Первая номинация - 1700₽
-          <br />
-          каждая следующая - 800₽
-          <br />
-          зрительский билет - {getDay2PriceHint("day2-spectator")}
-        </p>
+        <div className="relative z-10 mt-10 h-px w-full bg-[#d2d2d2]" />
 
-        <div className="h-px w-full bg-[#d9d9d9]" />
-
-        <section className="grid gap-5">
-          <p className="text-xl font-semibold tracking-[-0.36px]">
+        <section className="relative z-10 mt-8 grid items-center gap-6 lg:grid-cols-[1fr_auto]">
+          <p className="text-[52px] font-semibold leading-none md:text-[44px] lg:text-[46px]">
             Итого: <span className="font-bold text-[#19411f]">{formatRub(totalRub)}</span>
           </p>
           <button
             type="submit"
             disabled={isSubmitting || totalRub <= 0}
-            className="h-10 rounded-[100px] bg-[#2a6a34] px-6 text-sm tracking-[-0.26px] text-white transition hover:brightness-95 disabled:cursor-not-allowed disabled:opacity-60"
+            className="h-[78px] min-w-[392px] rounded-full bg-[#7da57f] px-10 text-[40px] font-medium leading-none text-white transition hover:brightness-95 disabled:cursor-not-allowed disabled:opacity-60 md:h-[70px] md:min-w-[382px] md:text-[34px] lg:text-[36px]"
           >
             {isSubmitting ? "Отправка..." : "Перейти к оплате"}
           </button>
         </section>
 
         {errorMessage ? (
-          <p className="rounded-lg border border-red-300 bg-red-50 px-3 py-2 text-sm text-red-700">
+          <p className="relative z-10 mt-6 rounded-lg border border-red-300 bg-red-50 px-3 py-2 text-sm text-red-700">
             {errorMessage}
           </p>
         ) : null}
         {successMessage ? (
-          <p className="rounded-lg border border-emerald-300 bg-emerald-50 px-3 py-2 text-sm text-emerald-700">
+          <p className="relative z-10 mt-6 rounded-lg border border-emerald-300 bg-emerald-50 px-3 py-2 text-sm text-emerald-700">
             {successMessage}
           </p>
         ) : null}
