@@ -3,11 +3,11 @@
 import { useEffect } from "react";
 
 function getPhase(progress: number) {
-  if (progress >= 0.95) return 5;
-  if (progress >= 0.8) return 4;
-  if (progress >= 0.6) return 3;
-  if (progress >= 0.4) return 2;
-  if (progress >= 0.2) return 1;
+  if (progress >= 0.52) return 5;
+  if (progress >= 0.42) return 4;
+  if (progress >= 0.32) return 3;
+  if (progress >= 0.22) return 2;
+  if (progress >= 0.12) return 1;
   return 0;
 }
 
@@ -74,7 +74,7 @@ export function ScrollEffectsController() {
       if (!locked) return;
 
       event.preventDefault();
-      const step = Math.min(130, Math.max(56, Math.abs(event.deltaY) * 0.45));
+      const step = Math.min(72, Math.max(28, Math.abs(event.deltaY) * 0.22));
       window.scrollBy({ top: step, behavior: "auto" });
     };
 
@@ -85,7 +85,7 @@ export function ScrollEffectsController() {
       if (!locked) return;
 
       event.preventDefault();
-      window.scrollBy({ top: 120, behavior: "auto" });
+      window.scrollBy({ top: 56, behavior: "auto" });
     };
 
     update();
