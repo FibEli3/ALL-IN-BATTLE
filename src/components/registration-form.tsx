@@ -34,7 +34,7 @@ function formatRub(value: number) {
 }
 
 function checkboxClasses() {
-  return "h-8 w-8 shrink-0 appearance-none rounded-[8px] border-2 border-[#d3d3d3] bg-transparent transition checked:border-[#2a6a34] checked:bg-[#2a6a34]";
+  return "h-8 w-8 shrink-0 appearance-none rounded-[8px] border-2 border-[#c9c9c9] bg-transparent transition checked:border-[#2a6a34] checked:bg-[#2a6a34]";
 }
 
 function Field(props: {
@@ -46,7 +46,7 @@ function Field(props: {
 }) {
   return (
     <label className="grid gap-3">
-      <span className="text-[44px] font-semibold leading-none tracking-[-0.02em] text-[#131417] md:text-[22px]">
+      <span className="text-[20px] font-semibold leading-none text-[#131417]">
         {props.label}
         {props.required ? <span className="text-[#bd2d2d]">*</span> : null}
       </span>
@@ -54,7 +54,7 @@ function Field(props: {
         value={props.value}
         placeholder={props.placeholder}
         onChange={(event) => props.onChange(event.target.value)}
-        className="h-[62px] border-b border-[rgba(0,0,0,0.38)] bg-transparent px-[12px] text-[40px] font-medium leading-none text-[rgba(0,0,0,0.58)] outline-none placeholder:text-[rgba(0,0,0,0.48)] md:h-[56px] md:text-[38px] lg:text-[22px]"
+        className="h-[56px] border-b border-[rgba(0,0,0,0.38)] bg-transparent px-[10px] text-[38px] font-semibold leading-none text-[rgba(0,0,0,0.58)] outline-none placeholder:text-[rgba(0,0,0,0.48)] md:text-[22px]"
       />
     </label>
   );
@@ -71,6 +71,8 @@ export function RegistrationForm() {
     [values.selectedOptionIds],
   );
   const totalRub = selection.totalRub;
+  const day2LeftOptions = day2Options.slice(0, 4);
+  const day2RightOptions = day2Options.slice(4, 8);
 
   const toggleOption = (optionId: string) => {
     setValues((prev) => {
@@ -148,13 +150,13 @@ export function RegistrationForm() {
   };
 
   return (
-    <div className="w-full text-[#131417]">
-      <h3 className="font-display text-[64px] font-black uppercase leading-none tracking-tight md:text-[72px]">
+    <div className="mx-auto w-full max-w-[1312px] text-[#131417]">
+      <h3 className="font-display text-[30px] font-black uppercase leading-none tracking-tight">
         РЕГИСТРАЦИЯ
       </h3>
 
       <form
-        className="relative mt-8 overflow-hidden rounded-[34px] border border-[#d7d7d7] bg-[#f1f1f1] px-6 py-10 md:px-14 md:py-12"
+        className="relative mt-8 overflow-hidden rounded-[34px] border border-[#cdcdcd] bg-[rgba(213,213,213,0.6)] px-6 py-10 md:px-[60px] md:py-[40px]"
         onSubmit={onSubmit}
       >
         <Image
@@ -180,11 +182,11 @@ export function RegistrationForm() {
         />
 
         <section className="relative z-10 grid gap-8">
-          <h4 className="text-[56px] font-semibold leading-none md:text-[52px] lg:text-[48px]">
+          <h4 className="text-[28px] font-bold leading-none">
             Укажите данные
           </h4>
 
-          <div className="grid gap-7 md:grid-cols-2 md:gap-x-8 md:gap-y-9">
+          <div className="grid gap-7 md:grid-cols-2 md:gap-x-8 md:gap-y-8">
             <Field
               label="ФИО"
               required
@@ -217,18 +219,16 @@ export function RegistrationForm() {
 
         <section className="relative z-10 mt-12 grid gap-10 lg:grid-cols-2 lg:gap-14">
           <div className="grid gap-8">
-            <h4 className="text-[54px] font-bold leading-none md:text-[50px] lg:text-[46px]">ALL IN DAY 1</h4>
-            <div className="grid gap-5">
+            <h4 className="text-center text-[28px] font-bold leading-none">ALL IN DAY 1</h4>
+            <div className="space-y-8">
               {day1Options.map((option) => (
-                <label key={option.id} className="flex items-center justify-between gap-4">
-                  <div className="grid min-w-0 grid-cols-[minmax(0,1fr)_auto] items-center gap-5">
-                    <span className="text-[42px] font-medium leading-[1.04] md:text-[36px] lg:text-[40px]">
-                      {option.title}
-                    </span>
-                    <span className="text-[42px] font-medium leading-none md:text-[36px] lg:text-[40px]">
-                      {formatRub(getOptionDisplayPrice(option) ?? 0)}
-                    </span>
-                  </div>
+                <label key={option.id} className="grid grid-cols-[minmax(0,1fr)_auto_auto] items-center gap-x-3">
+                  <span className="text-[20px] font-semibold leading-[1.1]">
+                    {option.title}
+                  </span>
+                  <span className="text-[20px] font-semibold leading-none">
+                    {formatRub(getOptionDisplayPrice(option) ?? 0)}
+                  </span>
                   <input
                     type="checkbox"
                     checked={values.selectedOptionIds.includes(option.id)}
@@ -241,33 +241,61 @@ export function RegistrationForm() {
           </div>
 
           <div className="grid gap-8">
-            <h4 className="text-[54px] font-bold leading-none md:text-[50px] lg:text-[46px]">ALL IN BATTLE</h4>
-            <div className="grid gap-7">
-              {day2Options.map((option) => (
-                <label
-                  key={option.id}
-                  className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-x-5"
-                >
-                  <div className="grid gap-2">
-                    <span className="text-[42px] font-semibold leading-[1.02] md:text-[34px] lg:text-[40px]">
-                      {option.title}
-                    </span>
-                    {option.subtitle ? (
-                      <span className="text-[30px] leading-[1.08] text-[rgba(0,0,0,0.55)] md:text-[26px] lg:text-[30px]">
-                        {option.subtitle}
+            <h4 className="text-center text-[28px] font-bold leading-none">ALL IN BATTLE</h4>
+            <div className="grid gap-x-12 gap-y-8 md:grid-cols-2">
+              <div className="space-y-8">
+                {day2LeftOptions.map((option) => (
+                  <label
+                    key={option.id}
+                    className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-x-3"
+                  >
+                    <div className="grid gap-[10px]">
+                      <span className="text-[20px] font-semibold leading-none">
+                        {option.title}
                       </span>
-                    ) : null}
-                  </div>
-                  <input
-                    type="checkbox"
-                    checked={values.selectedOptionIds.includes(option.id)}
-                    onChange={() => toggleOption(option.id)}
-                    className={checkboxClasses()}
-                  />
-                </label>
-              ))}
+                      {option.subtitle ? (
+                        <span className="text-[12px] font-semibold leading-none text-[rgba(0,0,0,0.55)]">
+                          {option.subtitle}
+                        </span>
+                      ) : null}
+                    </div>
+                    <input
+                      type="checkbox"
+                      checked={values.selectedOptionIds.includes(option.id)}
+                      onChange={() => toggleOption(option.id)}
+                      className={checkboxClasses()}
+                    />
+                  </label>
+                ))}
+              </div>
+
+              <div className="space-y-8">
+                {day2RightOptions.map((option) => (
+                  <label
+                    key={option.id}
+                    className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-x-3"
+                  >
+                    <div className="grid gap-[10px]">
+                      <span className="text-[20px] font-semibold leading-none">
+                      {option.title}
+                      </span>
+                      {option.subtitle ? (
+                        <span className="text-[12px] font-semibold leading-none text-[rgba(0,0,0,0.55)]">
+                          {option.subtitle}
+                        </span>
+                      ) : null}
+                    </div>
+                    <input
+                      type="checkbox"
+                      checked={values.selectedOptionIds.includes(option.id)}
+                      onChange={() => toggleOption(option.id)}
+                      className={checkboxClasses()}
+                    />
+                  </label>
+                ))}
+              </div>
             </div>
-            <p className="justify-self-end text-right text-[30px] leading-[1.1] text-[rgba(0,0,0,0.55)] md:text-[24px] lg:text-[36px]">
+            <p className="justify-self-end text-right text-[12px] font-semibold leading-[1.2] text-[rgba(0,0,0,0.55)]">
               Первая номинация - 1700₽, каждая следующая - 800₽,
               <br />
               зрительский билет - 600₽
@@ -278,13 +306,13 @@ export function RegistrationForm() {
         <div className="relative z-10 mt-10 h-px w-full bg-[#d2d2d2]" />
 
         <section className="relative z-10 mt-8 grid items-center gap-6 lg:grid-cols-[1fr_auto]">
-          <p className="text-[52px] font-semibold leading-none md:text-[44px] lg:text-[46px]">
+          <p className="text-[32px] font-semibold leading-none">
             Итого: <span className="font-bold text-[#19411f]">{formatRub(totalRub)}</span>
           </p>
           <button
             type="submit"
             disabled={isSubmitting || totalRub <= 0}
-            className="h-[78px] min-w-[392px] rounded-full bg-[#7da57f] px-10 text-[40px] font-medium leading-none text-white transition hover:brightness-95 disabled:cursor-not-allowed disabled:opacity-60 md:h-[70px] md:min-w-[382px] md:text-[34px] lg:text-[36px]"
+            className="h-[56px] min-w-[382px] rounded-full bg-[#7da57f] px-10 text-[18px] font-semibold leading-none text-white transition hover:brightness-95 disabled:cursor-not-allowed disabled:opacity-60"
           >
             {isSubmitting ? "Отправка..." : "Перейти к оплате"}
           </button>

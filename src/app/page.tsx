@@ -520,7 +520,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section id="registration" className="mx-auto w-full max-w-6xl px-5 pb-20 md:px-8 md:pb-24">
+      <section id="registration" className="mx-auto w-full max-w-[1440px] px-5 pb-20 md:px-8 md:pb-24">
         <RegistrationForm />
       </section>
     </main>
