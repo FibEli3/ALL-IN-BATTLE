@@ -395,7 +395,7 @@ export default function Home() {
                 key={card.title}
                 className={`relative flex flex-col overflow-hidden rounded-[28px] border border-[#dde1de] ${
                   card.variant === "center"
-                    ? "z-20 w-full bg-[#f3f4f3] px-[40px] py-[60px] md:w-[464px] md:min-h-[760px] md:shadow-[0_0_30px_3px_rgba(41,108,51,0.15)]"
+                    ? "z-20 w-full bg-[#fafafa] px-[40px] py-[60px] md:w-[464px] md:min-h-[760px] md:shadow-[0_0_30px_3px_rgba(41,108,51,0.15)]"
                     : "z-10 w-full bg-[#fafafa] px-[50px] py-[40px] md:mt-[20px] md:w-[444px] md:min-h-[720px]"
                 } ${
                   card.variant === "center"
@@ -472,7 +472,7 @@ export default function Home() {
                 key={column.title}
                 className={`relative flex flex-col overflow-hidden rounded-[28px] border border-[#dde1de] ${
                   column.variant === "center"
-                    ? "z-20 w-full bg-[#f3f4f3] px-[40px] py-[60px] md:w-[464px] md:min-h-[760px] md:shadow-[0_0_30px_3px_rgba(41,108,51,0.15)]"
+                    ? "z-20 w-full bg-[#fafafa] px-[40px] py-[60px] md:w-[464px] md:min-h-[760px] md:shadow-[0_0_30px_3px_rgba(41,108,51,0.15)]"
                     : "z-10 w-full bg-[#fafafa] px-[50px] py-[40px] md:mt-[20px] md:w-[444px] md:min-h-[720px]"
                 } ${
                   column.variant === "center"
