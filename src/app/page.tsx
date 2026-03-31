@@ -306,7 +306,7 @@ function FlowerMark({ warning = false }: { warning?: boolean }) {
 
 export default function Home() {
   return (
-    <main className="min-w-[375px] bg-white font-body text-[#1b1b1b]">
+    <main className="bg-white font-body text-[#1b1b1b]">
       <ScrollEffectsController />
 
       <section className="relative isolate flex min-h-[100svh] items-center justify-center overflow-hidden py-10 md:min-h-screen">
@@ -341,12 +341,12 @@ export default function Home() {
 
         <div className="relative z-10 w-full max-w-[980px] px-4">
           <div className="mt-24 text-center md:mt-28">
-            <h1 className="font-display text-[72px] font-black uppercase leading-[0.94] tracking-[0.02em] text-[#174b24] min-[375px]:text-[78px] md:text-[141px]">
+            <h1 className="font-display text-[58px] font-black uppercase leading-[0.94] tracking-[0.01em] text-[#174b24] min-[375px]:text-[64px] min-[423px]:text-[78px] md:text-[141px]">
               ALL IN
               <br />
               BATTLE
             </h1>
-            <p className="mt-[26px] text-[22px] font-medium leading-[1.05] text-[#808286] min-[375px]:text-[32px] min-[375px]:leading-none">
+            <p className="mt-[26px] text-[20px] font-medium leading-[1.05] text-[#808286] min-[375px]:text-[24px] min-[423px]:text-[32px] min-[423px]:leading-none">
               25-26 апреля &nbsp; г. Краснодар
             </p>
             <div className="mt-10 flex flex-col items-center justify-center gap-[24px] min-[375px]:gap-[30px] sm:flex-row">
