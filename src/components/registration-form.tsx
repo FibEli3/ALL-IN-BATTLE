@@ -18,6 +18,8 @@ type FormValues = {
   selectedOptionIds: string[];
 };
 
+type RequiredFieldKey = "fullName" | "nickname" | "phone";
+
 const initialForm: FormValues = {
   fullName: "",
   nickname: "",
@@ -84,11 +86,17 @@ function Field(props: {
   value: string;
   placeholder: string;
   onChange: (value: string) => void;
+  onFocus?: () => void;
   inputId?: string;
+  hasError?: boolean;
 }) {
   return (
     <label className="grid gap-2 md:gap-3">
-      <span className="text-[16px] font-semibold leading-none text-[#131417] md:text-[20px]">
+      <span
+        className={`text-[16px] font-semibold leading-none md:text-[20px] ${
+          props.hasError ? "text-[#bd2d2d]" : "text-[#131417]"
+        }`}
+      >
         {props.label}
         {props.required ? <span className="text-[#bd2d2d]">*</span> : null}
       </span>
@@ -97,7 +105,12 @@ function Field(props: {
         value={props.value}
         placeholder={props.placeholder}
         onChange={(event) => props.onChange(event.target.value)}
-        className="h-[44px] border-b border-[rgba(0,0,0,0.38)] bg-transparent px-[6px] text-[18px] font-semibold leading-none text-[#131417] outline-none placeholder:text-[rgba(0,0,0,0.48)] md:h-[56px] md:px-[10px] md:text-[22px]"
+        onFocus={props.onFocus}
+        className={`h-[44px] bg-transparent px-[6px] text-[18px] font-semibold leading-none text-[#131417] outline-none placeholder:text-[rgba(0,0,0,0.48)] md:h-[56px] md:px-[10px] md:text-[22px] ${
+          props.hasError
+            ? "border-b-2 border-[#bd2d2d]"
+            : "border-b border-[rgba(0,0,0,0.38)]"
+        }`}
       />
     </label>
   );
@@ -109,6 +122,13 @@ export function RegistrationForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
+  const [requiredFieldErrors, setRequiredFieldErrors] = useState<
+    Record<RequiredFieldKey, boolean>
+  >({
+    fullName: false,
+    nickname: false,
+    phone: false,
+  });
 
   const selection = useMemo(
     () => calculateSelection(values.selectedOptionIds),
@@ -204,10 +224,27 @@ export function RegistrationForm() {
     });
   };
 
+  const clearRequiredFieldError = (field: RequiredFieldKey) => {
+    setRequiredFieldErrors((prev) => ({ ...prev, [field]: false }));
+  };
+
   const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setErrorMessage("");
     setSuccessMessage("");
+
+    const nextRequiredErrors: Record<RequiredFieldKey, boolean> = {
+      fullName: values.fullName.trim().length === 0,
+      nickname: values.nickname.trim().length === 0,
+      phone: values.phone.replace(/\D/g, "").length < 11,
+    };
+    setRequiredFieldErrors(nextRequiredErrors);
+
+    if (Object.values(nextRequiredErrors).some(Boolean)) {
+      setErrorMessage("Заполните обязательные поля, выделенные красным.");
+      return;
+    }
+
     setIsSubmitting(true);
 
     try {
@@ -304,6 +341,8 @@ export function RegistrationForm() {
               placeholder="Иванов Иван Иванович"
               inputId="registration-full-name"
               onChange={(value) => setValues((prev) => ({ ...prev, fullName: value }))}
+              onFocus={() => clearRequiredFieldError("fullName")}
+              hasError={requiredFieldErrors.fullName}
             />
             <Field
               label="Никнейм"
@@ -311,6 +350,8 @@ export function RegistrationForm() {
               value={values.nickname}
               placeholder="Baban"
               onChange={(value) => setValues((prev) => ({ ...prev, nickname: value }))}
+              onFocus={() => clearRequiredFieldError("nickname")}
+              hasError={requiredFieldErrors.nickname}
             />
             <Field
               label="Возраст"
@@ -326,6 +367,8 @@ export function RegistrationForm() {
               onChange={(value) =>
                 setValues((prev) => ({ ...prev, phone: maskPhoneInput(value) }))
               }
+              onFocus={() => clearRequiredFieldError("phone")}
+              hasError={requiredFieldErrors.phone}
             />
           </div>
         </section>
