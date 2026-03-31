@@ -42,40 +42,43 @@ export function HeroNavigation({ items }: { items: NavItem[] }) {
         className="absolute right-4 top-4 z-30 inline-flex h-11 w-11 items-center justify-center md:hidden"
         aria-label="Open menu"
       >
-        <Image src="/icons/menu.svg" alt="" width={26} height={26} />
+        <Image src="/icons/menu.svg" alt="" width={32} height={32} />
       </button>
 
       {open ? (
-        <div className="fixed inset-0 z-50 md:hidden">
+        <div className="fixed inset-0 z-[120] md:hidden">
+          <div className="absolute inset-0 bg-[#e6eee6]" />
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_rgba(255,255,255,0.62)_0%,_rgba(230,238,230,0.92)_58%,_rgba(164,191,167,0.88)_100%)]" />
+
           <Image
             src="/menu/full.png"
             alt=""
             fill
             sizes="100vw"
-            className="pointer-events-none absolute inset-0 object-cover"
+            className="pointer-events-none absolute inset-0 z-[1] object-cover"
           />
           <Image
             src="/menu/top.png"
             alt=""
             width={390}
             height={220}
-            className="pointer-events-none absolute left-0 top-0 h-auto w-full object-cover"
+            className="pointer-events-none absolute left-0 top-0 z-[2] h-auto w-full object-cover"
           />
           <Image
             src="/menu/bot.png"
             alt=""
             width={390}
             height={240}
-            className="pointer-events-none absolute bottom-0 left-0 h-auto w-full object-cover"
+            className="pointer-events-none absolute bottom-0 left-0 z-[2] h-auto w-full object-cover"
           />
 
           <button
             type="button"
             onClick={() => setOpen(false)}
-            className="absolute right-4 top-4 inline-flex h-9 w-9 items-center justify-center"
+            className="absolute right-4 top-4 z-20 inline-flex h-9 w-9 items-center justify-center"
             aria-label="Close menu"
           >
-            <Image src="/icons/cross.svg" alt="" width={20} height={20} />
+            <Image src="/icons/cross.svg" alt="" width={32} height={32} />
           </button>
 
           <div className="relative z-10 flex min-h-full items-center justify-center">
@@ -97,4 +100,3 @@ export function HeroNavigation({ items }: { items: NavItem[] }) {
     </>
   );
 }
-
