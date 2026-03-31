@@ -1,4 +1,4 @@
-import Image from "next/image";
+﻿import Image from "next/image";
 import Link from "next/link";
 import { Suspense } from "react";
 import { RegistrationForm } from "@/components/registration-form";
@@ -32,31 +32,31 @@ type DayCard = {
 };
 
 const navItems = [
-  { label: "�����", href: "#judges" },
+  { label: "Судьи", href: "#judges" },
   { label: "DJ", href: "#dj" },
   { label: "MC", href: "#mc" },
   { label: "Media", href: "#media" },
-  { label: "�����������", href: "#registration" },
+  { label: "Регистрация", href: "#registration" },
 ];
 
 const judges: PersonCardProps[] = [
   {
     name: "ASHPI",
-    city: "�. ������",
+    city: "г. Донецк",
     image: "/judges/ashpi.jpg",
     imageClass: "-rotate-[2deg]",
     orderClass: "md:order-1 md:pt-0",
   },
   {
     name: "RASH THE FLOW",
-    city: "�. �����-���������",
+    city: "г. Санкт-Петербург",
     image: "/judges/rash-the-flow.jpg",
     imageClass: "rotate-0",
     orderClass: "md:order-2 md:pt-16",
   },
   {
     name: "RUBA",
-    city: "�. ������",
+    city: "г. Москва",
     image: "/judges/ruba.jpg",
     imageClass: "rotate-[2deg]",
     orderClass: "md:order-3 md:pt-0",
@@ -66,7 +66,7 @@ const judges: PersonCardProps[] = [
 const djs: PersonCardProps[] = [
   {
     name: "WHYDEAP",
-    city: "�. ���������",
+    city: "г. Краснодар",
     image: "/dj/whydeap.jpg",
     imageClass: "-rotate-[2deg]",
     textRotateClass: "md:-rotate-[2deg]",
@@ -74,14 +74,14 @@ const djs: PersonCardProps[] = [
   },
   {
     name: "ELMI",
-    city: "�. �����������",
+    city: "г. Симферополь",
     image: "/dj/elmi.jpg",
     imageClass: "rotate-0",
     orderClass: "md:order-2 md:pt-16",
   },
   {
     name: "BAMBOOK",
-    city: "�. ���������",
+    city: "г. Краснодар",
     image: "/dj/bambook.jpg",
     imageClass: "rotate-[2deg]",
     textRotateClass: "md:-rotate-[2deg]",
@@ -92,14 +92,14 @@ const djs: PersonCardProps[] = [
 const mcs: PersonCardProps[] = [
   {
     name: "EMILE",
-    city: "�. ���������",
+    city: "г. Краснодар",
     image: "/mc/emile.jpg",
     imageClass: "-rotate-[2deg]",
     textRotateClass: "md:-rotate-[2deg]",
   },
   {
     name: "MAVI",
-    city: "�. �����������",
+    city: "г. Симферополь",
     image: "/mc/mavi.jpg",
     imageClass: "rotate-[2deg]",
     textRotateClass: "md:-rotate-[2deg]",
@@ -108,16 +108,16 @@ const mcs: PersonCardProps[] = [
 
 const dayOneCards: DayCard[] = [
   {
-    title: "������-����� �� RASH THE FLOW",
+    title: "Мастер-Класс от RASH THE FLOW",
     price: "2900?",
     items: [
       {
         bullet: "black",
-        title: "������������:",
-        details: ["1,5 ����"],
+        title: "Длительность:",
+        details: ["1,5 часа"],
       },
     ],
-    button: "������������������ �� ��",
+    button: "Зарегистрироваться на МК",
     registrationPresetId: "day1-option-1",
     variant: "side",
     decor: "left-bottom",
@@ -126,16 +126,16 @@ const dayOneCards: DayCard[] = [
     title: "Contest 3x3",
     price: "900?",
     items: [
-      { bullet: "black", title: "�����:", details: ["RASH"] },
-      { bullet: "black", title: "������:", details: ["BAMBOOK/WHYDEAP"] },
+      { bullet: "black", title: "Судит:", details: ["RASH"] },
+      { bullet: "black", title: "Играют:", details: ["BAMBOOK/WHYDEAP"] },
       {
         bullet: "black",
-        title: "���������:",
-        details: ["KIDS (�� 12 ���)", "JUN (13-18 ���)", "OLD (18+)"],
+        title: "Номинации:",
+        details: ["KIDS (до 12 лет)", "JUN (13-18 лет)", "OLD (18+)"],
       },
-      { bullet: "black", title: "����������� �����:", details: ["700?"] },
+      { bullet: "black", title: "Зрительский билет:", details: ["700?"] },
     ],
-    button: "������������������ �� �������",
+    button: "Зарегистрироваться на контест",
     registrationPresetId: "day1-option-2",
     variant: "center",
   },
@@ -143,13 +143,13 @@ const dayOneCards: DayCard[] = [
     title: "JAM",
     price: "600?",
     items: [
-      { bullet: "black", title: "������:", details: ["BAMBOOK/WHYDEAP"] },
+      { bullet: "black", title: "Играют:", details: ["BAMBOOK/WHYDEAP"] },
       {
         bullet: "red",
-        title: "���������� ������-������/Contest 3x3 � ���� ����������",
+        title: "Участникам Мастер-Класса/Contest 3x3 – джем бесплатный",
       },
     ],
-    button: "������������������ �� ����",
+    button: "Зарегистрироваться на джем",
     registrationPresetId: "day1-option-3",
     variant: "side",
     decor: "right-mid",
@@ -158,45 +158,45 @@ const dayOneCards: DayCard[] = [
 
 const dayTwoColumns: DayCard[] = [
   {
-    title: "���������",
+    title: "Номинации",
     items: [
-      { bullet: "black", title: "BABY", details: ["(�� 7 ���)"] },
-      { bullet: "black", title: "JUN PRO", details: ["(12-15 ���, ���� 3+ ����)"] },
-      { bullet: "black", title: "KIDS BEG", details: ["(7-11 ���, �� 3 ��� ��������)"] },
-      { bullet: "black", title: "BEG 16+", details: ["(�� 3-� ��� ��������)"] },
-      { bullet: "black", title: "KIDS PRO", details: ["(7-11 ���, ���� 3+ ����)"] },
-      { bullet: "black", title: "PRO 16+", details: ["(���� 3+ ����)"] },
-      { bullet: "black", title: "JUN BEG", details: ["(12-15 ���, �� 3-� ��� ��������)"] },
+      { bullet: "black", title: "BABY", details: ["(до 7 лет)"] },
+      { bullet: "black", title: "JUN PRO", details: ["(12-15 лет, опыт 3+ года)"] },
+      { bullet: "black", title: "KIDS BEG", details: ["(7-11 лет, до 3 лет обучения)"] },
+      { bullet: "black", title: "BEG 16+", details: ["(до 3-х лет обучения)"] },
+      { bullet: "black", title: "KIDS PRO", details: ["(7-11 лет, опыт 3+ года)"] },
+      { bullet: "black", title: "PRO 16+", details: ["(опыт 3+ года)"] },
+      { bullet: "black", title: "JUN BEG", details: ["(12-15 лет, до 3-х лет обучения)"] },
     ],
     variant: "side",
   },
   {
-    title: "���������",
+    title: "Стоимость",
     items: [
-      { bullet: "black", title: "������ ���������:", details: ["1700?"] },
-      { bullet: "black", title: "������ ���������:", details: ["800?"] },
-      { bullet: "black", title: "����������� �����:", details: ["700?"] },
+      { bullet: "black", title: "Первая номинация:", details: ["1700?"] },
+      { bullet: "black", title: "Каждая следующая:", details: ["800?"] },
+      { bullet: "black", title: "Зрительский билет:", details: ["700?"] },
     ],
     variant: "center",
-    button: "������������������ �� �����",
+    button: "Зарегистрироваться на баттл",
     focusOnly: true,
   },
   {
-    title: "�����",
+    title: "Важно",
     items: [
-      { bullet: "black", title: "����� ����������:", details: ["����� ��������!"] },
+      { bullet: "black", title: "Место проведения:", details: ["Скоро появится!"] },
       {
         bullet: "red",
         title:
-          "���� ���������� ������������ ����������� BEG (���������� �� 3� ��� ��������), PRO (����� 3� ��� ��������). ������������ ������ �������������� ��������� ��� � ������ ��������� ��� �������������� ������ BEG/PRO.",
+          "Опыт танцевания определяется категориями BEG (начинающие до 3х лет обучения), PRO (более 3х лет обучения). Организаторы вправе самостоятельно перевести вас в другую категорию при несоответствии уровня BEG/PRO.",
       },
       {
         bullet: "red",
-        title: "����� ����, ��� �� ��������� ������ � ������������������, ��������� �������� ������!",
+        title: "После того, как вы отправили заявку и зарегистрировались, номинацию поменять нельзя!",
       },
       {
         bullet: "red",
-        title: "������� �������� ������� �� ������� �������� �� 17.04.26 ������������",
+        title: "Возврат денежных средств за участие возможен до 17.04.26 включительно",
       },
     ],
     variant: "side",
@@ -321,20 +321,20 @@ export default function Home() {
               BATTLE
             </h1>
             <p className="mt-[30px] text-[32px] font-medium leading-none text-[#808286]">
-              25-26 ������ &nbsp; �. ���������
+              25-26 апреля &nbsp; г. Краснодар
             </p>
             <div className="mt-10 flex flex-wrap items-center justify-center gap-[30px]">
               <a
                 href="#day-one"
                 className="rounded-full bg-[#2a6a34] px-[40px] py-[16px] text-[20px] font-medium leading-none text-white transition hover:bg-[#21562a]"
               >
-                ������ ����
+                Первый день
               </a>
               <a
                 href="#day-two"
                 className="rounded-full bg-[#2a6a34] px-[40px] py-[16px] text-[20px] font-medium leading-none text-white transition hover:bg-[#21562a]"
               >
-                ������ ����
+                Второй день
               </a>
             </div>
           </div>
@@ -394,8 +394,8 @@ export default function Home() {
       <section id="day-one" className="mx-auto w-full max-w-[1440px] px-5 py-10 md:px-8 md:py-16">
         <div className="relative px-2 py-6 md:px-0">
           <header className="mb-12 flex items-start justify-between gap-4 text-[30px] font-display font-black uppercase leading-[0.9] tracking-tight text-[#1b1b1b]">
-            <h2>���� 1: Workshop / Jam / Contest</h2>
-            <p>25 ������</p>
+            <h2>День 1: Workshop / Jam / Contest</h2>
+            <p>25 апреля</p>
           </header>
           <div className="relative mt-12 flex flex-col gap-6 md:mt-12 md:flex-row md:items-start md:justify-center">
             {dayOneCards.map((card) => (
@@ -408,7 +408,7 @@ export default function Home() {
                 } ${
                   card.variant === "center"
                     ? "md:mx-[-24px]"
-                    : card.title === "������-����� �� RASH THE FLOW"
+                    : card.title === "Мастер-Класс от RASH THE FLOW"
                       ? "md:mr-[-24px]"
                       : "md:ml-[-24px]"
                 }`}
@@ -464,8 +464,8 @@ export default function Home() {
           <div className="mt-8 flex items-start gap-3">
             <FlowerMark warning />
             <p className="text-[20px] font-semibold leading-[1.2] text-[#1f1f1f]">
-              ������� �������� ������� �� ������� � jam/contest/workshop �������� �� 17.04.2026
-              ������������
+              Возврат денежных средств за участие в jam/contest/workshop возможен до 17.04.2026
+              включительно
             </p>
           </div>
         </div>
@@ -474,8 +474,8 @@ export default function Home() {
       <section id="day-two" className="mx-auto w-full max-w-[1440px] px-5 py-10 md:px-8 md:py-16">
         <div className="relative px-2 py-6 md:px-0">
           <header className="mb-12 flex items-start justify-between gap-4 text-[30px] font-display font-black uppercase leading-[0.9] tracking-tight text-[#1b1b1b]">
-            <h2>���� 2: ALL IN BATTLE</h2>
-            <p>26 ������</p>
+            <h2>День 2: ALL IN BATTLE</h2>
+            <p>26 апреля</p>
           </header>
           <div className="relative mt-12 flex flex-col gap-6 md:flex-row md:items-start md:justify-center">
             {dayTwoColumns.map((column) => (
@@ -488,7 +488,7 @@ export default function Home() {
                 } ${
                   column.variant === "center"
                     ? "md:mx-[-24px]"
-                    : column.title === "���������"
+                    : column.title === "Номинации"
                       ? "md:mr-[-24px]"
                       : "md:ml-[-24px]"
                 }`}
@@ -542,6 +542,9 @@ export default function Home() {
     </main>
   );
 }
+
+
+
 
 
 

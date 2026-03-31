@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import {
   calculateSelection,
@@ -384,3 +384,4 @@ export function RegistrationForm() {
     </div>
   );
 }
+
