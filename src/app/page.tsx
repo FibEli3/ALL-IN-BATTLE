@@ -384,14 +384,14 @@ export default function Home() {
             alt=""
             width={120}
             height={120}
-            className="pointer-events-none absolute -left-2 bottom-24 hidden w-[88px] opacity-85 md:block"
+            className="pointer-events-none absolute -left-3 bottom-20 hidden w-[88px] opacity-85 md:block"
           />
           <Image
             src="/decor/flower-side-right.png"
             alt=""
             width={120}
             height={120}
-            className="pointer-events-none absolute -right-2 bottom-24 hidden w-[92px] opacity-85 md:block"
+            className="pointer-events-none absolute -right-3 bottom-[72px] hidden w-[92px] opacity-85 md:block"
           />
           <header className="mb-12 flex items-start justify-between gap-4 text-[30px] font-display font-black uppercase leading-[0.9] tracking-tight text-[#1b1b1b]">
             <h2>День 1: Workshop / Jam / Contest</h2>
@@ -403,7 +403,7 @@ export default function Home() {
                 key={card.title}
                 className={`flex flex-col rounded-[28px] border border-[#d0d0d0] bg-[#ececec] ${
                   card.variant === "center"
-                    ? "z-20 w-full px-[40px] py-[60px] md:w-[464px] md:min-h-[760px]"
+                    ? "z-20 w-full px-[40px] py-[60px] md:w-[464px] md:min-h-[760px] md:shadow-[0_0_30px_3px_rgba(41,108,51,0.15)]"
                     : "z-10 w-full px-[50px] py-[40px] md:mt-[20px] md:w-[444px] md:min-h-[720px]"
                 } ${
                   card.variant === "center"
@@ -417,7 +417,7 @@ export default function Home() {
                   <span className="font-body font-bold">{card.title}</span>
                 </h3>
                 <p className="mt-6 text-[42px] font-bold leading-none text-[#095d13]">{card.price}</p>
-                <div className="mt-12 space-y-3 text-[20px] font-semibold leading-[1.2] text-[#1f1f1f]">
+                <div className="mt-12 space-y-4 text-[20px] font-semibold leading-[1.2] text-[#1f1f1f]">
                   {card.points.map((line, lineIndex) => (
                     <div key={`${line.text}-${lineIndex}`} className="flex gap-3">
                       {line.bullet === "black" || line.bullet === "red" ? (
@@ -441,18 +441,11 @@ export default function Home() {
       <section id="day-two" className="mx-auto w-full max-w-[1440px] px-5 py-10 md:px-8 md:py-16">
         <div className="relative px-2 py-6 md:px-0">
           <Image
-            src="/decor/flower-side-left.png"
-            alt=""
-            width={120}
-            height={120}
-            className="pointer-events-none absolute -left-2 top-36 hidden w-[88px] opacity-85 md:block"
-          />
-          <Image
             src="/decor/flower-side-right.png"
             alt=""
             width={120}
             height={120}
-            className="pointer-events-none absolute -right-2 top-36 hidden w-[92px] opacity-85 md:block"
+            className="pointer-events-none absolute -right-2 top-[96px] hidden w-[98px] opacity-85 md:block"
           />
           <header className="mb-12 flex items-start justify-between gap-4 text-[30px] font-display font-black uppercase leading-[0.9] tracking-tight text-[#1b1b1b]">
             <h2>День 2: ALL IN BATTLE</h2>
@@ -464,7 +457,7 @@ export default function Home() {
                 key={column.title}
                 className={`flex flex-col rounded-[28px] border border-[#d0d0d0] bg-[#ececec] ${
                   column.variant === "center"
-                    ? "z-20 w-full px-[40px] py-[60px] md:w-[464px] md:min-h-[760px]"
+                    ? "z-20 w-full px-[40px] py-[60px] md:w-[464px] md:min-h-[760px] md:shadow-[0_0_30px_3px_rgba(41,108,51,0.15)]"
                     : "z-10 w-full px-[50px] py-[40px] md:mt-[20px] md:w-[444px] md:min-h-[720px]"
                 } ${
                   column.variant === "center"
@@ -474,8 +467,8 @@ export default function Home() {
                       : "md:ml-[-24px]"
                 }`}
               >
-                <h3 className="font-body text-[28px] font-medium leading-none md:text-[54px]">{column.title}</h3>
-                <div className="mt-12 space-y-3 text-[20px] font-semibold leading-[1.2] text-[#1f1f1f]">
+                <h3 className="font-body text-[28px] font-bold leading-[1.1]">{column.title}</h3>
+                <div className="mt-12 space-y-4 text-[20px] font-semibold leading-[1.2] text-[#1f1f1f]">
                   {column.points.map((line, index) => (
                     <div key={`${line.text}-${index}`} className="flex gap-3">
                       {line.bullet === "black" || line.bullet === "red" ? (
