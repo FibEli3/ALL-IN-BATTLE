@@ -24,6 +24,25 @@ type RegistrationRecord = {
   amountRub: number;
 };
 
+export type RegistrationAdminRecord = {
+  id: string;
+  fullName: string;
+  nickname: string | null;
+  age: string | null;
+  phone: string;
+  email: string | null;
+  city: string | null;
+  danceExperience: string | null;
+  participationType: string;
+  comment: string | null;
+  selectedOptionIds: string | null;
+  paymentStatus: string;
+  paymentOrderId: string | null;
+  paymentId: string | null;
+  amountRub: number;
+  createdAt: string;
+};
+
 type RegistrationForPayment = {
   id: string;
   fullName: string;
@@ -212,4 +231,62 @@ export async function setRegistrationPaidByOrderId(orderId: string) {
     WHERE payment_order_id = $1;`,
     [orderId],
   );
+}
+
+export async function listRegistrations(
+  paymentStatus?: "pending" | "created" | "paid",
+): Promise<RegistrationAdminRecord[]> {
+  await ensureSchema();
+
+  if (paymentStatus) {
+    const result = await db.query<RegistrationAdminRecord>(
+      `SELECT
+        id,
+        full_name as "fullName",
+        nickname,
+        age,
+        phone,
+        email,
+        city,
+        dance_experience as "danceExperience",
+        participation_type as "participationType",
+        comment,
+        selected_option_ids as "selectedOptionIds",
+        payment_status as "paymentStatus",
+        payment_order_id as "paymentOrderId",
+        payment_id as "paymentId",
+        COALESCE(amount_rub, 0) as "amountRub",
+        created_at as "createdAt"
+      FROM registrations
+      WHERE payment_status = $1
+      ORDER BY created_at DESC;`,
+      [paymentStatus],
+    );
+
+    return result.rows;
+  }
+
+  const result = await db.query<RegistrationAdminRecord>(
+    `SELECT
+      id,
+      full_name as "fullName",
+      nickname,
+      age,
+      phone,
+      email,
+      city,
+      dance_experience as "danceExperience",
+      participation_type as "participationType",
+      comment,
+      selected_option_ids as "selectedOptionIds",
+      payment_status as "paymentStatus",
+      payment_order_id as "paymentOrderId",
+      payment_id as "paymentId",
+      COALESCE(amount_rub, 0) as "amountRub",
+      created_at as "createdAt"
+    FROM registrations
+    ORDER BY created_at DESC;`,
+  );
+
+  return result.rows;
 }

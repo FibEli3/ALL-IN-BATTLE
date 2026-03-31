@@ -43,6 +43,7 @@ You can use Neon in the same way: just provide its Postgres URI in `DATABASE_URL
 ## Robokassa setup checklist
 
 Fill these env vars in Vercel:
+- `ADMIN_DASHBOARD_TOKEN` (for `/admin/registrations`)
 - `ROBOKASSA_MERCHANT_LOGIN`
 - `ROBOKASSA_PASSWORD_1`
 - `ROBOKASSA_PASSWORD_2`
@@ -67,4 +68,5 @@ In Robokassa cabinet, set result URL to:
 - `POST /api/registrations`
 - `POST /api/payments/robokassa/init`
 - `POST /api/payments/robokassa/webhook`
-
+- `GET /api/admin/registrations?token=<ADMIN_DASHBOARD_TOKEN>&status=paid`
+- `GET /admin/registrations?token=<ADMIN_DASHBOARD_TOKEN>`
