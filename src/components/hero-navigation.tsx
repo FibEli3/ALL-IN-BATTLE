@@ -93,7 +93,7 @@ export function HeroNavigation({ items }: { items: NavItem[] }) {
           <button
             type="button"
             onClick={() => setOpen(false)}
-            className="absolute right-4 top-4 z-20 inline-flex h-9 w-9 items-center justify-center"
+            className="absolute right-4 top-4 z-30 inline-flex h-11 w-11 items-center justify-center"
             aria-label="Close menu"
           >
             <Image src="/icons/cross.svg" alt="" width={32} height={32} />
