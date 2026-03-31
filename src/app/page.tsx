@@ -326,7 +326,7 @@ export default function Home() {
           alt=""
           width={380}
           height={380}
-          className="pointer-events-none absolute right-[-84px] top-[-12px] h-auto w-[260px] opacity-95 mix-blend-multiply min-[375px]:right-[-90px] min-[375px]:w-[290px] min-[423px]:w-[320px] md:right-[-150px] md:top-[-40px] md:w-[52vw] md:min-w-[360px] md:max-w-[900px]"
+          className="pointer-events-none absolute right-[-170px] top-[-12px] h-auto w-[260px] opacity-95 mix-blend-multiply min-[375px]:right-[-185px] min-[375px]:w-[290px] min-[423px]:right-[-200px] min-[423px]:w-[320px] md:right-[clamp(-380px,-26vw,-210px)] md:top-[-40px] md:w-[clamp(560px,62vw,900px)]"
           priority
         />
         <Image
