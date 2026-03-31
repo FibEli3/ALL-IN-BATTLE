@@ -131,6 +131,46 @@ export function RegistrationForm() {
     }
   }, [registerPreset, focusPreset]);
 
+  useEffect(() => {
+    const handleProgramPreset = (event: Event) => {
+      const customEvent = event as CustomEvent<{
+        presetId?: string | null;
+        clearSelection?: boolean;
+      }>;
+      const presetId = customEvent.detail?.presetId ?? null;
+      const clearSelection = Boolean(customEvent.detail?.clearSelection);
+
+      const isSupportedPreset = presetId
+        ? day1Options.some((option) => option.id === presetId)
+        : false;
+
+      setValues((prev) => ({
+        ...prev,
+        selectedOptionIds: isSupportedPreset
+          ? [presetId as string]
+          : clearSelection
+            ? []
+            : prev.selectedOptionIds,
+      }));
+
+      requestAnimationFrame(() => {
+        const input = document.getElementById("registration-full-name");
+        if (input instanceof HTMLInputElement) {
+          input.focus();
+        }
+      });
+    };
+
+    window.addEventListener("program-registration-preset", handleProgramPreset as EventListener);
+
+    return () => {
+      window.removeEventListener(
+        "program-registration-preset",
+        handleProgramPreset as EventListener,
+      );
+    };
+  }, []);
+
   const toggleOption = (optionId: string) => {
     setValues((prev) => {
       const exists = prev.selectedOptionIds.includes(optionId);
