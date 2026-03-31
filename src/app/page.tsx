@@ -7,9 +7,9 @@ type PersonCardProps = {
   name: string;
   image: string;
   city?: string;
-  imageClass?: string;
+  tiltClass?: string;
   orderClass?: string;
-  textRotateClass?: string;
+  offsetClass?: string;
 };
 
 type BulletTone = "black" | "red";
@@ -53,21 +53,21 @@ const judges: PersonCardProps[] = [
     name: "ASHPI",
     city: "г. Донецк",
     image: "/judges/ashpi.jpg",
-    imageClass: "-rotate-[2deg]",
+    tiltClass: "",
     orderClass: "md:order-1 md:pt-0",
   },
   {
     name: "RASH THE FLOW",
     city: "г. Санкт-Петербург",
     image: "/judges/rash-the-flow.jpg",
-    imageClass: "rotate-0",
+    tiltClass: "",
     orderClass: "md:order-2 md:pt-16",
   },
   {
     name: "RUBA",
     city: "г. Москва",
     image: "/judges/ruba.jpg",
-    imageClass: "rotate-[2deg]",
+    tiltClass: "",
     orderClass: "md:order-3 md:pt-0",
   },
 ];
@@ -77,23 +77,21 @@ const djs: PersonCardProps[] = [
     name: "WHYDEAP",
     city: "г. Краснодар",
     image: "/dj/whydeap.jpg",
-    imageClass: "-rotate-[5deg]",
-    textRotateClass: "md:-rotate-[5deg]",
+    tiltClass: "md:-rotate-[5deg]",
     orderClass: "md:order-1 md:pt-0",
   },
   {
     name: "ELMI",
     city: "г. Симферополь",
     image: "/dj/elmi.jpg",
-    imageClass: "rotate-0",
+    tiltClass: "",
     orderClass: "md:order-2 md:pt-16",
   },
   {
     name: "BAMBOOK",
     city: "г. Краснодар",
     image: "/dj/bambook.jpg",
-    imageClass: "rotate-[5deg]",
-    textRotateClass: "md:rotate-[5deg]",
+    tiltClass: "md:rotate-[5deg]",
     orderClass: "md:order-3 md:pt-0",
   },
 ];
@@ -103,15 +101,13 @@ const mcs: PersonCardProps[] = [
     name: "EMILE",
     city: "г. Краснодар",
     image: "/mc/emile.jpg",
-    imageClass: "-rotate-[5deg]",
-    textRotateClass: "md:-rotate-[5deg]",
+    tiltClass: "md:-rotate-[5deg]",
   },
   {
     name: "MAVI",
     city: "г. Симферополь",
     image: "/mc/mavi.jpg",
-    imageClass: "rotate-[5deg]",
-    textRotateClass: "md:rotate-[5deg]",
+    tiltClass: "md:rotate-[5deg]",
   },
 ];
 
@@ -225,24 +221,26 @@ function PersonCard({
   name,
   image,
   city,
-  imageClass = "",
+  tiltClass = "",
   orderClass = "",
-  textRotateClass = "",
+  offsetClass = "",
 }: PersonCardProps) {
   return (
-    <article className={`mx-auto w-full max-w-[420px] text-center ${orderClass}`}>
-      <div className={`mx-auto w-full max-w-[420px] overflow-hidden rounded-[28px] ${imageClass}`}>
-        <Image
-          src={image}
-          alt={name}
-          width={420}
-          height={620}
-          className="h-auto w-full object-cover"
-        />
-      </div>
-      <div className={`mt-6 origin-center ${textRotateClass || imageClass}`}>
-        <h3 className={personNameClass}>{name}</h3>
-        {city ? <p className={personCityClass}>{city}</p> : null}
+    <article className={`mx-auto w-full max-w-[420px] text-center ${orderClass} ${offsetClass}`}>
+      <div className={`mx-auto w-full max-w-[420px] origin-top ${tiltClass}`}>
+        <div className="mx-auto w-full max-w-[420px] overflow-hidden rounded-[28px]">
+          <Image
+            src={image}
+            alt={name}
+            width={420}
+            height={620}
+            className="h-auto w-full object-cover"
+          />
+        </div>
+        <div className="mt-6">
+          <h3 className={personNameClass}>{name}</h3>
+          {city ? <p className={personCityClass}>{city}</p> : null}
+        </div>
       </div>
     </article>
   );
@@ -372,8 +370,7 @@ export default function Home() {
               <PersonCard
                 name="VALENTINA"
                 image="/photo/valentina.jpg"
-                imageClass="-rotate-[1deg]"
-                textRotateClass="md:-rotate-[2deg]"
+                tiltClass="md:-rotate-[2deg]"
                 orderClass="max-w-[420px]"
               />
             </div>
@@ -383,8 +380,7 @@ export default function Home() {
             <PersonCard
               name="RADON"
               image="/video/radon.jpg"
-              imageClass="-rotate-[5.5deg]"
-              textRotateClass="md:-rotate-[5.5deg]"
+              tiltClass="md:-rotate-[5.5deg]"
             />
           </div>
 
@@ -392,8 +388,7 @@ export default function Home() {
             <PersonCard
               name="DIMA SOKOLOV"
               image="/video/dima-sokolov.jpg"
-              imageClass="rotate-[6deg]"
-              textRotateClass="md:rotate-[6deg]"
+              tiltClass="md:rotate-[6deg]"
             />
             <h2 className="mt-10 text-center font-display text-[56px] font-black uppercase leading-none tracking-tight text-[#2a6a34] md:text-[80px] md:text-left">
               VIDEO
