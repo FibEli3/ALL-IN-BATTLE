@@ -550,24 +550,24 @@ export default function Home() {
         </Suspense>
       </section>
 
-      <footer className="relative overflow-hidden px-5 pb-16 pt-10 md:px-8 md:pb-20 md:pt-16">
+      <footer className="relative overflow-hidden px-5 pb-28 pt-10 md:px-8 md:pb-40 md:pt-16">
         <Image
           src="/decor/footer-left.jpg"
           alt=""
           width={520}
           height={420}
-          className="pointer-events-none absolute bottom-0 left-[-120px] h-auto w-[34vw] min-w-[240px] max-w-[540px]"
+          className="pointer-events-none absolute bottom-0 left-[-40px] h-auto w-[44vw] min-w-[320px] max-w-[700px]"
         />
         <Image
           src="/decor/footer-right.jpg"
           alt=""
           width={420}
           height={420}
-          className="pointer-events-none absolute bottom-0 right-[-80px] h-auto w-[26vw] min-w-[200px] max-w-[430px]"
+          className="pointer-events-none absolute bottom-0 right-[-20px] h-auto w-[34vw] min-w-[270px] max-w-[580px]"
         />
 
         <div className="relative z-10 mx-auto flex w-full max-w-[1440px] justify-center">
-          <div className="flex flex-col items-start gap-5 md:gap-7">
+          <div className="flex flex-col items-center gap-5 text-center md:gap-7">
             {footerLinks.map((link) => (
               <a
                 key={link.label}
