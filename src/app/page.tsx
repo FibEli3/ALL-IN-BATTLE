@@ -3,6 +3,7 @@ import { Suspense } from "react";
 import { RegistrationForm } from "@/components/registration-form";
 import { ProgramRegistrationButton } from "@/components/program-registration-button";
 import { ScrollEffectsController } from "@/components/scroll-effects-controller";
+import { HeroNavigation } from "@/components/hero-navigation";
 
 type PersonCardProps = {
   name: string;
@@ -305,10 +306,10 @@ function FlowerMark({ warning = false }: { warning?: boolean }) {
 
 export default function Home() {
   return (
-    <main className="bg-white font-body text-[#1b1b1b]">
+    <main className="min-w-[375px] bg-white font-body text-[#1b1b1b]">
       <ScrollEffectsController />
 
-      <section className="relative isolate flex min-h-screen items-center justify-center overflow-hidden px-4 py-10">
+      <section className="relative isolate flex min-h-[100svh] items-center justify-center overflow-hidden px-4 py-10 md:min-h-screen">
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_center,_#f7f7f7_42%,_#c3d4c6_76%,_#8aa58f_100%)]" />
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_center,_rgba(255,255,255,0)_44%,_rgba(30,80,44,0.18)_100%)]" />
 
@@ -317,7 +318,7 @@ export default function Home() {
           alt=""
           width={380}
           height={380}
-          className="pointer-events-none absolute left-[-90px] top-[-56px] h-auto w-[34vw] min-w-[220px] max-w-[520px] opacity-95 mix-blend-multiply"
+          className="pointer-events-none absolute left-[-72px] top-[-26px] h-auto w-[56vw] max-w-[240px] opacity-95 mix-blend-multiply md:left-[-90px] md:top-[-56px] md:w-[34vw] md:min-w-[220px] md:max-w-[520px]"
           priority
         />
         <Image
@@ -325,7 +326,7 @@ export default function Home() {
           alt=""
           width={380}
           height={380}
-          className="pointer-events-none absolute right-[-150px] top-[-40px] h-auto w-[52vw] min-w-[360px] max-w-[900px] opacity-95 mix-blend-multiply"
+          className="pointer-events-none absolute right-[-96px] top-[-24px] h-auto w-[74vw] max-w-[300px] opacity-95 mix-blend-multiply md:right-[-150px] md:top-[-40px] md:w-[52vw] md:min-w-[360px] md:max-w-[900px]"
           priority
         />
         <Image
@@ -333,32 +334,22 @@ export default function Home() {
           alt=""
           width={360}
           height={360}
-          className="pointer-events-none absolute bottom-[-72px] left-[-84px] h-auto w-[30vw] min-w-[220px] max-w-[430px] opacity-95 mix-blend-multiply"
+          className="pointer-events-none absolute bottom-[-58px] left-[-68px] h-auto w-[56vw] max-w-[236px] opacity-95 mix-blend-multiply md:bottom-[-72px] md:left-[-84px] md:w-[30vw] md:min-w-[220px] md:max-w-[430px]"
           priority
         />
-        <nav className="absolute left-1/2 top-[30px] z-20 flex w-fit -translate-x-1/2 items-center justify-center gap-5 whitespace-nowrap rounded-full bg-white px-7 py-3 shadow-[0_8px_20px_rgba(0,0,0,0.12)] md:gap-10">
-          {navItems.map((item) => (
-            <a
-              key={item.label}
-              href={item.href}
-              className="text-xl font-semibold leading-none tracking-[-0.02em] text-[#174b24] transition hover:opacity-70"
-            >
-              {item.label}
-            </a>
-          ))}
-        </nav>
+        <HeroNavigation items={navItems} />
 
         <div className="relative z-10 w-full max-w-[980px]">
           <div className="mt-24 text-center md:mt-28">
-            <h1 className="font-display text-[78px] font-black uppercase leading-[0.94] tracking-[0.02em] text-[#174b24] md:text-[141px]">
+            <h1 className="font-display text-[72px] font-black uppercase leading-[0.94] tracking-[0.02em] text-[#174b24] min-[375px]:text-[78px] md:text-[141px]">
               ALL IN
               <br />
               BATTLE
             </h1>
-            <p className="mt-[30px] text-[32px] font-medium leading-none text-[#808286]">
+            <p className="mt-[26px] text-[22px] font-medium leading-[1.05] text-[#808286] min-[375px]:text-[32px] min-[375px]:leading-none">
               25-26 апреля &nbsp; г. Краснодар
             </p>
-            <div className="mt-10 flex flex-wrap items-center justify-center gap-[30px]">
+            <div className="mt-10 flex flex-col items-center justify-center gap-[24px] min-[375px]:gap-[30px] sm:flex-row">
               <a
                 href="#day-one"
                 className="rounded-full bg-[#2a6a34] px-[40px] py-[16px] text-[20px] font-medium leading-none text-white transition hover:bg-[#21562a]"
