@@ -85,6 +85,89 @@ const mcs: PersonCardProps[] = [
   },
 ];
 
+const dayOneCards = [
+  {
+    title: "Мастер-Класс от RASH THE FLOW",
+    price: "2900₽",
+    points: ["Длительность:", "1,5 часа"],
+    button: "Зарегистрироваться на МК",
+  },
+  {
+    title: "Contest 3x3",
+    price: "900₽",
+    points: [
+      "Судит:",
+      "RASH",
+      "Играют:",
+      "BAMBOOK/WHYDEAP",
+      "Номинации:",
+      "KIDS (до 12 лет)",
+      "JUN (13-18 лет)",
+      "OLD (18+)",
+      "Зрительский билет:",
+      "600₽",
+    ],
+    button: "Зарегистрироваться на контест",
+    featured: true,
+  },
+  {
+    title: "JAM",
+    price: "600₽",
+    points: [
+      "Играют:",
+      "BAMBOOK/WHYDEAP",
+      "Участникам Мастер-Класса/",
+      "Contest 3x3 – джем бесплатный",
+    ],
+    button: "Зарегистрироваться на джем",
+  },
+];
+
+const dayTwoColumns = [
+  {
+    title: "Номинации",
+    points: [
+      "BABY",
+      "(до 7 лет)",
+      "JUN PRO",
+      "(12-15 лет, опыт 3+ года)",
+      "KIDS BEG",
+      "(7-11 лет, до 3 лет обучения)",
+      "BEG 16+",
+      "(до 3-х лет обучения)",
+      "KIDS PRO",
+      "(7-11 лет, опыт 3+ года)",
+      "PRO 16+",
+      "(опыт 3+ года)",
+      "JUN BEG",
+      "(12-15 лет, до 3-х лет обучения)",
+    ],
+  },
+  {
+    title: "Стоимость",
+    points: [
+      "Первая номинация:",
+      "1700₽",
+      "Каждая следующая:",
+      "800₽",
+      "Зрительский билет:",
+      "600₽",
+    ],
+    featured: true,
+    button: "Зарегистрироваться на баттл",
+  },
+  {
+    title: "Важно",
+    points: [
+      "Место проведения:",
+      "Скоро появится!",
+      "Опыт танцевания определяется категориями BEG (начинающие до 3х лет обучения), PRO (более 3х лет обучения). Организаторы вправе самостоятельно перевести вас в другую категорию при несоответствии уровня BEG/PRO.",
+      "После того, как вы отправили заявку и зарегистрировались, номинацию поменять нельзя!",
+      "Возврат денежных средств за участие возможен до 17.04.26 включительно",
+    ],
+  },
+];
+
 const sectionHeadingClass =
   "font-display text-[56px] font-black uppercase leading-none tracking-tight text-[#2a6a34] md:text-[80px]";
 
@@ -137,6 +220,10 @@ function TrioSection({
       </div>
     </section>
   );
+}
+
+function FlowerMark({ warning = false }: { warning?: boolean }) {
+  return <span className={warning ? "text-[#d14a4a]" : "text-[#1b1b1b]"}>✽</span>;
 }
 
 export default function Home() {
@@ -194,13 +281,13 @@ export default function Home() {
             </p>
             <div className="mt-10 flex flex-wrap items-center justify-center gap-[30px]">
               <a
-                href="#dj"
+                href="#day-one"
                 className="rounded-full bg-[#2a6a34] px-[40px] py-[16px] text-[20px] font-medium leading-none text-white transition hover:bg-[#21562a]"
               >
                 Первый день
               </a>
               <a
-                href="#mc"
+                href="#day-two"
                 className="rounded-full bg-[#2a6a34] px-[40px] py-[16px] text-[20px] font-medium leading-none text-white transition hover:bg-[#21562a]"
               >
                 Второй день
@@ -256,6 +343,83 @@ export default function Home() {
             <h2 className="mt-10 text-center font-display text-[56px] font-black uppercase leading-none tracking-tight text-[#2a6a34] md:text-[80px] md:text-left">
               VIDEO
             </h2>
+          </div>
+        </div>
+      </section>
+
+      <section id="day-one" className="mx-auto w-full max-w-[1440px] px-5 py-10 md:px-8 md:py-16">
+        <div className="rounded-[36px] bg-[#e8e8e8] px-5 py-8 md:px-8 md:py-10">
+          <header className="mb-8 flex items-center justify-between gap-4 text-[42px] font-display font-black uppercase leading-none tracking-tight text-[#1b1b1b]">
+            <h2>День 1: Workshop / Jam / Contest</h2>
+            <p>25 апреля</p>
+          </header>
+          <div className="grid gap-6 md:grid-cols-3">
+            {dayOneCards.map((card) => (
+              <article
+                key={card.title}
+                className={`rounded-[28px] border border-[#d0d0d0] bg-[#ececec] p-8 ${
+                  card.featured ? "md:-mt-6 md:shadow-[0_10px_36px_rgba(0,0,0,0.1)]" : ""
+                }`}
+              >
+                <h3 className="text-[50px] leading-[0.95]">
+                  <span className="font-body text-[50px] font-medium">{card.title}</span>
+                </h3>
+                <p className="mt-6 text-[58px] font-semibold leading-none text-[#095d13]">{card.price}</p>
+                <div className="mt-8 space-y-4 text-[24px] leading-[1.18] text-[#1f1f1f]">
+                  {card.points.map((line, lineIndex) => (
+                    <div key={`${line}-${lineIndex}`} className="flex gap-3">
+                      {line.endsWith(":") || line.startsWith("Участникам") ? (
+                        <FlowerMark warning={line.startsWith("Участникам")} />
+                      ) : (
+                        <span className="w-4" />
+                      )}
+                      <p className={line.endsWith(":") ? "font-medium" : "text-[#626262]"}>{line}</p>
+                    </div>
+                  ))}
+                </div>
+                <button className="mt-10 h-[62px] w-full rounded-full bg-[#2a6a34] px-6 text-[36px] font-medium text-white transition hover:bg-[#21562a]">
+                  {card.button}
+                </button>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section id="day-two" className="mx-auto w-full max-w-[1440px] px-5 py-10 md:px-8 md:py-16">
+        <div className="rounded-[36px] bg-[#e8e8e8] px-5 py-8 md:px-8 md:py-10">
+          <header className="mb-8 flex items-center justify-between gap-4 text-[42px] font-display font-black uppercase leading-none tracking-tight text-[#1b1b1b]">
+            <h2>День 2: ALL IN BATTLE</h2>
+            <p>26 апреля</p>
+          </header>
+          <div className="grid gap-6 md:grid-cols-3">
+            {dayTwoColumns.map((column) => (
+              <article
+                key={column.title}
+                className={`rounded-[28px] border border-[#d0d0d0] bg-[#ececec] p-8 ${
+                  column.featured ? "md:-mt-6 md:shadow-[0_10px_36px_rgba(0,0,0,0.1)]" : ""
+                }`}
+              >
+                <h3 className="font-body text-[50px] font-medium leading-none">{column.title}</h3>
+                <div className="mt-8 space-y-4 text-[24px] leading-[1.2] text-[#1f1f1f]">
+                  {column.points.map((line, index) => (
+                    <div key={`${line}-${index}`} className="flex gap-3">
+                      {index % 2 === 0 ? (
+                        <FlowerMark warning={column.title === "Важно" && index > 1} />
+                      ) : (
+                        <span className="w-4" />
+                      )}
+                      <p className={index % 2 === 0 ? "font-medium" : "text-[#626262]"}>{line}</p>
+                    </div>
+                  ))}
+                </div>
+                {column.button ? (
+                  <button className="mt-10 h-[62px] w-full rounded-full bg-[#2a6a34] px-6 text-[36px] font-medium text-white transition hover:bg-[#21562a]">
+                    {column.button}
+                  </button>
+                ) : null}
+              </article>
+            ))}
           </div>
         </div>
       </section>
