@@ -307,13 +307,6 @@ export default function Home() {
   return (
     <main className="bg-white font-body text-[#1b1b1b]">
       <ScrollEffectsController />
-      <Image
-        src="/bg.png"
-        alt=""
-        width={620}
-        height={620}
-        className="global-lineup-bg pointer-events-none fixed left-1/2 top-1/2 z-[1] h-auto w-[36vw] min-w-[280px] max-w-[620px] -translate-x-1/2 -translate-y-1/2 opacity-20"
-      />
 
       <section className="relative isolate flex min-h-screen items-center justify-center overflow-hidden px-4 py-10">
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_center,_#f7f7f7_42%,_#c3d4c6_76%,_#8aa58f_100%)]" />

@@ -15,8 +15,6 @@ export function ScrollEffectsController() {
   useEffect(() => {
     const root = document.documentElement;
     const registration = document.getElementById("registration");
-    const judges = document.getElementById("judges");
-    const dayOne = document.getElementById("day-one");
     const lineupSections = Array.from(
       document.querySelectorAll<HTMLElement>("[data-lineup-anim]")
     );
@@ -30,13 +28,6 @@ export function ScrollEffectsController() {
         const registrationTop = registration.offsetTop;
         const shouldSnap = window.scrollY + 8 < registrationTop;
         root.classList.toggle("snap-mode", shouldSnap);
-      }
-
-      if (judges && dayOne) {
-        const from = judges.offsetTop - window.innerHeight * 0.42;
-        const to = dayOne.offsetTop - window.innerHeight * 0.12;
-        const showGlobalBg = window.scrollY >= from && window.scrollY < to;
-        root.classList.toggle("lineup-bg-visible", showGlobalBg);
       }
 
       const vh = window.innerHeight;
@@ -88,7 +79,6 @@ export function ScrollEffectsController() {
       window.removeEventListener("resize", onScroll);
       document.removeEventListener("click", onDocumentClick);
       root.classList.remove("snap-mode");
-      root.classList.remove("lineup-bg-visible");
     };
   }, []);
 
