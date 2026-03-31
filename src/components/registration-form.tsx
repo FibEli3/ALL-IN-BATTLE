@@ -211,14 +211,14 @@ export function RegistrationForm() {
 
         <section className="relative z-10 mt-12 grid gap-10 lg:grid-cols-2 lg:gap-14">
           <div className="grid gap-12 content-start">
-            <h4 className="h-[34px] w-[294px] text-center text-[28px] font-bold leading-[34px]">ALL IN DAY 1</h4>
-            <div className="w-[320px] space-y-8">
+            <h4 className="h-[34px] w-[338px] text-center text-[28px] font-bold leading-[34px]">ALL IN DAY 1</h4>
+            <div className="grid w-[338px] grid-rows-4 gap-8">
               {day1Options.map((option) => (
-                <label key={option.id} className="grid min-h-[64px] grid-cols-[222px_62px_24px] items-center gap-x-3">
+                <label key={option.id} className="grid h-[72px] grid-cols-[230px_84px_24px] items-center gap-x-3">
                   <span className="text-[20px] font-semibold leading-[1.1]">
                     {option.title}
                   </span>
-                  <span className="text-[20px] font-semibold leading-none">
+                  <span className="text-right text-[20px] font-semibold leading-none">
                     {formatRub(getOptionDisplayPrice(option) ?? 0)}
                   </span>
                   <input
@@ -235,11 +235,11 @@ export function RegistrationForm() {
           <div className="grid gap-12">
             <h4 className="h-[34px] text-center text-[28px] font-bold leading-[34px]">ALL IN BATTLE</h4>
             <div className="grid gap-x-12 gap-y-8 md:grid-cols-2">
-              <div className="space-y-8">
+              <div className="grid grid-rows-4 gap-8">
                 {day2LeftOptions.map((option) => (
                   <label
                     key={option.id}
-                    className="grid grid-cols-[184px_24px] items-center gap-x-3"
+                    className="grid h-[72px] grid-cols-[184px_24px] items-center gap-x-3"
                   >
                     <div className="grid gap-[10px]">
                       <span className="text-[20px] font-semibold leading-none">
@@ -261,11 +261,11 @@ export function RegistrationForm() {
                 ))}
               </div>
 
-              <div className="space-y-8">
+              <div className="grid grid-rows-4 gap-8">
                 {day2RightOptions.map((option) => (
                   <label
                     key={option.id}
-                    className="grid grid-cols-[184px_24px] items-center gap-x-3"
+                    className="grid h-[72px] grid-cols-[184px_24px] items-center gap-x-3"
                   >
                     <div className="grid gap-[10px]">
                       <span className="text-[20px] font-semibold leading-none">
@@ -304,7 +304,7 @@ export function RegistrationForm() {
           <button
             type="submit"
             disabled={isSubmitting || totalRub <= 0}
-            className="h-[56px] min-w-[382px] rounded-full bg-[#7da57f] px-10 text-[18px] font-semibold leading-none text-white transition hover:brightness-95 disabled:cursor-not-allowed disabled:opacity-60"
+            className="h-[56px] min-w-[382px] rounded-full bg-[#2a6a34] px-10 text-[18px] font-semibold leading-none text-white transition hover:brightness-95 disabled:cursor-not-allowed disabled:bg-[#7da57f] disabled:opacity-100"
           >
             {isSubmitting ? "Отправка..." : "Перейти к оплате"}
           </button>
