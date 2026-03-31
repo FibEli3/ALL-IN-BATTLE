@@ -77,8 +77,8 @@ const djs: PersonCardProps[] = [
     name: "WHYDEAP",
     city: "г. Краснодар",
     image: "/dj/whydeap.jpg",
-    imageClass: "-rotate-[2.5deg]",
-    textRotateClass: "md:-rotate-[2.5deg]",
+    imageClass: "-rotate-[5deg]",
+    textRotateClass: "md:-rotate-[5deg]",
     orderClass: "md:order-1 md:pt-0",
   },
   {
@@ -92,8 +92,8 @@ const djs: PersonCardProps[] = [
     name: "BAMBOOK",
     city: "г. Краснодар",
     image: "/dj/bambook.jpg",
-    imageClass: "rotate-[3deg]",
-    textRotateClass: "md:rotate-[3deg]",
+    imageClass: "rotate-[5deg]",
+    textRotateClass: "md:rotate-[5deg]",
     orderClass: "md:order-3 md:pt-0",
   },
 ];
@@ -103,15 +103,15 @@ const mcs: PersonCardProps[] = [
     name: "EMILE",
     city: "г. Краснодар",
     image: "/mc/emile.jpg",
-    imageClass: "-rotate-[2.5deg]",
-    textRotateClass: "md:-rotate-[2.5deg]",
+    imageClass: "-rotate-[5deg]",
+    textRotateClass: "md:-rotate-[5deg]",
   },
   {
     name: "MAVI",
     city: "г. Симферополь",
     image: "/mc/mavi.jpg",
-    imageClass: "rotate-[3deg]",
-    textRotateClass: "md:rotate-[3deg]",
+    imageClass: "rotate-[5deg]",
+    textRotateClass: "md:rotate-[5deg]",
   },
 ];
 
@@ -217,7 +217,7 @@ const sectionHeadingClass =
   "font-display text-[56px] font-black uppercase leading-none tracking-tight text-[#2a6a34] md:text-[80px]";
 
 const personNameClass =
-  "mt-6 inline-block whitespace-nowrap font-display text-[40px] font-semibold uppercase leading-[0.92] tracking-[-0.01em] text-[#111]";
+  "inline-block whitespace-nowrap font-display text-[40px] font-semibold uppercase leading-[0.92] tracking-[-0.01em] text-[#111]";
 
 const personCityClass = "mt-3 font-body text-[24px] font-bold leading-none text-[#242424]";
 
@@ -240,8 +240,10 @@ function PersonCard({
           className="h-auto w-full object-cover"
         />
       </div>
-      <h3 className={`${personNameClass} origin-center ${textRotateClass || imageClass}`}>{name}</h3>
-      {city ? <p className={personCityClass}>{city}</p> : null}
+      <div className={`mt-6 origin-center ${textRotateClass || imageClass}`}>
+        <h3 className={personNameClass}>{name}</h3>
+        {city ? <p className={personCityClass}>{city}</p> : null}
+      </div>
     </article>
   );
 }
@@ -371,7 +373,7 @@ export default function Home() {
                 name="VALENTINA"
                 image="/photo/valentina.jpg"
                 imageClass="-rotate-[1deg]"
-                textRotateClass="md:-rotate-[1.5deg]"
+                textRotateClass="md:-rotate-[2deg]"
                 orderClass="max-w-[420px]"
               />
             </div>
@@ -381,8 +383,8 @@ export default function Home() {
             <PersonCard
               name="RADON"
               image="/video/radon.jpg"
-              imageClass="-rotate-[3deg]"
-              textRotateClass="md:-rotate-[3deg]"
+              imageClass="-rotate-[5.5deg]"
+              textRotateClass="md:-rotate-[5.5deg]"
             />
           </div>
 
@@ -390,8 +392,8 @@ export default function Home() {
             <PersonCard
               name="DIMA SOKOLOV"
               image="/video/dima-sokolov.jpg"
-              imageClass="rotate-[3deg]"
-              textRotateClass="md:rotate-[3deg]"
+              imageClass="rotate-[6deg]"
+              textRotateClass="md:rotate-[6deg]"
             />
             <h2 className="mt-10 text-center font-display text-[56px] font-black uppercase leading-none tracking-tight text-[#2a6a34] md:text-[80px] md:text-left">
               VIDEO
