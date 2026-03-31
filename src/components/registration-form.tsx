@@ -211,10 +211,13 @@ export function RegistrationForm() {
 
         <section className="relative z-10 mt-12 grid gap-10 lg:grid-cols-2 lg:gap-14">
           <div className="grid gap-12 content-start">
-            <h4 className="h-[34px] w-[338px] text-center text-[28px] font-bold leading-[34px]">ALL IN DAY 1</h4>
-            <div className="grid w-[338px] grid-rows-4 gap-8">
+            <h4 className="h-[34px] w-full text-center text-[28px] font-bold leading-[34px]">ALL IN DAY 1</h4>
+            <div className="grid w-full grid-rows-4 gap-6">
               {day1Options.map((option) => (
-                <label key={option.id} className="grid h-[72px] grid-cols-[230px_84px_24px] items-center gap-x-3">
+                <label
+                  key={option.id}
+                  className="grid h-[72px] grid-cols-[minmax(0,1fr)_84px_24px] items-center gap-x-3"
+                >
                   <span className="text-[20px] font-semibold leading-[1.1]">
                     {option.title}
                   </span>
@@ -234,8 +237,8 @@ export function RegistrationForm() {
 
           <div className="grid gap-12">
             <h4 className="h-[34px] text-center text-[28px] font-bold leading-[34px]">ALL IN BATTLE</h4>
-            <div className="grid gap-x-12 gap-y-8 md:grid-cols-2">
-              <div className="grid grid-rows-4 gap-8">
+            <div className="grid gap-x-8 gap-y-6 md:grid-cols-2">
+              <div className="grid grid-rows-4 gap-6">
                 {day2LeftOptions.map((option) => (
                   <label
                     key={option.id}
@@ -261,7 +264,7 @@ export function RegistrationForm() {
                 ))}
               </div>
 
-              <div className="grid grid-rows-4 gap-8">
+              <div className="grid grid-rows-4 gap-6">
                 {day2RightOptions.map((option) => (
                   <label
                     key={option.id}
