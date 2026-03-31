@@ -340,7 +340,7 @@ export default function Home() {
 
         <div className="relative z-10 w-full max-w-[980px] px-4">
           <div className="mt-24 text-center md:mt-28">
-            <h1 className="font-display text-[58px] font-black uppercase leading-[0.94] tracking-[0.01em] text-[#174b24] min-[375px]:text-[64px] min-[501px]:text-[78px] md:text-[140px]">
+            <h1 className="font-display text-[58px] font-black uppercase leading-[0.94] tracking-[0.01em] text-[#174b24] min-[375px]:text-[64px] min-[501px]:text-[78px] md:text-[141px]">
               ALL IN
               <br />
               BATTLE
