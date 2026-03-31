@@ -15,6 +15,8 @@ export function ScrollEffectsController() {
   useEffect(() => {
     const root = document.documentElement;
     const registration = document.getElementById("registration");
+    const judges = document.getElementById("judges");
+    const dayOne = document.getElementById("day-one");
     const lineupSections = Array.from(
       document.querySelectorAll<HTMLElement>("[data-lineup-anim]")
     );
@@ -28,6 +30,13 @@ export function ScrollEffectsController() {
         const registrationTop = registration.offsetTop;
         const shouldSnap = window.scrollY + 8 < registrationTop;
         root.classList.toggle("snap-mode", shouldSnap);
+      }
+
+      if (judges && dayOne) {
+        const from = judges.offsetTop - window.innerHeight * 0.42;
+        const to = dayOne.offsetTop - window.innerHeight * 0.12;
+        const showGlobalBg = window.scrollY >= from && window.scrollY < to;
+        root.classList.toggle("lineup-bg-visible", showGlobalBg);
       }
 
       const vh = window.innerHeight;
@@ -88,11 +97,25 @@ export function ScrollEffectsController() {
       window.scrollBy({ top: 56, behavior: "auto" });
     };
 
+    const onDocumentClick = (event: MouseEvent) => {
+      const target = event.target as HTMLElement | null;
+      const link = target?.closest('a[href="#registration"]') as HTMLAnchorElement | null;
+      if (!link) return;
+
+      const registrationSection = document.getElementById("registration");
+      if (!registrationSection) return;
+
+      event.preventDefault();
+      registrationSection.scrollIntoView({ behavior: "smooth", block: "start" });
+      window.history.replaceState(null, "", "#registration");
+    };
+
     update();
     window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("resize", onScroll);
     window.addEventListener("wheel", onWheel, { passive: false });
     window.addEventListener("keydown", onKeyDown);
+    document.addEventListener("click", onDocumentClick);
 
     return () => {
       if (frame) window.cancelAnimationFrame(frame);
@@ -100,7 +123,9 @@ export function ScrollEffectsController() {
       window.removeEventListener("resize", onScroll);
       window.removeEventListener("wheel", onWheel);
       window.removeEventListener("keydown", onKeyDown);
+      document.removeEventListener("click", onDocumentClick);
       root.classList.remove("snap-mode");
+      root.classList.remove("lineup-bg-visible");
     };
   }, []);
 

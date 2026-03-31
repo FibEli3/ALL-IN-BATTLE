@@ -281,13 +281,6 @@ function TrioSection({
       data-complete-phase={completePhase}
       className="snap-section relative mx-auto w-full max-w-[1440px] overflow-hidden px-5 py-16 md:px-8 md:py-24"
     >
-      <Image
-        src="/bg.png"
-        alt=""
-        width={560}
-        height={560}
-        className="lineup-rotating-bg pointer-events-none absolute left-1/2 top-1/2 z-0 h-auto w-[34vw] min-w-[260px] max-w-[560px] -translate-x-1/2 -translate-y-1/2 opacity-20"
-      />
       <h2 className={`lineup-title relative z-10 text-center ${sectionHeadingClass}`}>{title}</h2>
       <div className="mx-auto mt-8 grid max-w-[1400px] gap-8 md:grid-cols-3 md:items-start md:gap-x-16">
         {people.map((person, index) => (
@@ -314,6 +307,13 @@ export default function Home() {
   return (
     <main className="bg-white font-body text-[#1b1b1b]">
       <ScrollEffectsController />
+      <Image
+        src="/bg.png"
+        alt=""
+        width={620}
+        height={620}
+        className="global-lineup-bg pointer-events-none fixed left-1/2 top-1/2 z-[1] h-auto w-[36vw] min-w-[280px] max-w-[620px] -translate-x-1/2 -translate-y-1/2 opacity-20"
+      />
 
       <section className="relative isolate flex min-h-screen items-center justify-center overflow-hidden px-4 py-10">
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_center,_#f7f7f7_42%,_#c3d4c6_76%,_#8aa58f_100%)]" />
@@ -393,13 +393,6 @@ export default function Home() {
         data-complete-phase="3"
         className="snap-section relative mx-auto w-full max-w-[1440px] overflow-hidden px-5 py-16 md:px-8 md:py-24"
       >
-        <Image
-          src="/bg.png"
-          alt=""
-          width={560}
-          height={560}
-          className="lineup-rotating-bg pointer-events-none absolute left-1/2 top-1/2 z-0 h-auto w-[34vw] min-w-[260px] max-w-[560px] -translate-x-1/2 -translate-y-1/2 opacity-20"
-        />
         <h2 className={`lineup-title relative z-10 text-center ${sectionHeadingClass}`}>MC</h2>
         <div className="mx-auto mt-8 grid max-w-[1240px] gap-10 md:grid-cols-2 md:gap-x-28">
           {mcs.map((person, index) => (
@@ -416,13 +409,6 @@ export default function Home() {
         data-lineup-kind="media"
         className="snap-section relative mx-auto w-full max-w-[1440px] overflow-hidden px-5 py-16 md:px-8 md:py-24"
       >
-        <Image
-          src="/bg.png"
-          alt=""
-          width={560}
-          height={560}
-          className="lineup-rotating-bg pointer-events-none absolute left-1/2 top-1/2 z-0 h-auto w-[34vw] min-w-[260px] max-w-[560px] -translate-x-1/2 -translate-y-1/2 opacity-20"
-        />
         <div className="grid items-start gap-10 md:grid-cols-3">
           <div className="md:pt-10">
             <h2 className={`lineup-title relative z-10 ${sectionHeadingClass} text-left`}>PHOTO</h2>

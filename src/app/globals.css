@@ -127,9 +127,15 @@ html.snap-mode {
   transition: transform 760ms cubic-bezier(0.2, 0.8, 0.22, 1), opacity 620ms ease;
 }
 
-[data-lineup-anim] .lineup-rotating-bg {
+.global-lineup-bg {
+  opacity: 0;
   transform-origin: center center;
+  transition: opacity 420ms ease;
   animation: lineup-spin 28s linear infinite;
+}
+
+html.lineup-bg-visible .global-lineup-bg {
+  opacity: 0.2;
 }
 
 [data-lineup-anim].phase-1 .lineup-title,
