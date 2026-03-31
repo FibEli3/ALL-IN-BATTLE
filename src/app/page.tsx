@@ -109,7 +109,7 @@ const mcs: PersonCardProps[] = [
 const dayOneCards: DayCard[] = [
   {
     title: "Мастер-Класс от RASH THE FLOW",
-    price: "2900?",
+    price: "2900₽",
     items: [
       {
         bullet: "black",
@@ -124,7 +124,7 @@ const dayOneCards: DayCard[] = [
   },
   {
     title: "Contest 3x3",
-    price: "900?",
+    price: "900₽",
     items: [
       { bullet: "black", title: "Судит:", details: ["RASH"] },
       { bullet: "black", title: "Играют:", details: ["BAMBOOK/WHYDEAP"] },
@@ -133,7 +133,7 @@ const dayOneCards: DayCard[] = [
         title: "Номинации:",
         details: ["KIDS (до 12 лет)", "JUN (13-18 лет)", "OLD (18+)"],
       },
-      { bullet: "black", title: "Зрительский билет:", details: ["700?"] },
+      { bullet: "black", title: "Зрительский билет:", details: ["700₽"] },
     ],
     button: "Зарегистрироваться на контест",
     registrationPresetId: "day1-option-2",
@@ -141,7 +141,7 @@ const dayOneCards: DayCard[] = [
   },
   {
     title: "JAM",
-    price: "600?",
+    price: "600₽",
     items: [
       { bullet: "black", title: "Играют:", details: ["BAMBOOK/WHYDEAP"] },
       {
@@ -173,9 +173,9 @@ const dayTwoColumns: DayCard[] = [
   {
     title: "Стоимость",
     items: [
-      { bullet: "black", title: "Первая номинация:", details: ["1700?"] },
-      { bullet: "black", title: "Каждая следующая:", details: ["800?"] },
-      { bullet: "black", title: "Зрительский билет:", details: ["700?"] },
+      { bullet: "black", title: "Первая номинация:", details: ["1700₽"] },
+      { bullet: "black", title: "Каждая следующая:", details: ["800₽"] },
+      { bullet: "black", title: "Зрительский билет:", details: ["700₽"] },
     ],
     variant: "center",
     button: "Зарегистрироваться на баттл",
