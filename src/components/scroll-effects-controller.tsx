@@ -2,7 +2,16 @@
 
 import { useEffect } from "react";
 
-function getPhase(progress: number) {
+function getPhase(progress: number, viewportWidth: number) {
+  if (viewportWidth < 768) {
+    if (progress >= 0.38) return 5;
+    if (progress >= 0.3) return 4;
+    if (progress >= 0.22) return 3;
+    if (progress >= 0.15) return 2;
+    if (progress >= 0.08) return 1;
+    return 0;
+  }
+
   if (progress >= 0.52) return 5;
   if (progress >= 0.42) return 4;
   if (progress >= 0.32) return 3;
@@ -23,11 +32,12 @@ export function ScrollEffectsController() {
       frame = 0;
 
       const vh = window.innerHeight;
+      const vw = window.innerWidth;
       for (const section of lineupSections) {
         const rect = section.getBoundingClientRect();
         const rawProgress = (vh - rect.top) / (vh + rect.height);
         const progress = Math.max(0, Math.min(1, rawProgress));
-        const phase = getPhase(progress);
+        const phase = getPhase(progress, vw);
         section.dataset.phase = String(phase);
 
         section.classList.remove(

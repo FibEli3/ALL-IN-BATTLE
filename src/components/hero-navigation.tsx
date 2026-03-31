@@ -39,44 +39,41 @@ export function HeroNavigation({ items }: { items: NavItem[] }) {
       <button
         type="button"
         onClick={() => setOpen(true)}
-        className="absolute right-4 top-4 z-30 inline-flex h-11 w-11 items-center justify-center rounded-[10px] bg-white/90 shadow-[0_6px_16px_rgba(0,0,0,0.16)] md:hidden"
-        aria-label="Открыть меню"
+        className="absolute right-4 top-4 z-30 inline-flex h-11 w-11 items-center justify-center md:hidden"
+        aria-label="Open menu"
       >
         <Image src="/icons/menu.svg" alt="" width={26} height={26} />
       </button>
 
       {open ? (
         <div className="fixed inset-0 z-50 md:hidden">
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_#f7f7f7_42%,_#c3d4c6_76%,_#8aa58f_100%)]" />
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_rgba(255,255,255,0)_44%,_rgba(30,80,44,0.18)_100%)]" />
-
           <Image
-            src="/hero/left-top.png"
+            src="/menu/full.png"
             alt=""
-            width={260}
-            height={260}
-            className="pointer-events-none absolute left-[-64px] top-[-22px] h-auto w-[58vw] max-w-[260px] opacity-95 mix-blend-multiply"
+            fill
+            sizes="100vw"
+            className="pointer-events-none absolute inset-0 object-cover"
           />
           <Image
-            src="/hero/left-bot.png"
+            src="/menu/top.png"
             alt=""
-            width={260}
-            height={260}
-            className="pointer-events-none absolute bottom-[-68px] left-[-72px] h-auto w-[60vw] max-w-[270px] opacity-95 mix-blend-multiply"
+            width={390}
+            height={220}
+            className="pointer-events-none absolute left-0 top-0 h-auto w-full object-cover"
           />
           <Image
-            src="/hero/right.png"
+            src="/menu/bot.png"
             alt=""
-            width={280}
-            height={280}
-            className="pointer-events-none absolute bottom-[-46px] right-[-74px] h-auto w-[62vw] max-w-[280px] opacity-95 mix-blend-multiply"
+            width={390}
+            height={240}
+            className="pointer-events-none absolute bottom-0 left-0 h-auto w-full object-cover"
           />
 
           <button
             type="button"
             onClick={() => setOpen(false)}
-            className="absolute right-4 top-4 inline-flex h-9 w-9 items-center justify-center rounded-[8px] bg-white/90 shadow-[0_6px_16px_rgba(0,0,0,0.16)]"
-            aria-label="Закрыть меню"
+            className="absolute right-4 top-4 inline-flex h-9 w-9 items-center justify-center"
+            aria-label="Close menu"
           >
             <Image src="/icons/cross.svg" alt="" width={20} height={20} />
           </button>
@@ -88,7 +85,7 @@ export function HeroNavigation({ items }: { items: NavItem[] }) {
                   key={item.label}
                   href={item.href}
                   onClick={() => setOpen(false)}
-                  className="text-[46px] font-semibold leading-none tracking-[-0.02em] text-[#174b24]"
+                  className="text-[28px] font-semibold leading-none tracking-[-0.02em] text-[#174b24]"
                 >
                   {item.label}
                 </a>

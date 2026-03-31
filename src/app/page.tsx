@@ -283,7 +283,7 @@ function TrioSection({
       className="snap-section relative mx-auto w-full max-w-[1440px] overflow-hidden px-5 py-16 md:px-8 md:py-24"
     >
       <h2 className={`lineup-title relative z-10 text-center ${sectionHeadingClass}`}>{title}</h2>
-      <div className="mx-auto mt-8 grid max-w-[1400px] gap-8 md:grid-cols-3 md:items-start md:gap-x-16">
+      <div className="mx-auto mt-8 grid w-full max-w-[1400px] gap-8 md:grid-cols-3 md:items-start md:gap-x-16">
         {people.map((person, index) => (
           <PersonCard key={person.name} revealIndex={person.revealIndex ?? index + 1} {...person} />
         ))}
@@ -318,7 +318,7 @@ export default function Home() {
           alt=""
           width={380}
           height={380}
-          className="pointer-events-none absolute left-[-72px] top-[-26px] h-auto w-[56vw] max-w-[240px] opacity-95 mix-blend-multiply md:left-[-90px] md:top-[-56px] md:w-[34vw] md:min-w-[220px] md:max-w-[520px]"
+          className="pointer-events-none absolute left-[-72px] top-[-26px] h-auto w-[56vw] min-w-[190px] max-w-[240px] opacity-95 mix-blend-multiply md:left-[-90px] md:top-[-56px] md:w-[34vw] md:min-w-[220px] md:max-w-[520px]"
           priority
         />
         <Image
@@ -326,7 +326,7 @@ export default function Home() {
           alt=""
           width={380}
           height={380}
-          className="pointer-events-none absolute right-[-96px] top-[-24px] h-auto w-[74vw] max-w-[300px] opacity-95 mix-blend-multiply md:right-[-150px] md:top-[-40px] md:w-[52vw] md:min-w-[360px] md:max-w-[900px]"
+          className="pointer-events-none absolute right-[-96px] top-[-24px] h-auto w-[74vw] min-w-[250px] max-w-[300px] opacity-95 mix-blend-multiply md:right-[-150px] md:top-[-40px] md:w-[52vw] md:min-w-[360px] md:max-w-[900px]"
           priority
         />
         <Image
@@ -334,7 +334,7 @@ export default function Home() {
           alt=""
           width={360}
           height={360}
-          className="pointer-events-none absolute bottom-[-58px] left-[-68px] h-auto w-[56vw] max-w-[236px] opacity-95 mix-blend-multiply md:bottom-[-72px] md:left-[-84px] md:w-[30vw] md:min-w-[220px] md:max-w-[430px]"
+          className="pointer-events-none absolute bottom-[-58px] left-[-68px] h-auto w-[56vw] min-w-[190px] max-w-[236px] opacity-95 mix-blend-multiply md:bottom-[-72px] md:left-[-84px] md:w-[30vw] md:min-w-[220px] md:max-w-[430px]"
           priority
         />
         <HeroNavigation items={navItems} />
@@ -349,16 +349,16 @@ export default function Home() {
             <p className="mt-[26px] text-[20px] font-medium leading-[1.05] text-[#808286] min-[375px]:text-[24px] min-[423px]:text-[32px] min-[423px]:leading-none">
               25-26 апреля &nbsp; г. Краснодар
             </p>
-            <div className="mt-10 flex flex-col items-center justify-center gap-[24px] min-[375px]:gap-[30px] sm:flex-row">
+            <div className="mt-10 flex flex-row items-center justify-center gap-3 min-[375px]:gap-4">
               <a
                 href="#day-one"
-                className="rounded-full bg-[#2a6a34] px-[40px] py-[16px] text-[20px] font-medium leading-none text-white transition hover:bg-[#21562a]"
+                className="rounded-full bg-[#2a6a34] px-6 py-[14px] text-[14px] font-medium leading-none text-white transition hover:bg-[#21562a] min-[375px]:px-8 md:px-[40px] md:py-[16px] md:text-[20px]"
               >
                 Первый день
               </a>
               <a
                 href="#day-two"
-                className="rounded-full bg-[#2a6a34] px-[40px] py-[16px] text-[20px] font-medium leading-none text-white transition hover:bg-[#21562a]"
+                className="rounded-full bg-[#2a6a34] px-6 py-[14px] text-[14px] font-medium leading-none text-white transition hover:bg-[#21562a] min-[375px]:px-8 md:px-[40px] md:py-[16px] md:text-[20px]"
               >
                 Второй день
               </a>
@@ -394,8 +394,10 @@ export default function Home() {
         className="snap-section relative mx-auto w-full max-w-[1440px] overflow-hidden px-5 py-16 md:px-8 md:py-24"
       >
         <div className="grid items-start gap-10 md:grid-cols-3">
-          <div className="md:pt-10">
-            <h2 className={`lineup-title relative z-10 ${sectionHeadingClass} text-left`}>PHOTO</h2>
+          <div className="order-1 md:order-none md:pt-10">
+            <h2 className={`lineup-title relative z-10 text-center ${sectionHeadingClass} md:text-left`}>
+              PHOTO
+            </h2>
             <div className="mt-16 max-w-[420px]">
               <PersonCard
                 name="VALENTINA"
@@ -407,7 +409,13 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="md:pt-16">
+          <div className="order-3 md:hidden">
+            <h2 className="lineup-video-title text-center font-display text-[56px] font-black uppercase leading-none tracking-tight text-[#2a6a34]">
+              VIDEO
+            </h2>
+          </div>
+
+          <div className="order-4 md:order-none md:pt-16">
             <PersonCard
               name="RADON"
               image="/video/radon.jpg"
@@ -417,7 +425,7 @@ export default function Home() {
             />
           </div>
 
-          <div className="md:pt-10">
+          <div className="order-5 md:order-none md:pt-10">
             <PersonCard
               name="DIMA SOKOLOV"
               image="/video/dima-sokolov.jpg"
@@ -425,7 +433,7 @@ export default function Home() {
               offsetClass="md:translate-x-12"
               revealIndex={5}
             />
-            <h2 className="lineup-video-title mt-10 text-center font-display text-[56px] font-black uppercase leading-none tracking-tight text-[#2a6a34] md:relative md:left-[-240px] md:text-center md:text-[80px]">
+            <h2 className="lineup-video-title mt-10 hidden text-center font-display text-[56px] font-black uppercase leading-none tracking-tight text-[#2a6a34] md:relative md:left-[-240px] md:block md:text-center md:text-[80px]">
               VIDEO
             </h2>
           </div>
