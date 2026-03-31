@@ -210,9 +210,9 @@ export function RegistrationForm() {
         </section>
 
         <section className="relative z-10 mt-12 grid gap-10 lg:grid-cols-2 lg:gap-14">
-          <div className="grid gap-12">
-            <h4 className="h-[34px] text-center text-[28px] font-bold leading-[34px]">ALL IN DAY 1</h4>
-            <div className="space-y-8">
+          <div className="grid gap-12 justify-items-center">
+            <h4 className="h-[34px] w-full text-center text-[28px] font-bold leading-[34px]">ALL IN DAY 1</h4>
+            <div className="mx-auto w-fit space-y-8">
               {day1Options.map((option) => (
                 <label key={option.id} className="grid grid-cols-[184px_62px_24px] items-center gap-x-3">
                   <span className="text-[20px] font-semibold leading-[1.1]">
@@ -287,7 +287,7 @@ export function RegistrationForm() {
                 ))}
               </div>
             </div>
-            <p className="justify-self-end text-right text-[12px] font-semibold leading-[1.2] text-[rgba(0,0,0,0.55)]">
+            <p className="justify-self-end text-right text-[16px] font-medium leading-[1.2] text-[rgba(0,0,0,0.55)]">
               Первая номинация - 1700₽, каждая следующая - 800₽,
               <br />
               зрительский билет - 600₽
@@ -298,8 +298,8 @@ export function RegistrationForm() {
         <div className="relative z-10 mt-10 h-px w-full bg-[#d2d2d2]" />
 
         <section className="relative z-10 mt-8 grid items-center gap-6 lg:grid-cols-[1fr_auto]">
-          <p className="text-[32px] font-semibold leading-none">
-            Итого: <span className="font-bold text-[#19411f]">{formatRub(totalRub)}</span>
+          <p className="text-[24px] font-semibold leading-none">
+            Итого: <span className="text-[28px] font-bold text-[#19411f]">{formatRub(totalRub)}</span>
           </p>
           <button
             type="submit"
