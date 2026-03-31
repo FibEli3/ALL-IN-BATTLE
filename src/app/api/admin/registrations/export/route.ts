@@ -1,5 +1,5 @@
 import { listRegistrations } from "@/lib/db";
-import { getOptionsByDay } from "@/lib/event-options";
+import { EVENT_OPTIONS, getOptionsByDay } from "@/lib/event-options";
 
 function checkAccess(request: Request) {
   const adminToken = process.env.ADMIN_DASHBOARD_TOKEN?.trim();
@@ -36,6 +36,10 @@ function parseOptions(raw: string | null) {
   }
 }
 
+function mapOptionIdsToTitles(optionIds: string[]) {
+  return optionIds.map((id) => EVENT_OPTIONS.find((item) => item.id === id)?.title ?? id);
+}
+
 function escapeCsv(value: string | number | null | undefined) {
   const text = value === null || value === undefined ? "" : String(value);
   return `"${text.replaceAll('"', '""')}"`;
@@ -65,7 +69,7 @@ export async function GET(request: Request) {
   ];
 
   const dataRows = all.map((item) => {
-    const options = parseOptions(item.selectedOptionIds);
+    const options = mapOptionIdsToTitles(parseOptions(item.selectedOptionIds));
 
     return [
       item.createdAt,
@@ -128,4 +132,3 @@ export async function GET(request: Request) {
     },
   });
 }
-

@@ -1,6 +1,6 @@
 import type { RegistrationAdminRecord } from "@/lib/db";
 import { listRegistrations } from "@/lib/db";
-import { getOptionsByDay } from "@/lib/event-options";
+import { EVENT_OPTIONS, getOptionsByDay } from "@/lib/event-options";
 import Link from "next/link";
 
 type AdminPageProps = {
@@ -32,6 +32,10 @@ function parseOptions(raw: string | null) {
   } catch {
     return [];
   }
+}
+
+function mapOptionIdsToTitles(optionIds: string[]) {
+  return optionIds.map((id) => EVENT_OPTIONS.find((item) => item.id === id)?.title ?? id);
 }
 
 function buildStats(registrations: RegistrationAdminRecord[], day: "day1" | "day2"): OptionStat[] {
@@ -220,7 +224,7 @@ export default async function AdminRegistrationsPage({ searchParams }: AdminPage
           </thead>
           <tbody>
             {registrations.map((item) => {
-              const options = parseOptions(item.selectedOptionIds);
+              const optionTitles = mapOptionIdsToTitles(parseOptions(item.selectedOptionIds));
 
               return (
                 <tr key={item.id} className="border-t border-[#ececec] align-top">
@@ -235,7 +239,7 @@ export default async function AdminRegistrationsPage({ searchParams }: AdminPage
                   <td className="px-4 py-3">{item.age ?? "-"}</td>
                   <td className="px-4 py-3">{item.participationType}</td>
                   <td className="px-4 py-3">
-                    {options.length > 0 ? options.join(", ") : "-"}
+                    {optionTitles.length > 0 ? optionTitles.join(", ") : "-"}
                   </td>
                   <td className="px-4 py-3">{item.paymentOrderId ?? "-"}</td>
                 </tr>
@@ -247,4 +251,3 @@ export default async function AdminRegistrationsPage({ searchParams }: AdminPage
     </main>
   );
 }
-
