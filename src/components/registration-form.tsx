@@ -29,6 +29,36 @@ const initialForm: FormValues = {
 const day1Options = getOptionsByDay("day1");
 const day2Options = getOptionsByDay("day2");
 
+function maskPhoneInput(value: string) {
+  const digitsOnly = value.replace(/\D/g, "");
+  const normalized = digitsOnly.startsWith("8")
+    ? `7${digitsOnly.slice(1)}`
+    : digitsOnly;
+  const local = normalized.startsWith("7")
+    ? normalized.slice(1, 11)
+    : normalized.slice(0, 10);
+
+  let result = "+7";
+
+  if (local.length > 0) {
+    result += `(${local.slice(0, 3)}`;
+  }
+  if (local.length >= 3) {
+    result += ")";
+  }
+  if (local.length > 3) {
+    result += local.slice(3, 6);
+  }
+  if (local.length > 6) {
+    result += `-${local.slice(6, 8)}`;
+  }
+  if (local.length > 8) {
+    result += `-${local.slice(8, 10)}`;
+  }
+
+  return result;
+}
+
 function formatRub(value: number) {
   return `${new Intl.NumberFormat("ru-RU").format(value)}₽`;
 }
@@ -203,8 +233,10 @@ export function RegistrationForm() {
               label="Телефон"
               required
               value={values.phone}
-              placeholder="+7 (918) 12-32-123"
-              onChange={(value) => setValues((prev) => ({ ...prev, phone: value }))}
+              placeholder="+7(***)***-**-**"
+              onChange={(value) =>
+                setValues((prev) => ({ ...prev, phone: maskPhoneInput(value) }))
+              }
             />
           </div>
         </section>
