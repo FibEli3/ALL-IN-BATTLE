@@ -87,8 +87,8 @@ function Field(props: {
   inputId?: string;
 }) {
   return (
-    <label className="grid gap-3">
-      <span className="text-[20px] font-semibold leading-none text-[#131417]">
+    <label className="grid gap-2 md:gap-3">
+      <span className="text-[16px] font-semibold leading-none text-[#131417] md:text-[20px]">
         {props.label}
         {props.required ? <span className="text-[#bd2d2d]">*</span> : null}
       </span>
@@ -97,7 +97,7 @@ function Field(props: {
         value={props.value}
         placeholder={props.placeholder}
         onChange={(event) => props.onChange(event.target.value)}
-        className="h-[56px] border-b border-[rgba(0,0,0,0.38)] bg-transparent px-[10px] text-[38px] font-semibold leading-none text-[#131417] outline-none placeholder:text-[rgba(0,0,0,0.48)] md:text-[22px]"
+        className="h-[44px] border-b border-[rgba(0,0,0,0.38)] bg-transparent px-[6px] text-[18px] font-semibold leading-none text-[#131417] outline-none placeholder:text-[rgba(0,0,0,0.48)] md:h-[56px] md:px-[10px] md:text-[22px]"
       />
     </label>
   );
@@ -274,7 +274,7 @@ export function RegistrationForm() {
       </h3>
 
       <form
-        className="relative mt-8 overflow-hidden rounded-[34px] border border-[#cdcdcd] bg-[#fafafa] px-6 py-10 md:px-[60px] md:py-[40px]"
+        className="relative mt-6 overflow-hidden rounded-[30px] border border-[#cdcdcd] bg-[#fafafa] px-5 py-8 md:mt-8 md:rounded-[34px] md:px-[60px] md:py-[40px]"
         onSubmit={onSubmit}
       >
         <Image
@@ -282,21 +282,21 @@ export function RegistrationForm() {
           alt=""
           width={130}
           height={130}
-          className="pointer-events-none absolute -left-2 top-[230px] w-[110px] opacity-80 md:w-[122px]"
+          className="pointer-events-none absolute -left-1 top-[240px] w-[84px] opacity-80 md:-left-2 md:top-[230px] md:w-[122px]"
         />
         <Image
           src="/decor/flower-side-right.png"
           alt=""
           width={130}
           height={130}
-          className="pointer-events-none absolute right-0 top-0 w-[122px] opacity-80"
+          className="pointer-events-none absolute right-0 top-0 w-[90px] opacity-80 md:w-[122px]"
         />
         <section className="relative z-10 grid gap-8">
-          <h4 className="text-[28px] font-bold leading-none">
+          <h4 className="text-[24px] font-bold leading-none md:text-[28px]">
             Укажите данные
           </h4>
 
-          <div className="grid gap-7 md:grid-cols-2 md:gap-x-8 md:gap-y-8">
+          <div className="grid gap-6 md:grid-cols-2 md:gap-x-8 md:gap-y-8">
             <Field
               label="ФИО"
               required
@@ -330,16 +330,21 @@ export function RegistrationForm() {
           </div>
         </section>
 
-        <section className="relative z-10 mt-12 grid gap-10 lg:grid-cols-2 lg:gap-14">
-          <div className="grid gap-12 content-start">
-            <h4 className="h-[34px] w-full text-center text-[28px] font-bold leading-[34px]">ALL IN DAY 1</h4>
-            <div className="grid w-full grid-rows-4 gap-6">
+        <section className="relative z-10 mt-10 grid gap-10 lg:grid-cols-2 lg:gap-14">
+          <div className="grid content-start gap-8">
+            <h4 className="w-full text-center text-[38px] font-bold leading-none md:h-[34px] md:text-[28px] md:leading-[34px]">
+              ALL IN DAY 1
+            </h4>
+            <div className="mx-auto grid w-full max-w-[320px] gap-6 md:max-w-none">
               {day1Options.map((option) => (
-                <label key={option.id} className="grid h-[72px] grid-cols-[250px_84px_24px] items-center gap-x-3">
-                  <span className="text-[20px] font-semibold leading-[1.1]">
+                <label
+                  key={option.id}
+                  className="grid min-h-[56px] grid-cols-[minmax(0,1fr)_72px_24px] items-center gap-x-3 md:h-[72px] md:grid-cols-[250px_84px_24px]"
+                >
+                  <span className="min-w-0 text-[16px] font-semibold leading-[1.15] md:text-[20px]">
                     {option.title}
                   </span>
-                  <span className="text-right text-[20px] font-semibold leading-none">
+                  <span className="text-right text-[16px] font-semibold leading-none md:text-[20px]">
                     {formatRub(getOptionDisplayPrice(option) ?? 0)}
                   </span>
                   <input
@@ -353,9 +358,36 @@ export function RegistrationForm() {
             </div>
           </div>
 
-          <div className="grid gap-12">
-            <h4 className="h-[34px] text-center text-[28px] font-bold leading-[34px]">ALL IN BATTLE</h4>
-            <div className="grid gap-x-8 gap-y-6 md:grid-cols-2">
+          <div className="grid gap-8 md:gap-12">
+            <h4 className="w-full text-center text-[38px] font-bold leading-none md:h-[34px] md:text-[28px] md:leading-[34px]">
+              ALL IN BATTLE
+            </h4>
+
+            <div className="mx-auto grid w-full max-w-[320px] gap-6 md:hidden">
+              {orderedDay2Options.map((option) => (
+                <label
+                  key={option.id}
+                  className="grid min-h-[56px] grid-cols-[minmax(0,1fr)_24px] items-center gap-x-3"
+                >
+                  <div className="grid gap-[8px]">
+                    <span className="text-[16px] font-semibold leading-none">{option.title}</span>
+                    {option.subtitle ? (
+                      <span className="text-[11px] font-semibold leading-none text-[rgba(0,0,0,0.55)]">
+                        {option.subtitle}
+                      </span>
+                    ) : null}
+                  </div>
+                  <input
+                    type="checkbox"
+                    checked={values.selectedOptionIds.includes(option.id)}
+                    onChange={() => toggleOption(option.id)}
+                    className={checkboxClasses()}
+                  />
+                </label>
+              ))}
+            </div>
+
+            <div className="hidden gap-x-8 gap-y-6 md:grid md:grid-cols-2">
               <div className="grid grid-rows-4 gap-6">
                 {day2LeftOptions.map((option) => (
                   <label
@@ -363,9 +395,7 @@ export function RegistrationForm() {
                     className="grid h-[72px] grid-cols-[184px_24px] items-center gap-x-3"
                   >
                     <div className="grid gap-[10px]">
-                      <span className="text-[20px] font-semibold leading-none">
-                        {option.title}
-                      </span>
+                      <span className="text-[20px] font-semibold leading-none">{option.title}</span>
                       {option.subtitle ? (
                         <span className="text-[12px] font-semibold leading-none text-[rgba(0,0,0,0.55)]">
                           {option.subtitle}
@@ -389,9 +419,7 @@ export function RegistrationForm() {
                     className="grid h-[72px] grid-cols-[184px_24px] items-center gap-x-3"
                   >
                     <div className="grid gap-[10px]">
-                      <span className="text-[20px] font-semibold leading-none">
-                      {option.title}
-                      </span>
+                      <span className="text-[20px] font-semibold leading-none">{option.title}</span>
                       {option.subtitle ? (
                         <span className="text-[12px] font-semibold leading-none text-[rgba(0,0,0,0.55)]">
                           {option.subtitle}
@@ -408,7 +436,8 @@ export function RegistrationForm() {
                 ))}
               </div>
             </div>
-            <p className="justify-self-end text-right text-[16px] font-medium leading-[1.2] text-[rgba(0,0,0,0.55)]">
+
+            <p className="mx-auto w-full max-w-[320px] text-right text-[12px] font-medium leading-[1.2] text-[rgba(0,0,0,0.55)] md:justify-self-end md:max-w-none md:text-[16px]">
               Первая номинация - 1700₽, каждая следующая - 800₽,
               <br />
               зрительский билет - 700₽
@@ -418,14 +447,17 @@ export function RegistrationForm() {
 
         <div className="relative z-10 mt-10 h-px w-full bg-[#d2d2d2]" />
 
-        <section className="relative z-10 mt-8 grid items-center gap-6 lg:grid-cols-[1fr_auto]">
-          <p className="text-[24px] font-semibold leading-none">
-            Итого: <span className="text-[28px] font-bold text-[#19411f]">{formatRub(totalRub)}</span>
+        <section className="relative z-10 mt-8 grid items-center gap-4 md:gap-6 lg:grid-cols-[1fr_auto]">
+          <p className="text-[18px] font-semibold leading-none md:text-[24px]">
+            Итого:{" "}
+            <span className="text-[22px] font-bold text-[#19411f] md:text-[28px]">
+              {formatRub(totalRub)}
+            </span>
           </p>
           <button
             type="submit"
             disabled={isSubmitting || totalRub <= 0}
-            className="h-[56px] min-w-[382px] rounded-full bg-[#2a6a34] px-10 text-[18px] font-semibold leading-none text-white transition hover:brightness-95 disabled:cursor-not-allowed disabled:bg-[#7da57f] disabled:opacity-100"
+            className="h-[46px] w-full rounded-full bg-[#2a6a34] px-8 text-[14px] font-semibold leading-none text-white transition hover:brightness-95 disabled:cursor-not-allowed disabled:bg-[#7da57f] disabled:opacity-100 md:h-[56px] md:min-w-[382px] md:w-auto md:px-10 md:text-[18px]"
           >
             {isSubmitting ? "Отправка..." : "Перейти к оплате"}
           </button>
