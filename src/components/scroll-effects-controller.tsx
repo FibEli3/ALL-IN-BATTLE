@@ -64,39 +64,6 @@ export function ScrollEffectsController() {
       frame = window.requestAnimationFrame(update);
     };
 
-    const getLockedSection = () => {
-      const viewportAnchor = window.innerHeight * 0.2;
-      for (const section of lineupSections) {
-        const rect = section.getBoundingClientRect();
-        if (rect.top <= viewportAnchor && rect.bottom > viewportAnchor) {
-          const phase = Number(section.dataset.phase || "0");
-          const completePhase = Number(section.dataset.completePhase || "5");
-          if (phase < completePhase) return section;
-        }
-      }
-      return null;
-    };
-
-    const onWheel = (event: WheelEvent) => {
-      if (event.deltaY <= 0) return;
-      const locked = getLockedSection();
-      if (!locked) return;
-
-      event.preventDefault();
-      const step = Math.min(72, Math.max(28, Math.abs(event.deltaY) * 0.22));
-      window.scrollBy({ top: step, behavior: "auto" });
-    };
-
-    const onKeyDown = (event: KeyboardEvent) => {
-      const keys = ["ArrowDown", "PageDown", " "];
-      if (!keys.includes(event.key)) return;
-      const locked = getLockedSection();
-      if (!locked) return;
-
-      event.preventDefault();
-      window.scrollBy({ top: 56, behavior: "auto" });
-    };
-
     const onDocumentClick = (event: MouseEvent) => {
       const target = event.target as HTMLElement | null;
       const link = target?.closest('a[href="#registration"]') as HTMLAnchorElement | null;
@@ -113,16 +80,12 @@ export function ScrollEffectsController() {
     update();
     window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("resize", onScroll);
-    window.addEventListener("wheel", onWheel, { passive: false });
-    window.addEventListener("keydown", onKeyDown);
     document.addEventListener("click", onDocumentClick);
 
     return () => {
       if (frame) window.cancelAnimationFrame(frame);
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", onScroll);
-      window.removeEventListener("wheel", onWheel);
-      window.removeEventListener("keydown", onKeyDown);
       document.removeEventListener("click", onDocumentClick);
       root.classList.remove("snap-mode");
       root.classList.remove("lineup-bg-visible");
