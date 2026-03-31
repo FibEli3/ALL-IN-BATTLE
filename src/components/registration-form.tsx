@@ -225,7 +225,7 @@ export function RegistrationForm() {
         throw new Error("Не удалось получить id заявки");
       }
 
-      const paymentResponse = await fetch("/api/payments/tbank/init", {
+      const paymentResponse = await fetch("/api/payments/robokassa/init", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ registrationId }),
@@ -233,7 +233,7 @@ export function RegistrationForm() {
       const paymentPayload = await paymentResponse.json();
 
       if (!paymentResponse.ok || !paymentPayload?.ok) {
-        setSuccessMessage("Заявка сохранена. Проверь настройки оплаты T-Банк в Vercel.");
+        setSuccessMessage("Заявка сохранена. Проверь настройки оплаты Robokassa в Vercel.");
         setValues(initialForm);
         return;
       }

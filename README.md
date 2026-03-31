@@ -7,7 +7,7 @@ Current scope:
 - participant lineup section;
 - registration form;
 - registration API;
-- T-Bank payment init + webhook scaffold;
+- Robokassa payment init + webhook scaffold;
 - database storage with production PostgreSQL support.
 
 ## Run locally
@@ -40,28 +40,31 @@ Current scope:
 
 You can use Neon in the same way: just provide its Postgres URI in `DATABASE_URL`.
 
-## T-Bank setup checklist
+## Robokassa setup checklist
 
 Fill these env vars in Vercel:
-- `TINKOFF_TERMINAL_KEY`
-- `TINKOFF_PASSWORD`
-- `TINKOFF_SUCCESS_URL`
-- `TINKOFF_FAIL_URL`
-- `TINKOFF_NOTIFICATION_URL` (must point to `/api/payments/tbank/webhook`)
+- `ROBOKASSA_MERCHANT_LOGIN`
+- `ROBOKASSA_PASSWORD_1`
+- `ROBOKASSA_PASSWORD_2`
+- `ROBOKASSA_SUCCESS_URL`
+- `ROBOKASSA_FAIL_URL`
+- `ROBOKASSA_RESULT_URL` (must point to `/api/payments/robokassa/webhook`)
+- `ROBOKASSA_IS_TEST` (`true` for tests, `false` for production)
 
 Prices are calculated from selected checkboxes in:
 - `src/lib/event-options.ts`
 
 Pricing rules in code:
-- Day 1 fixed: `2900`, `900`, `600`, `600`.
+- Day 1 fixed: `2900`, `900`, `600`, `700`.
 - Day 2 categories: first selected category `1700`, each next `800`.
-- `Зрительский билет` always `600`.
+- Spectator ticket always `700`.
 
-In T-Bank cabinet, set notification URL to:
-- `https://<your-domain>/api/payments/tbank/webhook`
+In Robokassa cabinet, set result URL to:
+- `https://<your-domain>/api/payments/robokassa/webhook`
 
 ## Useful routes
 
 - `POST /api/registrations`
-- `POST /api/payments/tbank/init`
-- `POST /api/payments/tbank/webhook`
+- `POST /api/payments/robokassa/init`
+- `POST /api/payments/robokassa/webhook`
+
