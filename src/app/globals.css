@@ -116,7 +116,6 @@ html.snap-mode {
 
 .snap-section {
   scroll-snap-align: start;
-  scroll-snap-stop: always;
 }
 
 [data-lineup-anim] .lineup-title,
