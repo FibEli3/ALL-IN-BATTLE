@@ -11,7 +11,7 @@ type PersonCardProps = {
   tiltClass?: string;
   orderClass?: string;
   offsetClass?: string;
-  revealIndex?: 1 | 2 | 3;
+  revealIndex?: number;
 };
 
 type BulletTone = "black" | "red";
@@ -266,16 +266,19 @@ function TrioSection({
   id,
   title,
   people,
+  completePhase = 4,
 }: {
   id: string;
   title: string;
   people: PersonCardProps[];
+  completePhase?: number;
 }) {
   return (
     <section
       id={id}
       data-snap-section
       data-lineup-anim
+      data-complete-phase={completePhase}
       className="snap-section relative mx-auto w-full max-w-[1440px] overflow-hidden px-5 py-16 md:px-8 md:py-24"
     >
       <Image
@@ -288,11 +291,7 @@ function TrioSection({
       <h2 className={`lineup-title relative z-10 text-center ${sectionHeadingClass}`}>{title}</h2>
       <div className="mx-auto mt-8 grid max-w-[1400px] gap-8 md:grid-cols-3 md:items-start md:gap-x-16">
         {people.map((person, index) => (
-          <PersonCard
-            key={person.name}
-            revealIndex={person.revealIndex ?? ((index + 1) as 1 | 2 | 3)}
-            {...person}
-          />
+          <PersonCard key={person.name} revealIndex={person.revealIndex ?? index + 1} {...person} />
         ))}
       </div>
     </section>
@@ -391,6 +390,7 @@ export default function Home() {
         id="mc"
         data-snap-section
         data-lineup-anim
+        data-complete-phase="3"
         className="snap-section relative mx-auto w-full max-w-[1440px] overflow-hidden px-5 py-16 md:px-8 md:py-24"
       >
         <Image
@@ -412,6 +412,8 @@ export default function Home() {
         id="media"
         data-snap-section
         data-lineup-anim
+        data-complete-phase="5"
+        data-lineup-kind="media"
         className="snap-section relative mx-auto w-full max-w-[1440px] overflow-hidden px-5 py-16 md:px-8 md:py-24"
       >
         <Image
@@ -430,7 +432,7 @@ export default function Home() {
                 image="/photo/valentina.jpg"
                 tiltClass="md:-rotate-[2deg]"
                 orderClass="max-w-[395px]"
-                revealIndex={1}
+                revealIndex={2}
               />
             </div>
           </div>
@@ -441,7 +443,7 @@ export default function Home() {
               image="/video/radon.jpg"
               tiltClass="md:-rotate-[5.5deg]"
               offsetClass="md:-translate-x-12"
-              revealIndex={2}
+              revealIndex={4}
             />
           </div>
 
@@ -451,7 +453,7 @@ export default function Home() {
               image="/video/dima-sokolov.jpg"
               tiltClass="md:rotate-[6deg]"
               offsetClass="md:translate-x-12"
-              revealIndex={3}
+              revealIndex={5}
             />
             <h2 className="lineup-video-title mt-10 text-center font-display text-[56px] font-black uppercase leading-none tracking-tight text-[#2a6a34] md:relative md:left-[-240px] md:text-center md:text-[80px]">
               VIDEO

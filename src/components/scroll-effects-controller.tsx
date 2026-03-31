@@ -36,6 +36,7 @@ export function ScrollEffectsController() {
         const rawProgress = (vh - rect.top) / (vh + rect.height);
         const progress = Math.max(0, Math.min(1, rawProgress));
         const phase = getPhase(progress);
+        section.dataset.phase = String(phase);
 
         section.classList.remove(
           "phase-0",
@@ -54,14 +55,51 @@ export function ScrollEffectsController() {
       frame = window.requestAnimationFrame(update);
     };
 
+    const getLockedSection = () => {
+      const viewportAnchor = window.innerHeight * 0.2;
+      for (const section of lineupSections) {
+        const rect = section.getBoundingClientRect();
+        if (rect.top <= viewportAnchor && rect.bottom > viewportAnchor) {
+          const phase = Number(section.dataset.phase || "0");
+          const completePhase = Number(section.dataset.completePhase || "5");
+          if (phase < completePhase) return section;
+        }
+      }
+      return null;
+    };
+
+    const onWheel = (event: WheelEvent) => {
+      if (event.deltaY <= 0) return;
+      const locked = getLockedSection();
+      if (!locked) return;
+
+      event.preventDefault();
+      const step = Math.min(130, Math.max(56, Math.abs(event.deltaY) * 0.45));
+      window.scrollBy({ top: step, behavior: "auto" });
+    };
+
+    const onKeyDown = (event: KeyboardEvent) => {
+      const keys = ["ArrowDown", "PageDown", " "];
+      if (!keys.includes(event.key)) return;
+      const locked = getLockedSection();
+      if (!locked) return;
+
+      event.preventDefault();
+      window.scrollBy({ top: 120, behavior: "auto" });
+    };
+
     update();
     window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("resize", onScroll);
+    window.addEventListener("wheel", onWheel, { passive: false });
+    window.addEventListener("keydown", onKeyDown);
 
     return () => {
       if (frame) window.cancelAnimationFrame(frame);
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", onScroll);
+      window.removeEventListener("wheel", onWheel);
+      window.removeEventListener("keydown", onKeyDown);
       root.classList.remove("snap-mode");
     };
   }, []);

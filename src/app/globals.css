@@ -150,7 +150,17 @@ html.snap-mode {
 [data-lineup-anim].phase-5 .lineup-card[data-reveal="2"] .lineup-card-reveal,
 [data-lineup-anim].phase-4 .lineup-card[data-reveal="3"] .lineup-card-reveal,
 [data-lineup-anim].phase-5 .lineup-card[data-reveal="3"] .lineup-card-reveal,
+[data-lineup-anim].phase-4 .lineup-card[data-reveal="4"] .lineup-card-reveal,
+[data-lineup-anim].phase-5 .lineup-card[data-reveal="4"] .lineup-card-reveal,
+[data-lineup-anim].phase-5 .lineup-card[data-reveal="5"] .lineup-card-reveal,
 [data-lineup-anim].phase-5 .lineup-video-title {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+[data-lineup-anim][data-lineup-kind="media"].phase-3 .lineup-video-title,
+[data-lineup-anim][data-lineup-kind="media"].phase-4 .lineup-video-title,
+[data-lineup-anim][data-lineup-kind="media"].phase-5 .lineup-video-title {
   opacity: 1;
   transform: translateY(0);
 }
