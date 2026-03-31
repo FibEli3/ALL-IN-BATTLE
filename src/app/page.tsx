@@ -464,7 +464,7 @@ export default function Home() {
                       : "md:ml-[-24px]"
                 }`}
               >
-                <h3 className="h-[40px] font-body text-[22px] font-bold leading-[1.1] md:h-[68px] md:text-[32px]">
+                <h3 className="h-[40px] font-body text-[22px] font-bold leading-[1.1] md:h-[68px] md:text-[28px]">
                   {card.title}
                 </h3>
                 <p className="mt-4 text-[32px] font-bold leading-none text-[#095d13] md:mt-6 md:text-[42px]">
@@ -540,7 +540,7 @@ export default function Home() {
                       : "md:ml-[-24px]"
                 }`}
               >
-                <h3 className="h-[40px] font-body text-[22px] font-bold leading-[1.1] md:h-auto md:text-[32px]">
+                <h3 className="h-[40px] font-body text-[22px] font-bold leading-[1.1] md:h-auto md:text-[28px]">
                   {column.title}
                 </h3>
                 <div className="mt-8 space-y-4 text-[16px] font-semibold leading-[1.2] text-[#1f1f1f] md:mt-12 md:text-[20px]">
