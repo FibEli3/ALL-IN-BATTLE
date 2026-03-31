@@ -89,37 +89,45 @@ const dayOneCards = [
   {
     title: "Мастер-Класс от RASH THE FLOW",
     price: "2900₽",
-    points: ["Длительность:", "1,5 часа"],
+    points: [
+      { text: "Длительность:", bullet: "black", tone: "primary" },
+      { text: "1,5 часа", bullet: "none", tone: "muted" },
+    ],
     button: "Зарегистрироваться на МК",
+    variant: "side",
   },
   {
     title: "Contest 3x3",
     price: "900₽",
     points: [
-      "Судит:",
-      "RASH",
-      "Играют:",
-      "BAMBOOK/WHYDEAP",
-      "Номинации:",
-      "KIDS (до 12 лет)",
-      "JUN (13-18 лет)",
-      "OLD (18+)",
-      "Зрительский билет:",
-      "600₽",
+      { text: "Судит:", bullet: "black", tone: "primary" },
+      { text: "RASH", bullet: "none", tone: "muted" },
+      { text: "Играют:", bullet: "black", tone: "primary" },
+      { text: "BAMBOOK/WHYDEAP", bullet: "none", tone: "muted" },
+      { text: "Номинации:", bullet: "black", tone: "primary" },
+      { text: "KIDS (до 12 лет)", bullet: "none", tone: "muted" },
+      { text: "JUN (13-18 лет)", bullet: "none", tone: "muted" },
+      { text: "OLD (18+)", bullet: "none", tone: "muted" },
+      { text: "Зрительский билет:", bullet: "black", tone: "primary" },
+      { text: "600₽", bullet: "none", tone: "muted" },
     ],
     button: "Зарегистрироваться на контест",
-    featured: true,
+    variant: "center",
   },
   {
     title: "JAM",
     price: "600₽",
     points: [
-      "Играют:",
-      "BAMBOOK/WHYDEAP",
-      "Участникам Мастер-Класса/",
-      "Contest 3x3 – джем бесплатный",
+      { text: "Играют:", bullet: "black", tone: "primary" },
+      { text: "BAMBOOK/WHYDEAP", bullet: "none", tone: "muted" },
+      {
+        text: "Участникам Мастер-Класса/Contest 3x3 – джем бесплатный",
+        bullet: "red",
+        tone: "primary",
+      },
     ],
     button: "Зарегистрироваться на джем",
+    variant: "side",
   },
 ];
 
@@ -127,44 +135,58 @@ const dayTwoColumns = [
   {
     title: "Номинации",
     points: [
-      "BABY",
-      "(до 7 лет)",
-      "JUN PRO",
-      "(12-15 лет, опыт 3+ года)",
-      "KIDS BEG",
-      "(7-11 лет, до 3 лет обучения)",
-      "BEG 16+",
-      "(до 3-х лет обучения)",
-      "KIDS PRO",
-      "(7-11 лет, опыт 3+ года)",
-      "PRO 16+",
-      "(опыт 3+ года)",
-      "JUN BEG",
-      "(12-15 лет, до 3-х лет обучения)",
+      { text: "BABY", bullet: "black", tone: "primary" },
+      { text: "(до 7 лет)", bullet: "none", tone: "muted" },
+      { text: "JUN PRO", bullet: "black", tone: "primary" },
+      { text: "(12-15 лет, опыт 3+ года)", bullet: "none", tone: "muted" },
+      { text: "KIDS BEG", bullet: "black", tone: "primary" },
+      { text: "(7-11 лет, до 3 лет обучения)", bullet: "none", tone: "muted" },
+      { text: "BEG 16+", bullet: "black", tone: "primary" },
+      { text: "(до 3-х лет обучения)", bullet: "none", tone: "muted" },
+      { text: "KIDS PRO", bullet: "black", tone: "primary" },
+      { text: "(7-11 лет, опыт 3+ года)", bullet: "none", tone: "muted" },
+      { text: "PRO 16+", bullet: "black", tone: "primary" },
+      { text: "(опыт 3+ года)", bullet: "none", tone: "muted" },
+      { text: "JUN BEG", bullet: "black", tone: "primary" },
+      { text: "(12-15 лет, до 3-х лет обучения)", bullet: "none", tone: "muted" },
     ],
+    variant: "side",
   },
   {
     title: "Стоимость",
     points: [
-      "Первая номинация:",
-      "1700₽",
-      "Каждая следующая:",
-      "800₽",
-      "Зрительский билет:",
-      "600₽",
+      { text: "Первая номинация:", bullet: "black", tone: "primary" },
+      { text: "1700₽", bullet: "none", tone: "muted" },
+      { text: "Каждая следующая:", bullet: "black", tone: "primary" },
+      { text: "800₽", bullet: "none", tone: "muted" },
+      { text: "Зрительский билет:", bullet: "black", tone: "primary" },
+      { text: "600₽", bullet: "none", tone: "muted" },
     ],
-    featured: true,
+    variant: "center",
     button: "Зарегистрироваться на баттл",
   },
   {
     title: "Важно",
     points: [
-      "Место проведения:",
-      "Скоро появится!",
-      "Опыт танцевания определяется категориями BEG (начинающие до 3х лет обучения), PRO (более 3х лет обучения). Организаторы вправе самостоятельно перевести вас в другую категорию при несоответствии уровня BEG/PRO.",
-      "После того, как вы отправили заявку и зарегистрировались, номинацию поменять нельзя!",
-      "Возврат денежных средств за участие возможен до 17.04.26 включительно",
+      { text: "Место проведения:", bullet: "black", tone: "primary" },
+      { text: "Скоро появится!", bullet: "none", tone: "muted" },
+      {
+        text: "Опыт танцевания определяется категориями BEG (начинающие до 3х лет обучения), PRO (более 3х лет обучения). Организаторы вправе самостоятельно перевести вас в другую категорию при несоответствии уровня BEG/PRO.",
+        bullet: "red",
+        tone: "primary",
+      },
+      {
+        text: "После того, как вы отправили заявку и зарегистрировались, номинацию поменять нельзя!",
+        bullet: "red",
+        tone: "primary",
+      },
+      {
+        text: "Возврат денежных средств за участие возможен до 17.04.26 включительно",
+        bullet: "red",
+        tone: "primary",
+      },
     ],
+    variant: "side",
   },
 ];
 
@@ -223,7 +245,15 @@ function TrioSection({
 }
 
 function FlowerMark({ warning = false }: { warning?: boolean }) {
-  return <span className={warning ? "text-[#d14a4a]" : "text-[#1b1b1b]"}>✽</span>;
+  return (
+    <Image
+      src={warning ? "/decor/flower-bullet-red.png" : "/decor/flower-bullet-black.png"}
+      alt=""
+      width={18}
+      height={18}
+      className="mt-[2px] h-[18px] w-[18px] shrink-0"
+    />
+  );
 }
 
 export default function Home() {
@@ -348,19 +378,39 @@ export default function Home() {
       </section>
 
       <section id="day-one" className="mx-auto w-full max-w-[1440px] px-5 py-10 md:px-8 md:py-16">
-        <div className="rounded-[36px] bg-[#e8e8e8] px-5 py-8 md:px-8 md:py-10">
-          <header className="mb-8 flex items-start justify-between gap-4 text-[30px] font-display font-black uppercase leading-[0.9] tracking-tight text-[#1b1b1b]">
+        <div className="relative px-2 py-6 md:px-0">
+          <Image
+            src="/decor/flower-side-left.png"
+            alt=""
+            width={120}
+            height={120}
+            className="pointer-events-none absolute -left-2 bottom-24 hidden w-[88px] opacity-85 md:block"
+          />
+          <Image
+            src="/decor/flower-side-right.png"
+            alt=""
+            width={120}
+            height={120}
+            className="pointer-events-none absolute -right-2 bottom-24 hidden w-[92px] opacity-85 md:block"
+          />
+          <header className="mb-12 flex items-start justify-between gap-4 text-[30px] font-display font-black uppercase leading-[0.9] tracking-tight text-[#1b1b1b]">
             <h2>День 1: Workshop / Jam / Contest</h2>
             <p>25 апреля</p>
           </header>
-          <div className="grid gap-6 md:grid-cols-3">
+          <div className="relative mt-12 flex flex-col gap-6 md:mt-12 md:flex-row md:items-start md:justify-center">
             {dayOneCards.map((card) => (
               <article
                 key={card.title}
-                className={`rounded-[28px] border border-[#d0d0d0] bg-[#ececec] ${
-                  card.featured
-                    ? "px-[40px] py-[60px] md:-mt-6 md:min-h-[760px] md:shadow-[0_10px_36px_rgba(0,0,0,0.1)]"
-                    : "px-[50px] py-[40px] md:min-h-[724px]"
+                className={`flex flex-col rounded-[28px] border border-[#d0d0d0] bg-[#ececec] ${
+                  card.variant === "center"
+                    ? "z-20 w-full px-[40px] py-[60px] md:w-[464px] md:min-h-[760px]"
+                    : "z-10 w-full px-[50px] py-[40px] md:mt-[20px] md:w-[444px] md:min-h-[720px]"
+                } ${
+                  card.variant === "center"
+                    ? "md:mx-[-24px]"
+                    : card.title === "Мастер-Класс от RASH THE FLOW"
+                      ? "md:mr-[-24px]"
+                      : "md:ml-[-24px]"
                 }`}
               >
                 <h3 className="h-[68px] text-[28px] leading-[1.1]">
@@ -369,17 +419,17 @@ export default function Home() {
                 <p className="mt-6 text-[42px] font-bold leading-none text-[#095d13]">{card.price}</p>
                 <div className="mt-12 space-y-3 text-[20px] font-semibold leading-[1.2] text-[#1f1f1f]">
                   {card.points.map((line, lineIndex) => (
-                    <div key={`${line}-${lineIndex}`} className="flex gap-3">
-                      {line.endsWith(":") || line.startsWith("Участникам") ? (
-                        <FlowerMark warning={line.startsWith("Участникам")} />
+                    <div key={`${line.text}-${lineIndex}`} className="flex gap-3">
+                      {line.bullet === "black" || line.bullet === "red" ? (
+                        <FlowerMark warning={line.bullet === "red"} />
                       ) : (
                         <span className="w-4" />
                       )}
-                      <p className={line.endsWith(":") ? "font-semibold" : "text-[#626262]"}>{line}</p>
+                      <p className={line.tone === "muted" ? "text-[#626262]" : "text-[#1f1f1f]"}>{line.text}</p>
                     </div>
                   ))}
                 </div>
-                <button className="mt-8 w-full rounded-full bg-[#2a6a34] px-6 py-4 text-[18px] font-semibold leading-none text-white transition hover:bg-[#21562a] whitespace-nowrap">
+                <button className="mt-auto w-full rounded-full bg-[#2a6a34] px-6 py-4 text-[18px] font-semibold leading-none text-white transition hover:bg-[#21562a] whitespace-nowrap">
                   {card.button}
                 </button>
               </article>
@@ -389,34 +439,56 @@ export default function Home() {
       </section>
 
       <section id="day-two" className="mx-auto w-full max-w-[1440px] px-5 py-10 md:px-8 md:py-16">
-        <div className="rounded-[36px] bg-[#e8e8e8] px-5 py-8 md:px-8 md:py-10">
-          <header className="mb-8 flex items-start justify-between gap-4 text-[28px] font-display font-black uppercase leading-[0.9] tracking-tight text-[#1b1b1b] md:text-[58px]">
+        <div className="relative px-2 py-6 md:px-0">
+          <Image
+            src="/decor/flower-side-left.png"
+            alt=""
+            width={120}
+            height={120}
+            className="pointer-events-none absolute -left-2 top-36 hidden w-[88px] opacity-85 md:block"
+          />
+          <Image
+            src="/decor/flower-side-right.png"
+            alt=""
+            width={120}
+            height={120}
+            className="pointer-events-none absolute -right-2 top-36 hidden w-[92px] opacity-85 md:block"
+          />
+          <header className="mb-12 flex items-start justify-between gap-4 text-[30px] font-display font-black uppercase leading-[0.9] tracking-tight text-[#1b1b1b]">
             <h2>День 2: ALL IN BATTLE</h2>
             <p>26 апреля</p>
           </header>
-          <div className="grid gap-6 md:grid-cols-3">
+          <div className="relative mt-12 flex flex-col gap-6 md:flex-row md:items-start md:justify-center">
             {dayTwoColumns.map((column) => (
               <article
                 key={column.title}
-                className={`rounded-[28px] border border-[#d0d0d0] bg-[#ececec] p-7 md:p-10 ${
-                  column.featured ? "md:-mt-6 md:shadow-[0_10px_36px_rgba(0,0,0,0.1)] md:min-h-[760px]" : "md:min-h-[724px]"
+                className={`flex flex-col rounded-[28px] border border-[#d0d0d0] bg-[#ececec] ${
+                  column.variant === "center"
+                    ? "z-20 w-full px-[40px] py-[60px] md:w-[464px] md:min-h-[760px]"
+                    : "z-10 w-full px-[50px] py-[40px] md:mt-[20px] md:w-[444px] md:min-h-[720px]"
+                } ${
+                  column.variant === "center"
+                    ? "md:mx-[-24px]"
+                    : column.title === "Номинации"
+                      ? "md:mr-[-24px]"
+                      : "md:ml-[-24px]"
                 }`}
               >
                 <h3 className="font-body text-[28px] font-medium leading-none md:text-[54px]">{column.title}</h3>
-                <div className="mt-7 space-y-3 text-[19px] leading-[1.2] text-[#1f1f1f] md:text-[24px]">
+                <div className="mt-12 space-y-3 text-[20px] font-semibold leading-[1.2] text-[#1f1f1f]">
                   {column.points.map((line, index) => (
-                    <div key={`${line}-${index}`} className="flex gap-3">
-                      {index % 2 === 0 ? (
-                        <FlowerMark warning={column.title === "Важно" && index > 1} />
+                    <div key={`${line.text}-${index}`} className="flex gap-3">
+                      {line.bullet === "black" || line.bullet === "red" ? (
+                        <FlowerMark warning={line.bullet === "red"} />
                       ) : (
                         <span className="w-4" />
                       )}
-                      <p className={index % 2 === 0 ? "font-medium" : "text-[#626262]"}>{line}</p>
+                      <p className={line.tone === "muted" ? "text-[#626262]" : "text-[#1f1f1f]"}>{line.text}</p>
                     </div>
                   ))}
                 </div>
                 {column.button ? (
-                  <button className="mt-8 h-[56px] w-full rounded-full bg-[#2a6a34] px-6 text-[20px] font-medium text-white transition hover:bg-[#21562a] md:mt-10 md:h-[72px] md:text-[26px]">
+                  <button className="mt-auto w-full rounded-full bg-[#2a6a34] px-6 py-4 text-[18px] font-semibold leading-none text-white transition hover:bg-[#21562a] whitespace-nowrap">
                     {column.button}
                   </button>
                 ) : null}
