@@ -1,4 +1,5 @@
-п»їimport Image from "next/image";
+import Image from "next/image";
+import Link from "next/link";
 import { RegistrationForm } from "@/components/registration-form";
 
 type PersonCardProps = {
@@ -23,36 +24,38 @@ type DayCard = {
   price?: string;
   items: DayListItem[];
   button?: string;
+  registrationPresetId?: string;
+  focusOnly?: boolean;
   variant: "side" | "center";
   decor?: "left-bottom" | "right-mid" | "right-top";
 };
 
 const navItems = [
-  { label: "РЎСѓРґСЊРё", href: "#judges" },
+  { label: "Судьи", href: "#judges" },
   { label: "DJ", href: "#dj" },
   { label: "MC", href: "#mc" },
   { label: "Media", href: "#media" },
-  { label: "Р РµРіРёСЃС‚СЂР°С†РёСЏ", href: "#registration" },
+  { label: "Регистрация", href: "#registration" },
 ];
 
 const judges: PersonCardProps[] = [
   {
     name: "ASHPI",
-    city: "Рі. Р”РѕРЅРµС†Рє",
+    city: "г. Донецк",
     image: "/judges/ashpi.jpg",
     imageClass: "-rotate-[2deg]",
     orderClass: "md:order-1 md:pt-0",
   },
   {
     name: "RASH THE FLOW",
-    city: "Рі. РЎР°РЅРєС‚-РџРµС‚РµСЂР±СѓСЂРі",
+    city: "г. Санкт-Петербург",
     image: "/judges/rash-the-flow.jpg",
     imageClass: "rotate-0",
     orderClass: "md:order-2 md:pt-16",
   },
   {
     name: "RUBA",
-    city: "Рі. РњРѕСЃРєРІР°",
+    city: "г. Москва",
     image: "/judges/ruba.jpg",
     imageClass: "rotate-[2deg]",
     orderClass: "md:order-3 md:pt-0",
@@ -62,7 +65,7 @@ const judges: PersonCardProps[] = [
 const djs: PersonCardProps[] = [
   {
     name: "WHYDEAP",
-    city: "Рі. РљСЂР°СЃРЅРѕРґР°СЂ",
+    city: "г. Краснодар",
     image: "/dj/whydeap.jpg",
     imageClass: "-rotate-[2deg]",
     textRotateClass: "md:-rotate-[2deg]",
@@ -70,14 +73,14 @@ const djs: PersonCardProps[] = [
   },
   {
     name: "ELMI",
-    city: "Рі. РЎРёРјС„РµСЂРѕРїРѕР»СЊ",
+    city: "г. Симферополь",
     image: "/dj/elmi.jpg",
     imageClass: "rotate-0",
     orderClass: "md:order-2 md:pt-16",
   },
   {
     name: "BAMBOOK",
-    city: "Рі. РљСЂР°СЃРЅРѕРґР°СЂ",
+    city: "г. Краснодар",
     image: "/dj/bambook.jpg",
     imageClass: "rotate-[2deg]",
     textRotateClass: "md:-rotate-[2deg]",
@@ -88,14 +91,14 @@ const djs: PersonCardProps[] = [
 const mcs: PersonCardProps[] = [
   {
     name: "EMILE",
-    city: "Рі. РљСЂР°СЃРЅРѕРґР°СЂ",
+    city: "г. Краснодар",
     image: "/mc/emile.jpg",
     imageClass: "-rotate-[2deg]",
     textRotateClass: "md:-rotate-[2deg]",
   },
   {
     name: "MAVI",
-    city: "Рі. РЎРёРјС„РµСЂРѕРїРѕР»СЊ",
+    city: "г. Симферополь",
     image: "/mc/mavi.jpg",
     imageClass: "rotate-[2deg]",
     textRotateClass: "md:-rotate-[2deg]",
@@ -104,46 +107,49 @@ const mcs: PersonCardProps[] = [
 
 const dayOneCards: DayCard[] = [
   {
-    title: "РњР°СЃС‚РµСЂ-РљР»Р°СЃСЃ РѕС‚ RASH THE FLOW",
-    price: "2900в‚Ѕ",
+    title: "Мастер-Класс от RASH THE FLOW",
+    price: "2900?",
     items: [
       {
         bullet: "black",
-        title: "Р”Р»РёС‚РµР»СЊРЅРѕСЃС‚СЊ:",
-        details: ["1,5 С‡Р°СЃР°"],
+        title: "Длительность:",
+        details: ["1,5 часа"],
       },
     ],
-    button: "Р—Р°СЂРµРіРёСЃС‚СЂРёСЂРѕРІР°С‚СЊСЃСЏ РЅР° РњРљ",
+    button: "Зарегистрироваться на МК",
+    registrationPresetId: "day1-option-1",
     variant: "side",
     decor: "left-bottom",
   },
   {
     title: "Contest 3x3",
-    price: "900в‚Ѕ",
+    price: "900?",
     items: [
-      { bullet: "black", title: "РЎСѓРґРёС‚:", details: ["RASH"] },
-      { bullet: "black", title: "РРіСЂР°СЋС‚:", details: ["BAMBOOK/WHYDEAP"] },
+      { bullet: "black", title: "Судит:", details: ["RASH"] },
+      { bullet: "black", title: "Играют:", details: ["BAMBOOK/WHYDEAP"] },
       {
         bullet: "black",
-        title: "РќРѕРјРёРЅР°С†РёРё:",
-        details: ["KIDS (РґРѕ 12 Р»РµС‚)", "JUN (13-18 Р»РµС‚)", "OLD (18+)"],
+        title: "Номинации:",
+        details: ["KIDS (до 12 лет)", "JUN (13-18 лет)", "OLD (18+)"],
       },
-      { bullet: "black", title: "Р—СЂРёС‚РµР»СЊСЃРєРёР№ Р±РёР»РµС‚:", details: ["700в‚Ѕ"] },
+      { bullet: "black", title: "Зрительский билет:", details: ["700?"] },
     ],
-    button: "Р—Р°СЂРµРіРёСЃС‚СЂРёСЂРѕРІР°С‚СЊСЃСЏ РЅР° РєРѕРЅС‚РµСЃС‚",
+    button: "Зарегистрироваться на контест",
+    registrationPresetId: "day1-option-2",
     variant: "center",
   },
   {
     title: "JAM",
-    price: "600в‚Ѕ",
+    price: "600?",
     items: [
-      { bullet: "black", title: "РРіСЂР°СЋС‚:", details: ["BAMBOOK/WHYDEAP"] },
+      { bullet: "black", title: "Играют:", details: ["BAMBOOK/WHYDEAP"] },
       {
         bullet: "red",
-        title: "РЈС‡Р°СЃС‚РЅРёРєР°Рј РњР°СЃС‚РµСЂ-РљР»Р°СЃСЃР°/Contest 3x3 вЂ“ РґР¶РµРј Р±РµСЃРїР»Р°С‚РЅС‹Р№",
+        title: "Участникам Мастер-Класса/Contest 3x3 – джем бесплатный",
       },
     ],
-    button: "Р—Р°СЂРµРіРёСЃС‚СЂРёСЂРѕРІР°С‚СЊСЃСЏ РЅР° РґР¶РµРј",
+    button: "Зарегистрироваться на джем",
+    registrationPresetId: "day1-option-3",
     variant: "side",
     decor: "right-mid",
   },
@@ -151,44 +157,45 @@ const dayOneCards: DayCard[] = [
 
 const dayTwoColumns: DayCard[] = [
   {
-    title: "РќРѕРјРёРЅР°С†РёРё",
+    title: "Номинации",
     items: [
-      { bullet: "black", title: "BABY", details: ["(РґРѕ 7 Р»РµС‚)"] },
-      { bullet: "black", title: "JUN PRO", details: ["(12-15 Р»РµС‚, РѕРїС‹С‚ 3+ РіРѕРґР°)"] },
-      { bullet: "black", title: "KIDS BEG", details: ["(7-11 Р»РµС‚, РґРѕ 3 Р»РµС‚ РѕР±СѓС‡РµРЅРёСЏ)"] },
-      { bullet: "black", title: "BEG 16+", details: ["(РґРѕ 3-С… Р»РµС‚ РѕР±СѓС‡РµРЅРёСЏ)"] },
-      { bullet: "black", title: "KIDS PRO", details: ["(7-11 Р»РµС‚, РѕРїС‹С‚ 3+ РіРѕРґР°)"] },
-      { bullet: "black", title: "PRO 16+", details: ["(РѕРїС‹С‚ 3+ РіРѕРґР°)"] },
-      { bullet: "black", title: "JUN BEG", details: ["(12-15 Р»РµС‚, РґРѕ 3-С… Р»РµС‚ РѕР±СѓС‡РµРЅРёСЏ)"] },
+      { bullet: "black", title: "BABY", details: ["(до 7 лет)"] },
+      { bullet: "black", title: "JUN PRO", details: ["(12-15 лет, опыт 3+ года)"] },
+      { bullet: "black", title: "KIDS BEG", details: ["(7-11 лет, до 3 лет обучения)"] },
+      { bullet: "black", title: "BEG 16+", details: ["(до 3-х лет обучения)"] },
+      { bullet: "black", title: "KIDS PRO", details: ["(7-11 лет, опыт 3+ года)"] },
+      { bullet: "black", title: "PRO 16+", details: ["(опыт 3+ года)"] },
+      { bullet: "black", title: "JUN BEG", details: ["(12-15 лет, до 3-х лет обучения)"] },
     ],
     variant: "side",
   },
   {
-    title: "РЎС‚РѕРёРјРѕСЃС‚СЊ",
+    title: "Стоимость",
     items: [
-      { bullet: "black", title: "РџРµСЂРІР°СЏ РЅРѕРјРёРЅР°С†РёСЏ:", details: ["1700в‚Ѕ"] },
-      { bullet: "black", title: "РљР°Р¶РґР°СЏ СЃР»РµРґСѓСЋС‰Р°СЏ:", details: ["800в‚Ѕ"] },
-      { bullet: "black", title: "Р—СЂРёС‚РµР»СЊСЃРєРёР№ Р±РёР»РµС‚:", details: ["700в‚Ѕ"] },
+      { bullet: "black", title: "Первая номинация:", details: ["1700?"] },
+      { bullet: "black", title: "Каждая следующая:", details: ["800?"] },
+      { bullet: "black", title: "Зрительский билет:", details: ["700?"] },
     ],
     variant: "center",
-    button: "Р—Р°СЂРµРіРёСЃС‚СЂРёСЂРѕРІР°С‚СЊСЃСЏ РЅР° Р±Р°С‚С‚Р»",
+    button: "Зарегистрироваться на баттл",
+    focusOnly: true,
   },
   {
-    title: "Р’Р°Р¶РЅРѕ",
+    title: "Важно",
     items: [
-      { bullet: "black", title: "РњРµСЃС‚Рѕ РїСЂРѕРІРµРґРµРЅРёСЏ:", details: ["РЎРєРѕСЂРѕ РїРѕСЏРІРёС‚СЃСЏ!"] },
+      { bullet: "black", title: "Место проведения:", details: ["Скоро появится!"] },
       {
         bullet: "red",
         title:
-          "РћРїС‹С‚ С‚Р°РЅС†РµРІР°РЅРёСЏ РѕРїСЂРµРґРµР»СЏРµС‚СЃСЏ РєР°С‚РµРіРѕСЂРёСЏРјРё BEG (РЅР°С‡РёРЅР°СЋС‰РёРµ РґРѕ 3С… Р»РµС‚ РѕР±СѓС‡РµРЅРёСЏ), PRO (Р±РѕР»РµРµ 3С… Р»РµС‚ РѕР±СѓС‡РµРЅРёСЏ). РћСЂРіР°РЅРёР·Р°С‚РѕСЂС‹ РІРїСЂР°РІРµ СЃР°РјРѕСЃС‚РѕСЏС‚РµР»СЊРЅРѕ РїРµСЂРµРІРµСЃС‚Рё РІР°СЃ РІ РґСЂСѓРіСѓСЋ РєР°С‚РµРіРѕСЂРёСЋ РїСЂРё РЅРµСЃРѕРѕС‚РІРµС‚СЃС‚РІРёРё СѓСЂРѕРІРЅСЏ BEG/PRO.",
+          "Опыт танцевания определяется категориями BEG (начинающие до 3х лет обучения), PRO (более 3х лет обучения). Организаторы вправе самостоятельно перевести вас в другую категорию при несоответствии уровня BEG/PRO.",
       },
       {
         bullet: "red",
-        title: "РџРѕСЃР»Рµ С‚РѕРіРѕ, РєР°Рє РІС‹ РѕС‚РїСЂР°РІРёР»Рё Р·Р°СЏРІРєСѓ Рё Р·Р°СЂРµРіРёСЃС‚СЂРёСЂРѕРІР°Р»РёСЃСЊ, РЅРѕРјРёРЅР°С†РёСЋ РїРѕРјРµРЅСЏС‚СЊ РЅРµР»СЊР·СЏ!",
+        title: "После того, как вы отправили заявку и зарегистрировались, номинацию поменять нельзя!",
       },
       {
         bullet: "red",
-        title: "Р’РѕР·РІСЂР°С‚ РґРµРЅРµР¶РЅС‹С… СЃСЂРµРґСЃС‚РІ Р·Р° СѓС‡Р°СЃС‚РёРµ РІРѕР·РјРѕР¶РµРЅ РґРѕ 17.04.26 РІРєР»СЋС‡РёС‚РµР»СЊРЅРѕ",
+        title: "Возврат денежных средств за участие возможен до 17.04.26 включительно",
       },
     ],
     variant: "side",
@@ -313,20 +320,20 @@ export default function Home() {
               BATTLE
             </h1>
             <p className="mt-[30px] text-[32px] font-medium leading-none text-[#808286]">
-              25-26 Р°РїСЂРµР»СЏ &nbsp; Рі. РљСЂР°СЃРЅРѕРґР°СЂ
+              25-26 апреля &nbsp; г. Краснодар
             </p>
             <div className="mt-10 flex flex-wrap items-center justify-center gap-[30px]">
               <a
                 href="#day-one"
                 className="rounded-full bg-[#2a6a34] px-[40px] py-[16px] text-[20px] font-medium leading-none text-white transition hover:bg-[#21562a]"
               >
-                РџРµСЂРІС‹Р№ РґРµРЅСЊ
+                Первый день
               </a>
               <a
                 href="#day-two"
                 className="rounded-full bg-[#2a6a34] px-[40px] py-[16px] text-[20px] font-medium leading-none text-white transition hover:bg-[#21562a]"
               >
-                Р’С‚РѕСЂРѕР№ РґРµРЅСЊ
+                Второй день
               </a>
             </div>
           </div>
@@ -386,8 +393,8 @@ export default function Home() {
       <section id="day-one" className="mx-auto w-full max-w-[1440px] px-5 py-10 md:px-8 md:py-16">
         <div className="relative px-2 py-6 md:px-0">
           <header className="mb-12 flex items-start justify-between gap-4 text-[30px] font-display font-black uppercase leading-[0.9] tracking-tight text-[#1b1b1b]">
-            <h2>Р”РµРЅСЊ 1: Workshop / Jam / Contest</h2>
-            <p>25 Р°РїСЂРµР»СЏ</p>
+            <h2>День 1: Workshop / Jam / Contest</h2>
+            <p>25 апреля</p>
           </header>
           <div className="relative mt-12 flex flex-col gap-6 md:mt-12 md:flex-row md:items-start md:justify-center">
             {dayOneCards.map((card) => (
@@ -400,7 +407,7 @@ export default function Home() {
                 } ${
                   card.variant === "center"
                     ? "md:mx-[-24px]"
-                    : card.title === "РњР°СЃС‚РµСЂ-РљР»Р°СЃСЃ РѕС‚ RASH THE FLOW"
+                    : card.title === "Мастер-Класс от RASH THE FLOW"
                       ? "md:mr-[-24px]"
                       : "md:ml-[-24px]"
                 }`}
@@ -444,17 +451,20 @@ export default function Home() {
                     className="pointer-events-none absolute right-[8px] bottom-[170px] w-[132px] opacity-85"
                   />
                 ) : null}
-                <button className="mt-auto w-full rounded-full bg-[#2a6a34] px-6 py-4 text-[18px] font-semibold leading-none text-white transition hover:bg-[#21562a] whitespace-nowrap">
+                <Link
+                  href={`/?register=${card.registrationPresetId}&focus=fullName#registration`}
+                  className="mt-auto block w-full rounded-full bg-[#2a6a34] px-6 py-4 text-center text-[18px] font-semibold leading-none text-white transition hover:bg-[#21562a] whitespace-nowrap"
+                >
                   {card.button}
-                </button>
+                </Link>
               </article>
             ))}
           </div>
           <div className="mt-8 flex items-start gap-3">
             <FlowerMark warning />
             <p className="text-[20px] font-semibold leading-[1.2] text-[#1f1f1f]">
-              Р’РѕР·РІСЂР°С‚ РґРµРЅРµР¶РЅС‹С… СЃСЂРµРґСЃС‚РІ Р·Р° СѓС‡Р°СЃС‚РёРµ РІ jam/contest/workshop РІРѕР·РјРѕР¶РµРЅ РґРѕ 17.04.2026
-              РІРєР»СЋС‡РёС‚РµР»СЊРЅРѕ
+              Возврат денежных средств за участие в jam/contest/workshop возможен до 17.04.2026
+              включительно
             </p>
           </div>
         </div>
@@ -463,8 +473,8 @@ export default function Home() {
       <section id="day-two" className="mx-auto w-full max-w-[1440px] px-5 py-10 md:px-8 md:py-16">
         <div className="relative px-2 py-6 md:px-0">
           <header className="mb-12 flex items-start justify-between gap-4 text-[30px] font-display font-black uppercase leading-[0.9] tracking-tight text-[#1b1b1b]">
-            <h2>Р”РµРЅСЊ 2: ALL IN BATTLE</h2>
-            <p>26 Р°РїСЂРµР»СЏ</p>
+            <h2>День 2: ALL IN BATTLE</h2>
+            <p>26 апреля</p>
           </header>
           <div className="relative mt-12 flex flex-col gap-6 md:flex-row md:items-start md:justify-center">
             {dayTwoColumns.map((column) => (
@@ -477,7 +487,7 @@ export default function Home() {
                 } ${
                   column.variant === "center"
                     ? "md:mx-[-24px]"
-                    : column.title === "РќРѕРјРёРЅР°С†РёРё"
+                    : column.title === "Номинации"
                       ? "md:mr-[-24px]"
                       : "md:ml-[-24px]"
                 }`}
@@ -510,9 +520,12 @@ export default function Home() {
                   />
                 ) : null}
                 {column.button ? (
-                  <button className="mt-auto w-full rounded-full bg-[#2a6a34] px-6 py-4 text-[18px] font-semibold leading-none text-white transition hover:bg-[#21562a] whitespace-nowrap">
+                  <Link
+                    href="/?focus=fullName#registration"
+                    className="mt-auto block w-full rounded-full bg-[#2a6a34] px-6 py-4 text-center text-[18px] font-semibold leading-none text-white transition hover:bg-[#21562a] whitespace-nowrap"
+                  >
                     {column.button}
-                  </button>
+                  </Link>
                 ) : null}
               </article>
             ))}
@@ -526,3 +539,7 @@ export default function Home() {
     </main>
   );
 }
+
+
+
+

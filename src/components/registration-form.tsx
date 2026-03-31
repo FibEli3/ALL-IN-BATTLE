@@ -6,7 +6,8 @@ import {
   getOptionsByDay,
 } from "@/lib/event-options";
 import Image from "next/image";
-import { FormEvent, useMemo, useState } from "react";
+import { useSearchParams } from "next/navigation";
+import { FormEvent, useEffect, useMemo, useState } from "react";
 
 type FormValues = {
   fullName: string;
@@ -73,6 +74,7 @@ function Field(props: {
   value: string;
   placeholder: string;
   onChange: (value: string) => void;
+  inputId?: string;
 }) {
   return (
     <label className="grid gap-3">
@@ -81,6 +83,7 @@ function Field(props: {
         {props.required ? <span className="text-[#bd2d2d]">*</span> : null}
       </span>
       <input
+        id={props.inputId}
         value={props.value}
         placeholder={props.placeholder}
         onChange={(event) => props.onChange(event.target.value)}
@@ -91,6 +94,7 @@ function Field(props: {
 }
 
 export function RegistrationForm() {
+  const searchParams = useSearchParams();
   const [values, setValues] = useState<FormValues>(initialForm);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
@@ -103,6 +107,29 @@ export function RegistrationForm() {
   const totalRub = selection.totalRub;
   const day2LeftOptions = day2Options.slice(0, 4);
   const day2RightOptions = day2Options.slice(4, 8);
+  const registerPreset = searchParams.get("register");
+  const focusPreset = searchParams.get("focus");
+
+  useEffect(() => {
+    const shouldFocus = registerPreset !== null || focusPreset === "fullName";
+
+    if (registerPreset !== null) {
+      const isSupported = day1Options.some((option) => option.id === registerPreset);
+      setValues((prev) => ({
+        ...prev,
+        selectedOptionIds: isSupported ? [registerPreset] : [],
+      }));
+    }
+
+    if (shouldFocus) {
+      requestAnimationFrame(() => {
+        const input = document.getElementById("registration-full-name");
+        if (input instanceof HTMLInputElement) {
+          input.focus();
+        }
+      });
+    }
+  }, [registerPreset, focusPreset]);
 
   const toggleOption = (optionId: string) => {
     setValues((prev) => {
@@ -214,6 +241,7 @@ export function RegistrationForm() {
               required
               value={values.fullName}
               placeholder="Иванов Иван Иванович"
+              inputId="registration-full-name"
               onChange={(value) => setValues((prev) => ({ ...prev, fullName: value }))}
             />
             <Field
