@@ -62,7 +62,7 @@ export const EVENT_OPTIONS: EventOption[] = [
   {
     id: "day2-pro-16-plus",
     day: "day2",
-    title: "PRO 16+",
+    title: "PRO",
     subtitle: "(опыт 3+ года)",
     kind: "competitive",
   },
