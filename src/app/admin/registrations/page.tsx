@@ -202,7 +202,7 @@ export default async function AdminRegistrationsPage({ searchParams }: AdminPage
       </section>
 
       <div className="mt-8 overflow-x-auto rounded-2xl border border-[#dadada] bg-white">
-        <table className="min-w-[1480px] border-collapse text-left text-sm">
+        <table className="min-w-[1320px] border-collapse text-left text-sm">
           <thead className="bg-[#f4f4f4] text-[#303030]">
             <tr>
               <th className="px-4 py-3 font-semibold">Дата</th>
@@ -212,10 +212,8 @@ export default async function AdminRegistrationsPage({ searchParams }: AdminPage
               <th className="px-4 py-3 font-semibold">Ник</th>
               <th className="px-4 py-3 font-semibold">Телефон</th>
               <th className="px-4 py-3 font-semibold">Возраст</th>
-              <th className="px-4 py-3 font-semibold">Тип</th>
               <th className="px-4 py-3 font-semibold">Опции</th>
               <th className="px-4 py-3 font-semibold">Чек</th>
-              <th className="px-4 py-3 font-semibold">Order ID</th>
             </tr>
           </thead>
           <tbody>
@@ -233,7 +231,6 @@ export default async function AdminRegistrationsPage({ searchParams }: AdminPage
                   <td className="px-4 py-3">{item.nickname ?? "-"}</td>
                   <td className="px-4 py-3 whitespace-nowrap">{item.phone}</td>
                   <td className="px-4 py-3">{item.age ?? "-"}</td>
-                  <td className="px-4 py-3">{item.participationType}</td>
                   <td className="px-4 py-3">{optionTitles.length > 0 ? optionTitles.join(", ") : "-"}</td>
                   <td className="px-4 py-3">
                     {item.receiptFileName || item.receiptFileBase64 ? (
@@ -247,7 +244,6 @@ export default async function AdminRegistrationsPage({ searchParams }: AdminPage
                       "-"
                     )}
                   </td>
-                  <td className="px-4 py-3">{item.paymentOrderId ?? "-"}</td>
                 </tr>
               );
             })}
