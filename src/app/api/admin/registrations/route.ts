@@ -1,7 +1,7 @@
 import { listRegistrations } from "@/lib/db";
 import { NextResponse } from "next/server";
 
-const allowedStatuses = new Set(["pending", "created", "paid"]);
+const allowedStatuses = new Set(["pending", "paid"]);
 
 function checkAccess(request: Request) {
   const adminToken = process.env.ADMIN_DASHBOARD_TOKEN?.trim();
@@ -37,9 +37,9 @@ export async function GET(request: Request) {
   try {
     const url = new URL(request.url);
     const statusParam = url.searchParams.get("status");
-    const status =
+      const status =
       statusParam && allowedStatuses.has(statusParam)
-        ? (statusParam as "pending" | "created" | "paid")
+        ? (statusParam as "pending" | "paid")
         : undefined;
 
     const registrations = await listRegistrations(status);

@@ -72,7 +72,7 @@ export default async function AdminRegistrationsPage({ searchParams }: AdminPage
   const token = (params.token ?? "").trim();
   const statusParam = params.status;
   const activeStatus =
-    statusParam === "pending" || statusParam === "created" || statusParam === "paid"
+    statusParam === "pending" || statusParam === "paid"
       ? statusParam
       : undefined;
 
@@ -108,11 +108,9 @@ export default async function AdminRegistrationsPage({ searchParams }: AdminPage
   const day1Stats = buildStats(allRegistrations, "day1");
   const day2Stats = buildStats(allRegistrations, "day2");
 
-  const statuses: Array<{ id: "all" | "pending" | "created" | "paid"; label: string }> = [
+  const statuses: Array<{ id: "all" | "pending" | "paid"; label: string }> = [
     { id: "all", label: "Все" },
-    { id: "pending", label: "Pending" },
-    { id: "created", label: "Created" },
-    { id: "paid", label: "Paid" },
+    { id: "pending", label: "Pending" },    { id: "paid", label: "Paid" },
   ];
 
   const exportHref = `/api/admin/registrations/export?token=${encodeURIComponent(token)}`;
@@ -251,3 +249,4 @@ export default async function AdminRegistrationsPage({ searchParams }: AdminPage
     </main>
   );
 }
+

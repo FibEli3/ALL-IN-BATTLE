@@ -21,10 +21,10 @@ export default function PaymentFailPage() {
 
       <section className="relative z-10 mx-auto flex w-full max-w-[920px] flex-col items-center rounded-[34px] border border-[#cdcdcd] bg-[#fafafa] px-6 py-14 text-center md:px-12 md:py-16">
         <h1 className="font-display text-[42px] font-black uppercase leading-none tracking-tight text-[#bd2d2d] md:text-[72px]">
-          Оплата Не Прошла
+          Ошибка Отправки
         </h1>
         <p className="mt-8 max-w-[680px] text-[22px] font-medium leading-[1.25] text-[#1b1b1b] md:text-[30px]">
-          Платёж не был завершён. Проверь данные карты и попробуй ещё раз.
+          Не удалось отправить заявку. Проверьте файл чека и попробуйте ещё раз.
         </p>
 
         <div className="mt-12 flex flex-wrap items-center justify-center gap-4">

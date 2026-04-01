@@ -15,6 +15,10 @@ type RegistrationInput = {
   comment?: string | null;
   selectedOptionIds: string[];
   amountRub: number;
+  paymentStatus?: "pending" | "paid";
+  receiptFileName?: string | null;
+  receiptFileMimeType?: string | null;
+  receiptFileBase64?: string | null;
 };
 
 type RegistrationRecord = {
@@ -39,17 +43,11 @@ export type RegistrationAdminRecord = {
   paymentStatus: string;
   paymentOrderId: string | null;
   paymentId: string | null;
+  receiptFileName: string | null;
+  receiptFileMimeType: string | null;
+  receiptFileBase64: string | null;
   amountRub: number;
   createdAt: string;
-};
-
-type RegistrationForPayment = {
-  id: string;
-  fullName: string;
-  nickname: string;
-  email: string | null;
-  phone: string;
-  amountRub: number;
 };
 
 type DbClient = {
@@ -110,6 +108,9 @@ async function ensureSchema() {
           payment_status TEXT NOT NULL DEFAULT 'pending',
           payment_order_id TEXT,
           payment_id TEXT,
+          receipt_file_name TEXT,
+          receipt_file_mime_type TEXT,
+          receipt_file_base64 TEXT,
           amount_rub INTEGER,
           created_at TIMESTAMP NOT NULL DEFAULT NOW()
         );
@@ -130,6 +131,18 @@ async function ensureSchema() {
       await db.exec(`
         ALTER TABLE registrations
         ADD COLUMN IF NOT EXISTS amount_rub INTEGER;
+      `);
+      await db.exec(`
+        ALTER TABLE registrations
+        ADD COLUMN IF NOT EXISTS receipt_file_name TEXT;
+      `);
+      await db.exec(`
+        ALTER TABLE registrations
+        ADD COLUMN IF NOT EXISTS receipt_file_mime_type TEXT;
+      `);
+      await db.exec(`
+        ALTER TABLE registrations
+        ADD COLUMN IF NOT EXISTS receipt_file_base64 TEXT;
       `);
     })();
   }
@@ -156,8 +169,12 @@ export async function createRegistration(
       participation_type,
       comment,
       selected_option_ids,
+      payment_status,
+      receipt_file_name,
+      receipt_file_mime_type,
+      receipt_file_base64,
       amount_rub
-    ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)
+    ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16)
     RETURNING
       id,
       payment_status as "paymentStatus",
@@ -175,6 +192,10 @@ export async function createRegistration(
       input.participationType,
       input.comment ?? null,
       JSON.stringify(input.selectedOptionIds),
+      input.paymentStatus ?? "pending",
+      input.receiptFileName ?? null,
+      input.receiptFileMimeType ?? null,
+      input.receiptFileBase64 ?? null,
       input.amountRub,
     ],
   );
@@ -182,59 +203,8 @@ export async function createRegistration(
   return result.rows[0];
 }
 
-export async function getRegistrationById(
-  id: string,
-): Promise<RegistrationForPayment | null> {
-  await ensureSchema();
-
-  const result = await db.query<RegistrationForPayment>(
-    `SELECT
-      id,
-      full_name as "fullName",
-      nickname,
-      email,
-      phone,
-      COALESCE(amount_rub, 0) as "amountRub"
-    FROM registrations
-    WHERE id = $1
-    LIMIT 1;`,
-    [id],
-  );
-
-  return result.rows[0] ?? null;
-}
-
-export async function attachPaymentToRegistration(params: {
-  registrationId: string;
-  orderId: string;
-  paymentId: string;
-}) {
-  await ensureSchema();
-
-  await db.query(
-    `UPDATE registrations
-    SET
-      payment_status = 'created',
-      payment_order_id = $2,
-      payment_id = $3
-    WHERE id = $1;`,
-    [params.registrationId, params.orderId, params.paymentId],
-  );
-}
-
-export async function setRegistrationPaidByOrderId(orderId: string) {
-  await ensureSchema();
-
-  await db.query(
-    `UPDATE registrations
-    SET payment_status = 'paid'
-    WHERE payment_order_id = $1;`,
-    [orderId],
-  );
-}
-
 export async function listRegistrations(
-  paymentStatus?: "pending" | "created" | "paid",
+  paymentStatus?: "pending" | "paid",
 ): Promise<RegistrationAdminRecord[]> {
   await ensureSchema();
 
@@ -255,6 +225,9 @@ export async function listRegistrations(
         payment_status as "paymentStatus",
         payment_order_id as "paymentOrderId",
         payment_id as "paymentId",
+        receipt_file_name as "receiptFileName",
+        receipt_file_mime_type as "receiptFileMimeType",
+        receipt_file_base64 as "receiptFileBase64",
         COALESCE(amount_rub, 0) as "amountRub",
         created_at as "createdAt"
       FROM registrations
@@ -282,6 +255,9 @@ export async function listRegistrations(
       payment_status as "paymentStatus",
       payment_order_id as "paymentOrderId",
       payment_id as "paymentId",
+      receipt_file_name as "receiptFileName",
+      receipt_file_mime_type as "receiptFileMimeType",
+      receipt_file_base64 as "receiptFileBase64",
       COALESCE(amount_rub, 0) as "amountRub",
       created_at as "createdAt"
     FROM registrations

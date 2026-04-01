@@ -3,12 +3,12 @@
 Next.js landing page for a hip-hop improvisation event in Krasnodar.
 
 Current scope:
-- responsive landing structure;
-- participant lineup section;
+- responsive landing;
+- lineup and program sections;
 - registration form;
-- registration API;
-- Robokassa payment init + webhook scaffold;
-- database storage with production PostgreSQL support.
+- manual payment flow (bank transfer + receipt upload);
+- admin dashboard and CSV export;
+- database storage with PostgreSQL (Vercel) or local fallback.
 
 ## Run locally
 
@@ -25,48 +25,25 @@ Current scope:
 
 ## Deploy to Vercel
 
-1. Import the repository in [Vercel](https://vercel.com/new).
+1. Import repository in [Vercel](https://vercel.com/new).
 2. Keep framework as `Next.js`.
-3. Add environment variables from `.env.example`.
+3. Add env vars from `.env.example`.
 4. Deploy.
 
-## Supabase setup (recommended)
+## Payment flow (manual)
 
-1. Create project at [Supabase](https://supabase.com/).
-2. Open `Project Settings -> Database`.
-3. Copy the connection string (URI format).
-4. Put it into `DATABASE_URL` in Vercel env vars.
-5. Redeploy.
-
-You can use Neon in the same way: just provide its Postgres URI in `DATABASE_URL`.
-
-## Robokassa setup checklist
-
-Fill these env vars in Vercel:
-- `ADMIN_DASHBOARD_TOKEN` (for `/admin/registrations`)
-- `ROBOKASSA_MERCHANT_LOGIN`
-- `ROBOKASSA_PASSWORD_1`
-- `ROBOKASSA_PASSWORD_2`
-- `ROBOKASSA_SUCCESS_URL`
-- `ROBOKASSA_FAIL_URL`
-- `ROBOKASSA_RESULT_URL` (must point to `/api/payments/robokassa/webhook`)
-- `ROBOKASSA_IS_TEST` (`true` for tests, `false` for production)
-
-Prices are calculated from selected checkboxes in:
-- `src/lib/event-options.ts`
-
-Pricing rules in code:
-- Day 1 fixed: `2900`, `900`, `600`, `700`.
-- Day 2 categories: first selected category `1700`, each next `800`.
-- Spectator ticket always `700`.
-
-In Robokassa cabinet, set result URL to:
-- `https://<your-domain>/api/payments/robokassa/webhook`
+1. User fills the registration form and selects options.
+2. User clicks `Перейти к оплате`.
+3. User is redirected to `/payment/manual`.
+4. User transfers money to provided bank details.
+5. User uploads receipt file (phone/PC).
+6. Button `Отправить` becomes active only after file is attached.
+7. Registration with selected options + receipt is saved to DB.
 
 ## Useful routes
 
-- `POST /api/registrations`
-- `POST /api/payments/robokassa/init`
-- `POST /api/payments/robokassa/webhook`
+- `POST /api/registrations/manual`
 - `GET /api/admin/registrations?token=<ADMIN_DASHBOARD_TOKEN>&status=paid`
+- `GET /api/admin/registrations/export?token=<ADMIN_DASHBOARD_TOKEN>`
 - `GET /admin/registrations?token=<ADMIN_DASHBOARD_TOKEN>`
+

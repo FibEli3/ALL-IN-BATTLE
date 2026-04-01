@@ -6,8 +6,9 @@ import {
   getOptionsByDay,
 } from "@/lib/event-options";
 import Image from "next/image";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { FormEvent, useEffect, useMemo, useState } from "react";
+import { MANUAL_PAYMENT_DRAFT_KEY, type PaymentDraft } from "@/lib/payment-draft";
 
 type FormValues = {
   fullName: string;
@@ -117,11 +118,11 @@ function Field(props: {
 }
 
 export function RegistrationForm() {
+  const router = useRouter();
   const searchParams = useSearchParams();
   const [values, setValues] = useState<FormValues>(initialForm);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-  const [successMessage, setSuccessMessage] = useState("");
   const [requiredFieldErrors, setRequiredFieldErrors] = useState<
     Record<RequiredFieldKey, boolean>
   >({
@@ -231,7 +232,6 @@ export function RegistrationForm() {
   const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setErrorMessage("");
-    setSuccessMessage("");
 
     const nextRequiredErrors: Record<RequiredFieldKey, boolean> = {
       fullName: values.fullName.trim().length === 0,
@@ -245,59 +245,28 @@ export function RegistrationForm() {
       return;
     }
 
+    if (selection.selected.length < 1) {
+      setErrorMessage("Выберите хотя бы одну номинацию перед оплатой.");
+      return;
+    }
+
     setIsSubmitting(true);
 
     try {
-      const registrationResponse = await fetch("/api/registrations", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          fullName: values.fullName,
-          nickname: values.nickname,
-          age: values.age,
-          phone: values.phone,
-          email: "",
-          city: "",
-          danceExperience: "",
-          comment: "",
-          participationType: values.participationType,
-          selectedOptionIds: values.selectedOptionIds,
-        }),
-      });
+      const draft: PaymentDraft = {
+        fullName: values.fullName.trim(),
+        nickname: values.nickname.trim(),
+        age: values.age.trim(),
+        phone: values.phone.trim(),
+        participationType: values.participationType,
+        selectedOptionIds: selection.selected.map((item) => item.id),
+      };
 
-      const registrationPayload = await registrationResponse.json();
-      if (!registrationResponse.ok || !registrationPayload?.ok) {
-        throw new Error(registrationPayload?.message ?? "Ошибка отправки");
-      }
-
-      const registrationId = registrationPayload?.registration?.id;
-      if (!registrationId) {
-        throw new Error("Не удалось получить id заявки");
-      }
-
-      const paymentResponse = await fetch("/api/payments/robokassa/init", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ registrationId }),
-      });
-      const paymentPayload = await paymentResponse.json();
-
-      if (!paymentResponse.ok || !paymentPayload?.ok) {
-        setSuccessMessage("Заявка сохранена. Проверь настройки оплаты Robokassa в Vercel.");
-        setValues(initialForm);
-        return;
-      }
-
-      if (paymentPayload?.paymentUrl) {
-        window.location.href = paymentPayload.paymentUrl as string;
-        return;
-      }
-
-      setSuccessMessage("Заявка сохранена, но ссылка на оплату не получена.");
-      setValues(initialForm);
+      sessionStorage.setItem(MANUAL_PAYMENT_DRAFT_KEY, JSON.stringify(draft));
+      router.push("/payment/manual");
     } catch (error) {
       setErrorMessage(
-        error instanceof Error ? error.message : "Не удалось отправить форму.",
+        error instanceof Error ? error.message : "Не удалось перейти к оплате.",
       );
     } finally {
       setIsSubmitting(false);
@@ -509,11 +478,6 @@ export function RegistrationForm() {
         {errorMessage ? (
           <p className="relative z-10 mt-6 rounded-lg border border-red-300 bg-red-50 px-3 py-2 text-sm text-red-700">
             {errorMessage}
-          </p>
-        ) : null}
-        {successMessage ? (
-          <p className="relative z-10 mt-6 rounded-lg border border-emerald-300 bg-emerald-50 px-3 py-2 text-sm text-emerald-700">
-            {successMessage}
           </p>
         ) : null}
       </form>
