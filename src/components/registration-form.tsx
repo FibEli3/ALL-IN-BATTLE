@@ -376,7 +376,7 @@ export function RegistrationForm() {
               ))}
             </div>
 
-            <div className="hidden min-[501px]:max-[1023px]:grid min-[501px]:max-[1023px]:grid-cols-2 min-[501px]:max-[1023px]:gap-x-4 min-[501px]:max-[1023px]:gap-y-4">
+            <div className="hidden min-[501px]:max-[1023px]:grid min-[501px]:max-[1023px]:grid-cols-2 min-[501px]:max-[1023px]:gap-x-12 min-[501px]:max-[1023px]:gap-y-4">
               {day1Options.map((option) => (
                 <label
                   key={`tablet-${option.id}`}
@@ -428,7 +428,7 @@ export function RegistrationForm() {
               ))}
             </div>
 
-            <div className="hidden gap-y-4 min-[501px]:grid min-[501px]:grid-cols-2 min-[501px]:gap-x-4 min-[1024px]:gap-x-8 min-[1024px]:gap-y-6">
+            <div className="hidden gap-y-4 min-[501px]:grid min-[501px]:grid-cols-2 min-[501px]:gap-x-12 min-[1024px]:gap-x-8 min-[1024px]:gap-y-6">
               <div className="grid grid-rows-4 gap-4 min-[1024px]:gap-6">
                 {day2LeftOptions.map((option) => (
                   <label
