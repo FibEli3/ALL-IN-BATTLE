@@ -40,9 +40,32 @@ function mapOptionIdsToTitles(optionIds: string[]) {
   return optionIds.map((id) => EVENT_OPTIONS.find((item) => item.id === id)?.title ?? id);
 }
 
-function escapeCsv(value: string | number | null | undefined) {
+function xmlEscape(value: string | number | null | undefined) {
   const text = value === null || value === undefined ? "" : String(value);
-  return `"${text.replaceAll('"', '""')}"`;
+  return text
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&apos;");
+}
+
+function cell(value: string | number | null | undefined) {
+  return `<Cell><Data ss:Type="String">${xmlEscape(value)}</Data></Cell>`;
+}
+
+function worksheet(name: string, headers: string[], rows: Array<Array<string | number | null | undefined>>) {
+  const headerRow = `<Row>${headers.map((h) => cell(h)).join("")}</Row>`;
+  const bodyRows = rows.map((row) => `<Row>${row.map((v) => cell(v)).join("")}</Row>`).join("");
+
+  return `
+    <Worksheet ss:Name="${xmlEscape(name)}">
+      <Table>
+        ${headerRow}
+        ${bodyRows}
+      </Table>
+    </Worksheet>
+  `;
 }
 
 export async function GET(request: Request) {
@@ -57,33 +80,33 @@ export async function GET(request: Request) {
   const url = new URL(request.url);
   const token = access.token ?? url.searchParams.get("token") ?? "";
 
-  const header = [
-    "id",
-    "createdAt",
-    "paymentStatus",
-    "amountRub",
-    "fullName",
-    "nickname",
-    "phone",
-    "age",
-    "participationType",
-    "selectedOptions",
-    "paymentOrderId",
-    "hasReceipt",
-    "receiptFileName",
-    "receiptDownloadUrl",
+  const registrationsHeaders = [
+    "ID",
+    "Дата",
+    "Статус",
+    "Сумма (₽)",
+    "ФИО",
+    "Ник",
+    "Телефон",
+    "Возраст",
+    "Тип",
+    "Опции",
+    "Order ID",
+    "Есть чек",
+    "Имя файла чека",
+    "Ссылка на чек",
   ];
 
-  const dataRows = all.map((item) => {
+  const registrationRows = all.map((item) => {
     const options = mapOptionIdsToTitles(parseOptions(item.selectedOptionIds));
-    const hasReceipt = Boolean(item.receiptFileName && item.receiptFileBase64);
+    const hasReceipt = Boolean(item.receiptFileBase64);
     const receiptDownloadUrl = hasReceipt
       ? `${url.origin}/api/admin/registrations/receipt?token=${encodeURIComponent(token)}&id=${encodeURIComponent(item.id)}`
       : "";
 
     return [
       item.id,
-      item.createdAt,
+      new Date(item.createdAt).toLocaleString("ru-RU"),
       item.paymentStatus,
       item.amountRub,
       item.fullName,
@@ -93,83 +116,49 @@ export async function GET(request: Request) {
       item.participationType,
       options.join(", "),
       item.paymentOrderId ?? "",
-      hasReceipt ? "yes" : "no",
+      hasReceipt ? "Да" : "Нет",
       item.receiptFileName ?? "",
       receiptDownloadUrl,
     ];
   });
 
-  const blankSummaryRow = new Array(header.length).fill("");
-  const summaryRows: Array<string[]> = [];
+  const summaryHeaders = ["Номинация", "Зарегистрировано", "Оплачено"];
 
-  summaryRows.push(["Summary Day 1", "", "", "", "", "", "", "", "", "", "", "", "", ""]);
-  summaryRows.push(["nomination", "registered", "paid", "", "", "", "", "", "", "", "", "", "", ""]);
-
-  for (const option of day1Options) {
+  const day1Rows = day1Options.map((option) => {
     const registered = all.filter((item) => parseOptions(item.selectedOptionIds).includes(option.id)).length;
     const paid = all.filter(
       (item) => item.paymentStatus === "paid" && parseOptions(item.selectedOptionIds).includes(option.id),
     ).length;
 
-    summaryRows.push([
-      option.title,
-      String(registered),
-      String(paid),
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-    ]);
-  }
+    return [option.title, registered, paid];
+  });
 
-  summaryRows.push(blankSummaryRow);
-  summaryRows.push(["Summary Day 2", "", "", "", "", "", "", "", "", "", "", "", "", ""]);
-  summaryRows.push(["nomination", "registered", "paid", "", "", "", "", "", "", "", "", "", "", ""]);
-
-  for (const option of day2Options) {
+  const day2Rows = day2Options.map((option) => {
     const registered = all.filter((item) => parseOptions(item.selectedOptionIds).includes(option.id)).length;
     const paid = all.filter(
       (item) => item.paymentStatus === "paid" && parseOptions(item.selectedOptionIds).includes(option.id),
     ).length;
 
-    summaryRows.push([
-      option.title,
-      String(registered),
-      String(paid),
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-    ]);
-  }
+    return [option.title, registered, paid];
+  });
 
-  const csv = [
-    header.map(escapeCsv).join(";"),
-    ...dataRows.map((row) => row.map(escapeCsv).join(";")),
-    "",
-    ...summaryRows.map((row) => row.map(escapeCsv).join(";")),
-  ].join("\n");
+  const xml = `<?xml version="1.0" encoding="UTF-8"?>
+<?mso-application progid="Excel.Sheet"?>
+<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet"
+ xmlns:o="urn:schemas-microsoft-com:office:office"
+ xmlns:x="urn:schemas-microsoft-com:office:excel"
+ xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet"
+ xmlns:html="http://www.w3.org/TR/REC-html40">
+  ${worksheet("Заявки", registrationsHeaders, registrationRows)}
+  ${worksheet("Сводка День 1", summaryHeaders, day1Rows)}
+  ${worksheet("Сводка День 2", summaryHeaders, day2Rows)}
+</Workbook>`;
 
-  const bom = "\uFEFF";
-  return new Response(`${bom}${csv}`, {
+  return new Response(xml, {
     status: 200,
     headers: {
-      "Content-Type": "text/csv; charset=utf-8",
-      "Content-Disposition": 'attachment; filename="all-in-battle-registrations.csv"',
+      "Content-Type": "application/vnd.ms-excel; charset=utf-8",
+      "Content-Disposition": 'attachment; filename="all-in-battle-registrations.xls"',
       "Cache-Control": "no-store",
     },
   });

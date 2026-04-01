@@ -147,7 +147,7 @@ export default async function AdminRegistrationsPage({ searchParams }: AdminPage
           href={exportHref}
           className="rounded-full border border-[#2a6a34] bg-white px-4 py-2 text-sm font-semibold text-[#2a6a34] transition hover:bg-[#2a6a34] hover:text-white"
         >
-          Скачать Excel (CSV)
+          Скачать Excel
         </a>
       </div>
 
@@ -236,7 +236,7 @@ export default async function AdminRegistrationsPage({ searchParams }: AdminPage
                   <td className="px-4 py-3">{item.participationType}</td>
                   <td className="px-4 py-3">{optionTitles.length > 0 ? optionTitles.join(", ") : "-"}</td>
                   <td className="px-4 py-3">
-                    {item.receiptFileName ? (
+                    {item.receiptFileName || item.receiptFileBase64 ? (
                       <a
                         href={`/api/admin/registrations/receipt?token=${encodeURIComponent(token)}&id=${encodeURIComponent(item.id)}`}
                         className="inline-flex rounded-full border border-[#2a6a34] px-3 py-1 text-xs font-semibold text-[#2a6a34] transition hover:bg-[#2a6a34] hover:text-white"

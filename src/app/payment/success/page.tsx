@@ -20,7 +20,7 @@ export default function PaymentSuccessPage() {
       />
 
       <section className="relative z-10 mx-auto flex w-full max-w-[920px] flex-col items-center rounded-[34px] border border-[#cdcdcd] bg-[#fafafa] px-6 py-14 text-center md:px-12 md:py-16">
-        <h1 className="font-display text-[42px] font-black uppercase leading-none tracking-tight text-[#2a6a34] md:text-[72px]">
+        <h1 className="font-display text-[34px] font-black uppercase leading-none tracking-tight text-[#2a6a34] md:text-[72px]">
           Заявка Отправлена
         </h1>
         <p className="mt-8 max-w-[640px] text-[22px] font-medium leading-[1.25] text-[#1b1b1b] md:text-[30px]">
