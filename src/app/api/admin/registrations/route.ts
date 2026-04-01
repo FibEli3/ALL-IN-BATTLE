@@ -1,7 +1,6 @@
 import { listRegistrations } from "@/lib/db";
+import { getOptionsByDay } from "@/lib/event-options";
 import { NextResponse } from "next/server";
-
-const allowedStatuses = new Set(["pending", "paid"]);
 
 function checkAccess(request: Request) {
   const adminToken = process.env.ADMIN_DASHBOARD_TOKEN?.trim();
@@ -36,13 +35,25 @@ export async function GET(request: Request) {
 
   try {
     const url = new URL(request.url);
-    const statusParam = url.searchParams.get("status");
-      const status =
-      statusParam && allowedStatuses.has(statusParam)
-        ? (statusParam as "pending" | "paid")
-        : undefined;
+    const dayParam = url.searchParams.get("day");
+    const day = dayParam === "day1" || dayParam === "day2" ? dayParam : undefined;
 
-    const registrations = await listRegistrations(status);
+    const allRegistrations = await listRegistrations();
+    const registrations = day
+      ? allRegistrations.filter((item) => {
+          const dayOptionIds = new Set(getOptionsByDay(day).map((option) => option.id));
+          if (!item.selectedOptionIds) {
+            return false;
+          }
+
+          try {
+            const parsed = JSON.parse(item.selectedOptionIds) as string[];
+            return Array.isArray(parsed) && parsed.some((id) => dayOptionIds.has(id));
+          } catch {
+            return false;
+          }
+        })
+      : allRegistrations;
 
     return NextResponse.json({
       ok: true,

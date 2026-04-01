@@ -54,7 +54,6 @@ export async function POST(request: Request) {
       comment: null,
       selectedOptionIds: selection.selected.map((item) => item.id),
       amountRub: selection.totalRub,
-      paymentStatus: "paid",
       receiptFileName: payload.receiptFileName,
       receiptFileMimeType: payload.receiptFileMimeType,
       receiptFileBase64: payload.receiptFileBase64,
@@ -75,4 +74,3 @@ export async function POST(request: Request) {
     );
   }
 }
-

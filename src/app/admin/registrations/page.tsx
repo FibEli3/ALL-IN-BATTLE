@@ -6,7 +6,7 @@ import Link from "next/link";
 type AdminPageProps = {
   searchParams: Promise<{
     token?: string;
-    status?: string;
+    day?: string;
   }>;
 };
 
@@ -43,7 +43,6 @@ function buildStats(registrations: RegistrationAdminRecord[], day: "day1" | "day
 
   return options.map((option) => {
     let registered = 0;
-    let paid = 0;
 
     for (const record of registrations) {
       const selected = parseOptions(record.selectedOptionIds);
@@ -52,25 +51,28 @@ function buildStats(registrations: RegistrationAdminRecord[], day: "day1" | "day
       }
 
       registered += 1;
-      if (record.paymentStatus === "paid") {
-        paid += 1;
-      }
     }
 
     return {
       id: option.id,
       title: option.title,
       registered,
-      paid,
+      paid: registered,
     };
   });
+}
+
+function hasOptionsForDay(record: RegistrationAdminRecord, day: "day1" | "day2") {
+  const selected = parseOptions(record.selectedOptionIds);
+  const dayOptionIds = new Set(getOptionsByDay(day).map((item) => item.id));
+  return selected.some((id) => dayOptionIds.has(id));
 }
 
 export default async function AdminRegistrationsPage({ searchParams }: AdminPageProps) {
   const params = await searchParams;
   const token = (params.token ?? "").trim();
-  const statusParam = params.status;
-  const activeStatus = statusParam === "pending" || statusParam === "paid" ? statusParam : undefined;
+  const dayParam = params.day;
+  const activeDay = dayParam === "day1" || dayParam === "day2" ? dayParam : undefined;
 
   const expectedToken = process.env.ADMIN_DASHBOARD_TOKEN?.trim();
   const isAuthorized = Boolean(expectedToken) && token === expectedToken;
@@ -98,16 +100,16 @@ export default async function AdminRegistrationsPage({ searchParams }: AdminPage
   }
 
   const allRegistrations = await listRegistrations();
-  const registrations = activeStatus
-    ? allRegistrations.filter((item) => item.paymentStatus === activeStatus)
+  const registrations = activeDay
+    ? allRegistrations.filter((item) => hasOptionsForDay(item, activeDay))
     : allRegistrations;
   const day1Stats = buildStats(allRegistrations, "day1");
   const day2Stats = buildStats(allRegistrations, "day2");
 
-  const statuses: Array<{ id: "all" | "pending" | "paid"; label: string }> = [
+  const filters: Array<{ id: "all" | "day1" | "day2"; label: string }> = [
     { id: "all", label: "Все" },
-    { id: "pending", label: "Pending" },
-    { id: "paid", label: "Paid" },
+    { id: "day1", label: "1 день" },
+    { id: "day2", label: "2 день" },
   ];
 
   const exportHref = `/api/admin/registrations/export?token=${encodeURIComponent(token)}`;
@@ -120,13 +122,13 @@ export default async function AdminRegistrationsPage({ searchParams }: AdminPage
       <p className="mt-3 text-lg text-[#575757]">Всего заявок: {allRegistrations.length}</p>
 
       <div className="mt-6 flex flex-wrap items-center gap-3">
-        {statuses.map((item) => {
+        {filters.map((item) => {
           const href =
             item.id === "all"
               ? `/admin/registrations?token=${encodeURIComponent(token)}`
-              : `/admin/registrations?token=${encodeURIComponent(token)}&status=${item.id}`;
+              : `/admin/registrations?token=${encodeURIComponent(token)}&day=${item.id}`;
           const active =
-            (item.id === "all" && !activeStatus) || (item.id !== "all" && activeStatus === item.id);
+            (item.id === "all" && !activeDay) || (item.id !== "all" && activeDay === item.id);
 
           return (
             <Link
@@ -206,7 +208,6 @@ export default async function AdminRegistrationsPage({ searchParams }: AdminPage
           <thead className="bg-[#f4f4f4] text-[#303030]">
             <tr>
               <th className="px-4 py-3 font-semibold">Дата</th>
-              <th className="px-4 py-3 font-semibold">Статус</th>
               <th className="px-4 py-3 font-semibold">Сумма</th>
               <th className="px-4 py-3 font-semibold">ФИО</th>
               <th className="px-4 py-3 font-semibold">Ник</th>
@@ -225,7 +226,6 @@ export default async function AdminRegistrationsPage({ searchParams }: AdminPage
                   <td className="px-4 py-3 whitespace-nowrap">
                     {new Date(item.createdAt).toLocaleString("ru-RU")}
                   </td>
-                  <td className="px-4 py-3 font-semibold">{item.paymentStatus}</td>
                   <td className="px-4 py-3 font-semibold">{rub(item.amountRub)}</td>
                   <td className="px-4 py-3">{item.fullName}</td>
                   <td className="px-4 py-3">{item.nickname ?? "-"}</td>

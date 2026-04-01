@@ -83,7 +83,6 @@ export async function GET(request: Request) {
   const registrationsHeaders = [
     "ID",
     "Дата",
-    "Статус",
     "Сумма (₽)",
     "ФИО",
     "Ник",
@@ -105,7 +104,6 @@ export async function GET(request: Request) {
     return [
       item.id,
       new Date(item.createdAt).toLocaleString("ru-RU"),
-      item.paymentStatus,
       item.amountRub,
       item.fullName,
       item.nickname ?? "",
@@ -123,7 +121,7 @@ export async function GET(request: Request) {
   const day1Rows = day1Options.map((option) => {
     const registered = all.filter((item) => parseOptions(item.selectedOptionIds).includes(option.id)).length;
     const paid = all.filter(
-      (item) => item.paymentStatus === "paid" && parseOptions(item.selectedOptionIds).includes(option.id),
+      (item) => parseOptions(item.selectedOptionIds).includes(option.id),
     ).length;
 
     return [option.title, registered, paid];
@@ -132,7 +130,7 @@ export async function GET(request: Request) {
   const day2Rows = day2Options.map((option) => {
     const registered = all.filter((item) => parseOptions(item.selectedOptionIds).includes(option.id)).length;
     const paid = all.filter(
-      (item) => item.paymentStatus === "paid" && parseOptions(item.selectedOptionIds).includes(option.id),
+      (item) => parseOptions(item.selectedOptionIds).includes(option.id),
     ).length;
 
     return [option.title, registered, paid];
