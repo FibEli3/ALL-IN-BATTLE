@@ -56,8 +56,10 @@ const judges: PersonCardProps[] = [
     name: "ASHPI",
     city: "г. Донецк",
     image: "/judges/ashpi.jpg",
-    tiltClass: "md:-rotate-[5deg]",
-    orderClass: "md:order-1 md:pt-0",
+    tiltClass:
+      "min-[501px]:max-[1023px]:-rotate-[5deg] min-[1024px]:-rotate-[5deg]",
+    orderClass:
+      "min-[501px]:max-[1023px]:order-1 min-[1024px]:order-1 min-[1024px]:pt-0",
     revealIndex: 1,
   },
   {
@@ -65,15 +67,18 @@ const judges: PersonCardProps[] = [
     city: "г. Санкт-Петербург",
     image: "/judges/rash-the-flow.jpg",
     tiltClass: "",
-    orderClass: "md:order-2 md:pt-16",
+    orderClass:
+      "min-[501px]:max-[1023px]:order-3 min-[1024px]:order-2 min-[1024px]:pt-16",
     revealIndex: 3,
   },
   {
     name: "RUBA",
     city: "г. Москва",
     image: "/judges/ruba.jpg",
-    tiltClass: "md:rotate-[5deg]",
-    orderClass: "md:order-3 md:pt-0",
+    tiltClass:
+      "min-[501px]:max-[1023px]:rotate-[5deg] min-[1024px]:rotate-[5deg]",
+    orderClass:
+      "min-[501px]:max-[1023px]:order-2 min-[1024px]:order-3 min-[1024px]:pt-0",
     revealIndex: 2,
   },
 ];
@@ -83,8 +88,10 @@ const djs: PersonCardProps[] = [
     name: "WHYDEAP",
     city: "г. Краснодар",
     image: "/dj/whydeap.jpg",
-    tiltClass: "md:-rotate-[5deg]",
-    orderClass: "md:order-1 md:pt-0",
+    tiltClass:
+      "min-[501px]:max-[1023px]:-rotate-[5deg] min-[1024px]:-rotate-[5deg]",
+    orderClass:
+      "min-[501px]:max-[1023px]:order-1 min-[1024px]:order-1 min-[1024px]:pt-0",
     revealIndex: 1,
   },
   {
@@ -92,15 +99,18 @@ const djs: PersonCardProps[] = [
     city: "г. Симферополь",
     image: "/dj/elmi.jpg",
     tiltClass: "",
-    orderClass: "md:order-2 md:pt-16",
+    orderClass:
+      "min-[501px]:max-[1023px]:order-3 min-[1024px]:order-2 min-[1024px]:pt-16",
     revealIndex: 3,
   },
   {
     name: "BAMBOOK",
     city: "г. Краснодар",
     image: "/dj/bambook.jpg",
-    tiltClass: "md:rotate-[5deg]",
-    orderClass: "md:order-3 md:pt-0",
+    tiltClass:
+      "min-[501px]:max-[1023px]:rotate-[5deg] min-[1024px]:rotate-[5deg]",
+    orderClass:
+      "min-[501px]:max-[1023px]:order-2 min-[1024px]:order-3 min-[1024px]:pt-0",
     revealIndex: 2,
   },
 ];
@@ -110,14 +120,16 @@ const mcs: PersonCardProps[] = [
     name: "EMILE",
     city: "г. Краснодар",
     image: "/mc/emile.jpg",
-    tiltClass: "md:-rotate-[5deg]",
+    tiltClass:
+      "min-[501px]:max-[1023px]:-rotate-[5deg] min-[1024px]:-rotate-[5deg]",
     revealIndex: 1,
   },
   {
     name: "MAVI",
     city: "г. Симферополь",
     image: "/mc/mavi.jpg",
-    tiltClass: "md:rotate-[5deg]",
+    tiltClass:
+      "min-[501px]:max-[1023px]:rotate-[5deg] min-[1024px]:rotate-[5deg]",
     revealIndex: 2,
   },
 ];
@@ -221,7 +233,7 @@ const dayTwoColumns: DayCard[] = [
 ];
 
 const sectionHeadingClass =
-  "font-display text-[56px] font-black uppercase leading-none tracking-tight text-[#2a6a34] md:text-[80px]";
+  "font-display text-[56px] font-black uppercase leading-none tracking-tight text-[#2a6a34] min-[501px]:max-[1023px]:text-[72px] min-[1024px]:text-[80px]";
 
 const personNameClass =
   "mx-auto inline-block max-w-[14ch] whitespace-normal break-words font-display text-[32px] font-semibold uppercase leading-[0.92] tracking-[-0.01em] text-[#111]";
@@ -239,12 +251,12 @@ function PersonCard({
 }: PersonCardProps) {
   return (
     <article
-      className={`lineup-card mx-auto w-full max-w-[335px] text-center min-[501px]:max-w-[395px] ${orderClass} ${offsetClass}`}
+      className={`lineup-card mx-auto w-full max-w-[335px] text-center min-[501px]:max-[1023px]:max-w-[260px] min-[1024px]:max-w-[395px] ${orderClass} ${offsetClass}`}
       data-reveal={revealIndex}
     >
       <div className="lineup-card-reveal">
-        <div className={`mx-auto w-full max-w-[335px] origin-top min-[501px]:max-w-[395px] ${tiltClass}`}>
-          <div className="mx-auto w-full max-w-[335px] overflow-hidden rounded-[28px] min-[501px]:max-w-[395px]">
+        <div className={`mx-auto w-full max-w-[335px] origin-top min-[501px]:max-[1023px]:max-w-[260px] min-[1024px]:max-w-[395px] ${tiltClass}`}>
+          <div className="mx-auto w-full max-w-[335px] overflow-hidden rounded-[28px] min-[501px]:max-[1023px]:max-w-[260px] min-[1024px]:max-w-[395px]">
             <Image
               src={image}
               alt={name}
@@ -280,10 +292,10 @@ function TrioSection({
       data-snap-section
       data-lineup-anim
       data-complete-phase={completePhase}
-      className="snap-section relative mx-auto w-full max-w-[1440px] overflow-hidden px-5 py-16 md:px-8 md:py-24"
+      className="snap-section relative mx-auto w-full max-w-[1440px] overflow-hidden px-5 py-16 md:px-8 md:py-24 min-[501px]:max-[1023px]:py-20"
     >
       <h2 className={`lineup-title relative z-10 text-center ${sectionHeadingClass}`}>{title}</h2>
-      <div className="mx-auto mt-8 grid w-full max-w-[1400px] justify-items-center gap-8 md:grid-cols-3 md:items-start md:gap-x-16">
+      <div className="mx-auto mt-8 grid w-full max-w-[1400px] justify-items-center gap-8 min-[501px]:max-[1023px]:grid-cols-1 min-[501px]:max-[1023px]:gap-12 min-[1024px]:grid-cols-3 min-[1024px]:items-start min-[1024px]:gap-x-16">
         {people.map((person, index) => (
           <PersonCard key={person.name} revealIndex={person.revealIndex ?? index + 1} {...person} />
         ))}
@@ -375,10 +387,10 @@ export default function Home() {
         data-snap-section
         data-lineup-anim
         data-complete-phase="3"
-        className="snap-section relative mx-auto w-full max-w-[1440px] overflow-hidden px-5 py-16 md:px-8 md:py-24"
+        className="snap-section relative mx-auto w-full max-w-[1440px] overflow-hidden px-5 py-16 md:px-8 md:py-24 min-[501px]:max-[1023px]:py-20"
       >
         <h2 className={`lineup-title relative z-10 text-center ${sectionHeadingClass}`}>MC</h2>
-        <div className="mx-auto mt-8 grid max-w-[1240px] gap-10 md:grid-cols-2 md:gap-x-28">
+        <div className="mx-auto mt-8 grid max-w-[1240px] gap-10 min-[501px]:max-[1023px]:grid-cols-1 min-[501px]:max-[1023px]:gap-12 min-[1024px]:grid-cols-2 min-[1024px]:gap-x-28">
           {mcs.map((person, index) => (
             <PersonCard key={person.name} revealIndex={(index + 1) as 1 | 2 | 3} {...person} />
           ))}
@@ -391,49 +403,49 @@ export default function Home() {
         data-lineup-anim
         data-complete-phase="5"
         data-lineup-kind="media"
-        className="snap-section relative mx-auto w-full max-w-[1440px] overflow-hidden px-5 py-16 md:px-8 md:py-24"
+        className="snap-section relative mx-auto w-full max-w-[1440px] overflow-hidden px-5 py-16 md:px-8 md:py-24 min-[501px]:max-[1023px]:py-20"
       >
-        <div className="grid items-start gap-10 md:grid-cols-3">
-          <div className="order-1 md:order-none md:pt-10">
-            <h2 className={`lineup-title relative z-10 text-center ${sectionHeadingClass} md:text-left`}>
+        <div className="grid items-start gap-10 min-[501px]:max-[1023px]:grid-cols-1 min-[1024px]:grid-cols-3">
+          <div className="order-1 min-[1024px]:order-none min-[1024px]:pt-10">
+            <h2 className={`lineup-title relative z-10 text-center ${sectionHeadingClass} min-[1024px]:text-left`}>
               PHOTO
             </h2>
-            <div className="mt-16 mx-auto max-w-[395px] md:mx-0">
+            <div className="mt-16 mx-auto max-w-[395px] min-[1024px]:mx-0">
               <PersonCard
                 name="VALENTINA"
                 image="/photo/valentina.jpg"
-                tiltClass="md:-rotate-[2deg]"
+                tiltClass="min-[501px]:max-[1023px]:-rotate-[2deg] min-[1024px]:-rotate-[2deg]"
                 orderClass="max-w-[395px]"
                 revealIndex={1}
               />
             </div>
           </div>
 
-          <div className="order-3 mt-12 md:hidden">
+          <div className="order-3 mt-12 min-[1024px]:hidden">
             <h2 className="lineup-video-title text-center font-display text-[56px] font-black uppercase leading-none tracking-tight text-[#2a6a34]">
               VIDEO
             </h2>
           </div>
 
-          <div className="order-4 md:order-none md:pt-16">
+          <div className="order-4 min-[1024px]:order-none min-[1024px]:pt-16">
             <PersonCard
               name="RADON"
               image="/video/radon.jpg"
-              tiltClass="md:-rotate-[5.5deg]"
-              offsetClass="md:-translate-x-12"
+              tiltClass="min-[501px]:max-[1023px]:-rotate-[5.5deg] min-[1024px]:-rotate-[5.5deg]"
+              offsetClass="min-[1024px]:-translate-x-12"
               revealIndex={4}
             />
           </div>
 
-          <div className="order-5 md:order-none md:pt-10">
+          <div className="order-5 min-[1024px]:order-none min-[1024px]:pt-10">
             <PersonCard
               name="DIMA SOKOLOV"
               image="/video/dima-sokolov.jpg"
-              tiltClass="md:rotate-[6deg]"
-              offsetClass="md:translate-x-12"
+              tiltClass="min-[501px]:max-[1023px]:rotate-[6deg] min-[1024px]:rotate-[6deg]"
+              offsetClass="min-[1024px]:translate-x-12"
               revealIndex={4}
             />
-            <h2 className="lineup-video-title mt-10 hidden text-center font-display text-[56px] font-black uppercase leading-none tracking-tight text-[#2a6a34] md:relative md:left-[-240px] md:block md:text-center md:text-[80px]">
+            <h2 className="lineup-video-title mt-10 hidden text-center font-display text-[56px] font-black uppercase leading-none tracking-tight text-[#2a6a34] min-[1024px]:relative min-[1024px]:left-[-240px] min-[1024px]:block min-[1024px]:text-center min-[1024px]:text-[80px]">
               VIDEO
             </h2>
           </div>
@@ -442,35 +454,35 @@ export default function Home() {
 
       <section id="day-one" className="mx-auto w-full max-w-[1440px] px-5 py-10 md:px-8 md:py-16">
         <div className="relative px-2 py-6 md:px-0">
-          <header className="mb-10 flex flex-col items-start gap-3 text-[24px] font-display font-black uppercase leading-[0.9] tracking-tight text-[#1b1b1b] md:mb-12 md:flex-row md:items-start md:justify-between md:gap-4 md:text-[30px]">
+          <header className="mb-10 flex flex-col items-start gap-3 text-[24px] font-display font-black uppercase leading-[0.9] tracking-tight text-[#1b1b1b] md:mb-12 md:flex-row md:items-start md:justify-between md:gap-4 min-[1024px]:text-[30px]">
             <h2>День 1: Workshop / Jam / Contest</h2>
             <p>25 апреля</p>
           </header>
-          <div className="relative mt-8 flex flex-col gap-4 md:mt-12 md:flex-row md:items-start md:justify-center md:gap-6">
+          <div className="relative mt-8 flex flex-col gap-4 md:mt-12 min-[501px]:max-[1023px]:grid min-[501px]:max-[1023px]:grid-cols-2 min-[501px]:max-[1023px]:items-start min-[501px]:max-[1023px]:gap-4 min-[1024px]:flex min-[1024px]:flex-row min-[1024px]:items-start min-[1024px]:justify-center min-[1024px]:gap-6">
             {dayOneCards.map((card) => (
               <article
                 key={card.title}
                 className={`relative flex flex-col overflow-hidden rounded-[28px] border border-[#dde1de] ${
                   card.variant === "center"
-                    ? "order-2 z-20 w-full bg-[#fafafa] px-6 py-8 shadow-[0_0_30px_3px_rgba(41,108,51,0.15)] md:w-[464px] md:min-h-[760px] md:px-[40px] md:py-[60px]"
+                    ? "order-2 z-20 w-full bg-[#fafafa] px-6 py-8 shadow-[0_0_30px_3px_rgba(41,108,51,0.15)] min-[501px]:max-[1023px]:col-start-1 min-[501px]:max-[1023px]:col-end-2 min-[501px]:max-[1023px]:translate-y-[-12px] min-[1024px]:w-[464px] min-[1024px]:min-h-[760px] min-[1024px]:px-[40px] min-[1024px]:py-[60px]"
                     : card.title === "JAM"
-                      ? "order-3 z-10 mt-[-56px] w-[calc(100%-20px)] self-center bg-[#fafafa] px-6 pb-8 pt-[84px] md:mt-[20px] md:w-[444px] md:min-h-[720px] md:px-[50px] md:py-[40px]"
-                      : "order-1 z-10 w-full bg-[#fafafa] px-6 py-8 md:mt-[20px] md:w-[444px] md:min-h-[720px] md:px-[50px] md:py-[40px]"
+                      ? "order-3 z-10 mt-[-56px] w-[calc(100%-20px)] self-center bg-[#fafafa] px-6 pb-8 pt-[84px] min-[501px]:max-[1023px]:order-3 min-[501px]:max-[1023px]:mt-0 min-[501px]:max-[1023px]:w-full min-[501px]:max-[1023px]:self-auto min-[501px]:max-[1023px]:px-6 min-[501px]:max-[1023px]:pb-8 min-[501px]:max-[1023px]:pt-8 min-[1024px]:mt-[20px] min-[1024px]:w-[444px] min-[1024px]:min-h-[720px] min-[1024px]:px-[50px] min-[1024px]:py-[40px]"
+                      : "order-1 z-10 w-full bg-[#fafafa] px-6 py-8 min-[501px]:max-[1023px]:col-span-2 min-[1024px]:mt-[20px] min-[1024px]:w-[444px] min-[1024px]:min-h-[720px] min-[1024px]:px-[50px] min-[1024px]:py-[40px]"
                 } ${
                   card.variant === "center"
-                    ? "md:mx-[-24px]"
+                    ? "min-[1024px]:mx-[-24px]"
                     : card.title === "Мастер-Класс от RASH THE FLOW"
-                      ? "md:mr-[-24px]"
-                      : "md:ml-[-24px]"
+                      ? "min-[1024px]:mr-[-24px]"
+                      : "min-[1024px]:ml-[-24px]"
                 }`}
               >
-                <h3 className="h-[40px] font-body text-[22px] font-bold leading-[1.1] md:h-[68px] md:text-[28px]">
+                <h3 className="h-[40px] font-body text-[18px] font-bold leading-[1.1] min-[1024px]:h-[68px] min-[1024px]:text-[28px]">
                   {card.title}
                 </h3>
-                <p className="mt-4 text-[32px] font-bold leading-none text-[#095d13] md:mt-6 md:text-[42px]">
+                <p className="mt-4 text-[32px] font-bold leading-none text-[#095d13] min-[1024px]:mt-6 min-[1024px]:text-[42px]">
                   {card.price}
                 </p>
-                <div className="mt-8 space-y-4 text-[16px] font-semibold leading-[1.2] text-[#1f1f1f] md:mt-12 md:text-[20px]">
+                <div className="mt-8 space-y-4 text-[16px] font-semibold leading-[1.2] text-[#1f1f1f] min-[1024px]:mt-12 min-[1024px]:text-[20px]">
                   {card.items.map((item, itemIndex) => (
                     <div key={`${item.title}-${itemIndex}`} className="flex gap-3">
                       <FlowerMark warning={item.bullet === "red"} />
@@ -499,7 +511,7 @@ export default function Home() {
                 <ProgramRegistrationButton
                   presetId={card.registrationPresetId}
                   clearSelection
-                  className="mt-12 block w-full rounded-full bg-[#2a6a34] px-6 py-4 text-center text-[14px] font-semibold leading-none text-white transition hover:bg-[#21562a] whitespace-nowrap md:mt-auto md:text-[18px]"
+                  className="mt-12 block w-full rounded-full bg-[#2a6a34] px-6 py-4 text-center text-[14px] font-semibold leading-none text-white transition hover:bg-[#21562a] whitespace-nowrap min-[1024px]:mt-auto min-[1024px]:text-[18px]"
                 >
                   {card.button}
                 </ProgramRegistrationButton>
@@ -508,7 +520,7 @@ export default function Home() {
           </div>
           <div className="mt-8 flex items-start gap-3">
             <FlowerMark warning />
-            <p className="text-[16px] font-semibold leading-[1.2] text-[#1f1f1f] md:text-[20px]">
+            <p className="text-[16px] font-semibold leading-[1.2] text-[#1f1f1f] min-[1024px]:text-[20px]">
               Возврат денежных средств за участие в jam/contest/workshop возможен до 17.04.2026
               включительно
             </p>
@@ -518,32 +530,32 @@ export default function Home() {
 
       <section id="day-two" className="mx-auto w-full max-w-[1440px] px-5 py-10 md:px-8 md:py-16">
         <div className="relative px-2 py-6 md:px-0">
-          <header className="mb-10 flex flex-col items-start gap-3 text-[24px] font-display font-black uppercase leading-[0.9] tracking-tight text-[#1b1b1b] md:mb-12 md:flex-row md:items-start md:justify-between md:gap-4 md:text-[30px]">
+          <header className="mb-10 flex flex-col items-start gap-3 text-[24px] font-display font-black uppercase leading-[0.9] tracking-tight text-[#1b1b1b] md:mb-12 md:flex-row md:items-start md:justify-between md:gap-4 min-[1024px]:text-[30px]">
             <h2>День 2: ALL IN BATTLE</h2>
             <p>26 апреля</p>
           </header>
-          <div className="relative mt-8 flex flex-col gap-4 md:mt-12 md:flex-row md:items-start md:justify-center md:gap-6">
+          <div className="relative mt-8 flex flex-col gap-4 md:mt-12 min-[501px]:max-[1023px]:grid min-[501px]:max-[1023px]:grid-cols-2 min-[501px]:max-[1023px]:items-start min-[501px]:max-[1023px]:gap-4 min-[1024px]:flex min-[1024px]:flex-row min-[1024px]:items-start min-[1024px]:justify-center min-[1024px]:gap-6">
             {dayTwoColumns.map((column) => (
               <article
                 key={column.title}
                 className={`relative flex flex-col overflow-hidden rounded-[28px] border border-[#dde1de] ${
                   column.title === "Стоимость"
-                    ? "order-1 z-10 w-full bg-[#fafafa] px-6 py-8 md:mt-[20px] md:w-[444px] md:min-h-[720px] md:px-[50px] md:py-[40px]"
+                    ? "order-1 z-10 w-full bg-[#fafafa] px-6 py-8 min-[501px]:max-[1023px]:col-span-2 min-[1024px]:mt-[20px] min-[1024px]:w-[444px] min-[1024px]:min-h-[720px] min-[1024px]:px-[50px] min-[1024px]:py-[40px]"
                     : column.title === "Номинации"
-                      ? "order-2 z-20 w-full bg-[#fafafa] px-6 py-8 shadow-[0_0_30px_3px_rgba(41,108,51,0.15)] md:w-[464px] md:min-h-[760px] md:px-[40px] md:py-[60px]"
-                      : "order-3 z-10 mt-[-56px] w-[calc(100%-20px)] self-center bg-[#fafafa] px-6 pb-8 pt-[84px] md:mt-[20px] md:w-[444px] md:min-h-[720px] md:px-[50px] md:py-[40px]"
+                      ? "order-2 z-20 w-full bg-[#fafafa] px-6 py-8 shadow-[0_0_30px_3px_rgba(41,108,51,0.15)] min-[501px]:max-[1023px]:translate-y-[0] min-[1024px]:w-[464px] min-[1024px]:min-h-[760px] min-[1024px]:px-[40px] min-[1024px]:py-[60px]"
+                      : "order-3 z-10 mt-[-56px] w-[calc(100%-20px)] self-center bg-[#fafafa] px-6 pb-8 pt-[84px] min-[501px]:max-[1023px]:mt-0 min-[501px]:max-[1023px]:w-full min-[501px]:max-[1023px]:self-auto min-[501px]:max-[1023px]:px-6 min-[501px]:max-[1023px]:pb-8 min-[501px]:max-[1023px]:pt-8 min-[1024px]:mt-[20px] min-[1024px]:w-[444px] min-[1024px]:min-h-[720px] min-[1024px]:px-[50px] min-[1024px]:py-[40px]"
                 } ${
                   column.title === "Номинации"
-                    ? "md:mx-[-24px]"
+                    ? "min-[1024px]:mx-[-24px]"
                     : column.title === "Стоимость"
-                      ? "md:mr-[-24px]"
-                      : "md:ml-[-24px]"
+                      ? "min-[1024px]:mr-[-24px]"
+                      : "min-[1024px]:ml-[-24px]"
                 }`}
               >
-                <h3 className="h-[40px] font-body text-[22px] font-bold leading-[1.1] md:h-auto md:text-[28px]">
+                <h3 className="h-[40px] font-body text-[18px] font-bold leading-[1.1] min-[1024px]:h-auto min-[1024px]:text-[28px]">
                   {column.title}
                 </h3>
-                <div className="mt-8 space-y-4 text-[16px] font-semibold leading-[1.2] text-[#1f1f1f] md:mt-12 md:text-[20px]">
+                <div className="mt-8 space-y-4 text-[16px] font-semibold leading-[1.2] text-[#1f1f1f] min-[1024px]:mt-12 min-[1024px]:text-[20px]">
                   {column.items.map((item, itemIndex) => (
                     <div key={`${item.title}-${itemIndex}`} className="flex gap-3">
                       <FlowerMark warning={item.bullet === "red"} />
@@ -572,7 +584,7 @@ export default function Home() {
                 {column.button ? (
                   <ProgramRegistrationButton
                     clearSelection
-                    className="mt-12 block w-full rounded-full bg-[#2a6a34] px-6 py-4 text-center text-[14px] font-semibold leading-none text-white transition hover:bg-[#21562a] whitespace-nowrap md:mt-auto md:text-[18px]"
+                    className="mt-12 block w-full rounded-full bg-[#2a6a34] px-6 py-4 text-center text-[14px] font-semibold leading-none text-white transition hover:bg-[#21562a] whitespace-nowrap min-[1024px]:mt-auto min-[1024px]:text-[18px]"
                   >
                     {column.button}
                   </ProgramRegistrationButton>

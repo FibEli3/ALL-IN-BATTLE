@@ -347,16 +347,36 @@ export function RegistrationForm() {
             <h4 className="w-full text-center text-[38px] font-bold leading-none md:h-[34px] md:text-[28px] md:leading-[34px]">
               ALL IN DAY 1
             </h4>
-            <div className="mx-auto grid w-full max-w-[320px] gap-6 md:max-w-none">
+            <div className="mx-auto grid w-full max-w-[320px] gap-6 min-[501px]:max-[1023px]:hidden min-[1024px]:max-w-none">
               {day1Options.map((option) => (
                 <label
                   key={option.id}
-                  className="grid min-h-[56px] grid-cols-[minmax(0,1fr)_72px_24px] items-center gap-x-3 md:h-[72px] md:grid-cols-[250px_84px_24px]"
+                  className="grid min-h-[56px] grid-cols-[minmax(0,1fr)_72px_24px] items-center gap-x-3 min-[1024px]:h-[72px] min-[1024px]:grid-cols-[250px_84px_24px]"
                 >
-                  <span className="min-w-0 text-[16px] font-semibold leading-[1.15] md:text-[20px]">
+                  <span className="min-w-0 text-[16px] font-semibold leading-[1.15] min-[1024px]:text-[20px]">
                     {option.title}
                   </span>
-                  <span className="text-right text-[16px] font-semibold leading-none md:text-[20px]">
+                  <span className="text-right text-[16px] font-semibold leading-none min-[1024px]:text-[20px]">
+                    {formatRub(getOptionDisplayPrice(option) ?? 0)}
+                  </span>
+                  <input
+                    type="checkbox"
+                    checked={values.selectedOptionIds.includes(option.id)}
+                    onChange={() => toggleOption(option.id)}
+                    className={checkboxClasses()}
+                  />
+                </label>
+              ))}
+            </div>
+
+            <div className="hidden min-[501px]:max-[1023px]:grid min-[501px]:max-[1023px]:grid-cols-2 min-[501px]:max-[1023px]:gap-x-5 min-[501px]:max-[1023px]:gap-y-6">
+              {day1Options.map((option) => (
+                <label
+                  key={`tablet-${option.id}`}
+                  className="grid h-[68px] grid-cols-[1fr_68px_24px] items-center gap-x-2"
+                >
+                  <span className="text-[16px] font-semibold leading-[1.1]">{option.title}</span>
+                  <span className="text-right text-[16px] font-semibold leading-none">
                     {formatRub(getOptionDisplayPrice(option) ?? 0)}
                   </span>
                   <input
@@ -399,7 +419,7 @@ export function RegistrationForm() {
               ))}
             </div>
 
-            <div className="hidden gap-x-8 gap-y-6 md:grid md:grid-cols-2">
+            <div className="hidden gap-x-8 gap-y-6 md:grid md:grid-cols-2 min-[1024px]:gap-x-8">
               <div className="grid grid-rows-4 gap-6">
                 {day2LeftOptions.map((option) => (
                   <label
