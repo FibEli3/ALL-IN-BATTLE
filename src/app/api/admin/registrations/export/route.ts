@@ -1,4 +1,4 @@
-import { listRegistrations } from "@/lib/db";
+﻿import { listRegistrations } from "@/lib/db";
 import { EVENT_OPTIONS, getOptionsByDay } from "@/lib/event-options";
 
 function checkAccess(request: Request) {
@@ -20,7 +20,7 @@ function checkAccess(request: Request) {
     return { ok: false, message: "Unauthorized", status: 401 };
   }
 
-  return { ok: true, status: 200 };
+  return { ok: true, status: 200, token: providedToken };
 }
 
 function parseOptions(raw: string | null) {
@@ -54,8 +54,11 @@ export async function GET(request: Request) {
   const all = await listRegistrations();
   const day1Options = getOptionsByDay("day1");
   const day2Options = getOptionsByDay("day2");
+  const url = new URL(request.url);
+  const token = access.token ?? url.searchParams.get("token") ?? "";
 
   const header = [
+    "id",
     "createdAt",
     "paymentStatus",
     "amountRub",
@@ -66,15 +69,20 @@ export async function GET(request: Request) {
     "participationType",
     "selectedOptions",
     "paymentOrderId",
+    "hasReceipt",
     "receiptFileName",
-    "receiptFileMimeType",
-    "receiptFileBase64",
+    "receiptDownloadUrl",
   ];
 
   const dataRows = all.map((item) => {
     const options = mapOptionIdsToTitles(parseOptions(item.selectedOptionIds));
+    const hasReceipt = Boolean(item.receiptFileName && item.receiptFileBase64);
+    const receiptDownloadUrl = hasReceipt
+      ? `${url.origin}/api/admin/registrations/receipt?token=${encodeURIComponent(token)}&id=${encodeURIComponent(item.id)}`
+      : "";
 
     return [
+      item.id,
       item.createdAt,
       item.paymentStatus,
       item.amountRub,
@@ -85,29 +93,30 @@ export async function GET(request: Request) {
       item.participationType,
       options.join(", "),
       item.paymentOrderId ?? "",
+      hasReceipt ? "yes" : "no",
       item.receiptFileName ?? "",
-      item.receiptFileMimeType ?? "",
-      item.receiptFileBase64 ?? "",
+      receiptDownloadUrl,
     ];
   });
 
-  const emptySummaryRow = new Array(header.length).fill("");
+  const blankSummaryRow = new Array(header.length).fill("");
   const summaryRows: Array<string[]> = [];
-  summaryRows.push(["Summary Day 1", "", "", "", "", "", "", "", "", "", "", ""]);
-  summaryRows.push(["nomination", "registered", "paid", "", "", "", "", "", "", "", "", ""]);
+
+  summaryRows.push(["Summary Day 1", "", "", "", "", "", "", "", "", "", "", "", "", ""]);
+  summaryRows.push(["nomination", "registered", "paid", "", "", "", "", "", "", "", "", "", "", ""]);
+
   for (const option of day1Options) {
-    const registered = all.filter((item) =>
-      parseOptions(item.selectedOptionIds).includes(option.id),
-    ).length;
+    const registered = all.filter((item) => parseOptions(item.selectedOptionIds).includes(option.id)).length;
     const paid = all.filter(
-      (item) =>
-        item.paymentStatus === "paid" &&
-        parseOptions(item.selectedOptionIds).includes(option.id),
+      (item) => item.paymentStatus === "paid" && parseOptions(item.selectedOptionIds).includes(option.id),
     ).length;
+
     summaryRows.push([
       option.title,
       String(registered),
       String(paid),
+      "",
+      "",
       "",
       "",
       "",
@@ -120,22 +129,22 @@ export async function GET(request: Request) {
     ]);
   }
 
-  summaryRows.push(emptySummaryRow);
-  summaryRows.push(["Summary Day 2", "", "", "", "", "", "", "", "", "", "", ""]);
-  summaryRows.push(["nomination", "registered", "paid", "", "", "", "", "", "", "", "", ""]);
+  summaryRows.push(blankSummaryRow);
+  summaryRows.push(["Summary Day 2", "", "", "", "", "", "", "", "", "", "", "", "", ""]);
+  summaryRows.push(["nomination", "registered", "paid", "", "", "", "", "", "", "", "", "", "", ""]);
+
   for (const option of day2Options) {
-    const registered = all.filter((item) =>
-      parseOptions(item.selectedOptionIds).includes(option.id),
-    ).length;
+    const registered = all.filter((item) => parseOptions(item.selectedOptionIds).includes(option.id)).length;
     const paid = all.filter(
-      (item) =>
-        item.paymentStatus === "paid" &&
-        parseOptions(item.selectedOptionIds).includes(option.id),
+      (item) => item.paymentStatus === "paid" && parseOptions(item.selectedOptionIds).includes(option.id),
     ).length;
+
     summaryRows.push([
       option.title,
       String(registered),
       String(paid),
+      "",
+      "",
       "",
       "",
       "",
@@ -160,7 +169,7 @@ export async function GET(request: Request) {
     status: 200,
     headers: {
       "Content-Type": "text/csv; charset=utf-8",
-      "Content-Disposition": `attachment; filename="all-in-battle-registrations.csv"`,
+      "Content-Disposition": 'attachment; filename="all-in-battle-registrations.csv"',
       "Cache-Control": "no-store",
     },
   });

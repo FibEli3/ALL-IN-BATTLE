@@ -1,4 +1,4 @@
-import type { RegistrationAdminRecord } from "@/lib/db";
+﻿import type { RegistrationAdminRecord } from "@/lib/db";
 import { listRegistrations } from "@/lib/db";
 import { EVENT_OPTIONS, getOptionsByDay } from "@/lib/event-options";
 import Link from "next/link";
@@ -47,8 +47,7 @@ function buildStats(registrations: RegistrationAdminRecord[], day: "day1" | "day
 
     for (const record of registrations) {
       const selected = parseOptions(record.selectedOptionIds);
-      const contains = selected.includes(option.id);
-      if (!contains) {
+      if (!selected.includes(option.id)) {
         continue;
       }
 
@@ -71,10 +70,7 @@ export default async function AdminRegistrationsPage({ searchParams }: AdminPage
   const params = await searchParams;
   const token = (params.token ?? "").trim();
   const statusParam = params.status;
-  const activeStatus =
-    statusParam === "pending" || statusParam === "paid"
-      ? statusParam
-      : undefined;
+  const activeStatus = statusParam === "pending" || statusParam === "paid" ? statusParam : undefined;
 
   const expectedToken = process.env.ADMIN_DASHBOARD_TOKEN?.trim();
   const isAuthorized = Boolean(expectedToken) && token === expectedToken;
@@ -82,9 +78,9 @@ export default async function AdminRegistrationsPage({ searchParams }: AdminPage
   if (!expectedToken) {
     return (
       <main className="mx-auto w-full max-w-[900px] px-5 py-10 md:px-8">
-        <h1 className="font-display text-[44px] font-black uppercase">Админка Регистраций</h1>
+        <h1 className="font-display text-[44px] font-black uppercase">Админка регистраций</h1>
         <p className="mt-6 text-lg">
-          Установи <code>ADMIN_DASHBOARD_TOKEN</code> в Vercel, чтобы открыть доступ.
+          Установите <code>ADMIN_DASHBOARD_TOKEN</code> в Vercel, чтобы открыть доступ.
         </p>
       </main>
     );
@@ -93,9 +89,9 @@ export default async function AdminRegistrationsPage({ searchParams }: AdminPage
   if (!isAuthorized) {
     return (
       <main className="mx-auto w-full max-w-[900px] px-5 py-10 md:px-8">
-        <h1 className="font-display text-[44px] font-black uppercase">Админка Регистраций</h1>
+        <h1 className="font-display text-[44px] font-black uppercase">Админка регистраций</h1>
         <p className="mt-6 text-lg">
-          Нет доступа. Открой страницу с <code>?token=ТВОЙ_ТОКЕН</code>.
+          Нет доступа. Откройте страницу с <code>?token=ВАШ_ТОКЕН</code>.
         </p>
       </main>
     );
@@ -110,7 +106,8 @@ export default async function AdminRegistrationsPage({ searchParams }: AdminPage
 
   const statuses: Array<{ id: "all" | "pending" | "paid"; label: string }> = [
     { id: "all", label: "Все" },
-    { id: "pending", label: "Pending" },    { id: "paid", label: "Paid" },
+    { id: "pending", label: "Pending" },
+    { id: "paid", label: "Paid" },
   ];
 
   const exportHref = `/api/admin/registrations/export?token=${encodeURIComponent(token)}`;
@@ -205,7 +202,7 @@ export default async function AdminRegistrationsPage({ searchParams }: AdminPage
       </section>
 
       <div className="mt-8 overflow-x-auto rounded-2xl border border-[#dadada] bg-white">
-        <table className="min-w-[1280px] border-collapse text-left text-sm">
+        <table className="min-w-[1480px] border-collapse text-left text-sm">
           <thead className="bg-[#f4f4f4] text-[#303030]">
             <tr>
               <th className="px-4 py-3 font-semibold">Дата</th>
@@ -217,6 +214,7 @@ export default async function AdminRegistrationsPage({ searchParams }: AdminPage
               <th className="px-4 py-3 font-semibold">Возраст</th>
               <th className="px-4 py-3 font-semibold">Тип</th>
               <th className="px-4 py-3 font-semibold">Опции</th>
+              <th className="px-4 py-3 font-semibold">Чек</th>
               <th className="px-4 py-3 font-semibold">Order ID</th>
             </tr>
           </thead>
@@ -236,8 +234,18 @@ export default async function AdminRegistrationsPage({ searchParams }: AdminPage
                   <td className="px-4 py-3 whitespace-nowrap">{item.phone}</td>
                   <td className="px-4 py-3">{item.age ?? "-"}</td>
                   <td className="px-4 py-3">{item.participationType}</td>
+                  <td className="px-4 py-3">{optionTitles.length > 0 ? optionTitles.join(", ") : "-"}</td>
                   <td className="px-4 py-3">
-                    {optionTitles.length > 0 ? optionTitles.join(", ") : "-"}
+                    {item.receiptFileName ? (
+                      <a
+                        href={`/api/admin/registrations/receipt?token=${encodeURIComponent(token)}&id=${encodeURIComponent(item.id)}`}
+                        className="inline-flex rounded-full border border-[#2a6a34] px-3 py-1 text-xs font-semibold text-[#2a6a34] transition hover:bg-[#2a6a34] hover:text-white"
+                      >
+                        Скачать чек
+                      </a>
+                    ) : (
+                      "-"
+                    )}
                   </td>
                   <td className="px-4 py-3">{item.paymentOrderId ?? "-"}</td>
                 </tr>
@@ -249,4 +257,3 @@ export default async function AdminRegistrationsPage({ searchParams }: AdminPage
     </main>
   );
 }
-

@@ -28,6 +28,13 @@ type RegistrationRecord = {
   amountRub: number;
 };
 
+type RegistrationReceiptRecord = {
+  id: string;
+  receiptFileName: string | null;
+  receiptFileMimeType: string | null;
+  receiptFileBase64: string | null;
+};
+
 export type RegistrationAdminRecord = {
   id: string;
   fullName: string;
@@ -265,4 +272,24 @@ export async function listRegistrations(
   );
 
   return result.rows;
+}
+
+export async function getRegistrationReceiptById(
+  id: string,
+): Promise<RegistrationReceiptRecord | null> {
+  await ensureSchema();
+
+  const result = await db.query<RegistrationReceiptRecord>(
+    `SELECT
+      id,
+      receipt_file_name as "receiptFileName",
+      receipt_file_mime_type as "receiptFileMimeType",
+      receipt_file_base64 as "receiptFileBase64"
+    FROM registrations
+    WHERE id = $1
+    LIMIT 1;`,
+    [id],
+  );
+
+  return result.rows[0] ?? null;
 }
