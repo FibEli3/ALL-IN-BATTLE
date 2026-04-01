@@ -21,6 +21,19 @@ function rub(value: number) {
   return `${new Intl.NumberFormat("ru-RU").format(value)} ₽`;
 }
 
+function formatDateTimeRu(value: string) {
+  return new Intl.DateTimeFormat("ru-RU", {
+    timeZone: "Europe/Moscow",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+    hour12: false,
+  }).format(new Date(value));
+}
+
 function parseOptions(raw: string | null) {
   if (!raw) {
     return [];
@@ -224,7 +237,7 @@ export default async function AdminRegistrationsPage({ searchParams }: AdminPage
               return (
                 <tr key={item.id} className="border-t border-[#ececec] align-top">
                   <td className="px-4 py-3 whitespace-nowrap">
-                    {new Date(item.createdAt).toLocaleString("ru-RU")}
+                    {formatDateTimeRu(item.createdAt)}
                   </td>
                   <td className="px-4 py-3 font-semibold">{rub(item.amountRub)}</td>
                   <td className="px-4 py-3">{item.fullName}</td>

@@ -68,6 +68,19 @@ function worksheet(name: string, headers: string[], rows: Array<Array<string | n
   `;
 }
 
+function formatDateTimeRu(value: string) {
+  return new Intl.DateTimeFormat("ru-RU", {
+    timeZone: "Europe/Moscow",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+    hour12: false,
+  }).format(new Date(value));
+}
+
 export async function GET(request: Request) {
   const access = checkAccess(request);
   if (!access.ok) {
@@ -103,7 +116,7 @@ export async function GET(request: Request) {
 
     return [
       item.id,
-      new Date(item.createdAt).toLocaleString("ru-RU"),
+      formatDateTimeRu(item.createdAt),
       item.amountRub,
       item.fullName,
       item.nickname ?? "",
