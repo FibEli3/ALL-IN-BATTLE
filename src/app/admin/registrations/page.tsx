@@ -221,7 +221,7 @@ export default async function AdminRegistrationsPage({ searchParams }: AdminPage
           <thead className="bg-[#f4f4f4] text-[#303030]">
             <tr>
               <th className="px-4 py-3 font-semibold">Дата</th>
-              <th className="px-4 py-3 font-semibold">Сумма</th>
+              <th className="w-[140px] px-4 py-3 font-semibold whitespace-nowrap">Сумма</th>
               <th className="px-4 py-3 font-semibold">ФИО</th>
               <th className="px-4 py-3 font-semibold">Ник</th>
               <th className="px-4 py-3 font-semibold">Телефон</th>
@@ -239,7 +239,7 @@ export default async function AdminRegistrationsPage({ searchParams }: AdminPage
                   <td className="px-4 py-3 whitespace-nowrap">
                     {formatDateTimeRu(item.createdAt)}
                   </td>
-                  <td className="px-4 py-3 font-semibold">{rub(item.amountRub)}</td>
+                  <td className="w-[140px] px-4 py-3 font-semibold whitespace-nowrap">{rub(item.amountRub)}</td>
                   <td className="px-4 py-3">{item.fullName}</td>
                   <td className="px-4 py-3">{item.nickname ?? "-"}</td>
                   <td className="px-4 py-3 whitespace-nowrap">{item.phone}</td>
@@ -251,7 +251,7 @@ export default async function AdminRegistrationsPage({ searchParams }: AdminPage
                         href={`/api/admin/registrations/receipt?token=${encodeURIComponent(token)}&id=${encodeURIComponent(item.id)}`}
                         className="inline-flex rounded-full border border-[#2a6a34] px-3 py-1 text-xs font-semibold text-[#2a6a34] transition hover:bg-[#2a6a34] hover:text-white"
                       >
-                        Скачать чек
+                        Скачать
                       </a>
                     ) : (
                       "-"
