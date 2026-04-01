@@ -251,11 +251,11 @@ function PersonCard({
 }: PersonCardProps) {
   return (
     <article
-      className={`lineup-card mx-auto w-full max-w-[335px] text-center min-[501px]:max-[1023px]:max-w-[260px] min-[1024px]:max-w-[395px] ${orderClass} ${offsetClass}`}
+      className={`lineup-card mx-auto w-full max-w-[335px] text-center min-[501px]:max-[1023px]:max-w-[260px] min-[501px]:max-[1023px]:justify-self-center min-[1024px]:max-w-[395px] ${orderClass} ${offsetClass}`}
       data-reveal={revealIndex}
     >
       <div className="lineup-card-reveal">
-        <div className={`mx-auto w-full max-w-[335px] origin-top min-[501px]:max-[1023px]:max-w-[260px] min-[1024px]:max-w-[395px] ${tiltClass}`}>
+        <div className={`mx-auto w-full max-w-[335px] origin-top min-[501px]:max-[1023px]:max-w-[260px] min-[501px]:max-[1023px]:origin-center min-[1024px]:max-w-[395px] ${tiltClass}`}>
           <div className="mx-auto w-full max-w-[335px] overflow-hidden rounded-[28px] min-[501px]:max-[1023px]:max-w-[260px] min-[1024px]:max-w-[395px]">
             <Image
               src={image}
@@ -464,9 +464,9 @@ export default function Home() {
                 key={card.title}
                 className={`relative flex flex-col overflow-hidden rounded-[28px] border border-[#dde1de] ${
                   card.variant === "center"
-                    ? "order-2 z-20 w-full bg-[#fafafa] px-6 py-8 shadow-[0_0_30px_3px_rgba(41,108,51,0.15)] min-[501px]:max-[1023px]:col-start-1 min-[501px]:max-[1023px]:col-end-2 min-[501px]:max-[1023px]:translate-y-[-12px] min-[1024px]:w-[464px] min-[1024px]:min-h-[760px] min-[1024px]:px-[40px] min-[1024px]:py-[60px]"
+                    ? "order-2 z-20 w-full bg-[#fafafa] px-6 py-8 shadow-[0_0_30px_3px_rgba(41,108,51,0.15)] min-[501px]:max-[1023px]:col-start-1 min-[501px]:max-[1023px]:col-end-2 min-[501px]:max-[1023px]:translate-y-[-12px] min-[501px]:max-[1023px]:min-h-[560px] min-[1024px]:w-[464px] min-[1024px]:min-h-[760px] min-[1024px]:px-[40px] min-[1024px]:py-[60px]"
                     : card.title === "JAM"
-                      ? "order-3 z-10 mt-[-56px] w-[calc(100%-20px)] self-center bg-[#fafafa] px-6 pb-8 pt-[84px] min-[501px]:max-[1023px]:order-3 min-[501px]:max-[1023px]:mt-0 min-[501px]:max-[1023px]:w-full min-[501px]:max-[1023px]:self-auto min-[501px]:max-[1023px]:px-6 min-[501px]:max-[1023px]:pb-8 min-[501px]:max-[1023px]:pt-8 min-[1024px]:mt-[20px] min-[1024px]:w-[444px] min-[1024px]:min-h-[720px] min-[1024px]:px-[50px] min-[1024px]:py-[40px]"
+                      ? "order-3 z-10 mt-[-56px] w-[calc(100%-20px)] self-center bg-[#fafafa] px-6 pb-8 pt-[84px] min-[501px]:max-[1023px]:order-3 min-[501px]:max-[1023px]:mt-[20px] min-[501px]:max-[1023px]:w-[calc(100%-18px)] min-[501px]:max-[1023px]:self-start min-[501px]:max-[1023px]:px-6 min-[501px]:max-[1023px]:pb-8 min-[501px]:max-[1023px]:pt-8 min-[501px]:max-[1023px]:-ml-5 min-[501px]:max-[1023px]:min-h-[520px] min-[1024px]:mt-[20px] min-[1024px]:w-[444px] min-[1024px]:min-h-[720px] min-[1024px]:px-[50px] min-[1024px]:py-[40px]"
                       : "order-1 z-10 w-full bg-[#fafafa] px-6 py-8 min-[501px]:max-[1023px]:col-span-2 min-[1024px]:mt-[20px] min-[1024px]:w-[444px] min-[1024px]:min-h-[720px] min-[1024px]:px-[50px] min-[1024px]:py-[40px]"
                 } ${
                   card.variant === "center"
@@ -540,10 +540,10 @@ export default function Home() {
                 key={column.title}
                 className={`relative flex flex-col overflow-hidden rounded-[28px] border border-[#dde1de] ${
                   column.title === "Стоимость"
-                    ? "order-1 z-10 w-full bg-[#fafafa] px-6 py-8 min-[501px]:max-[1023px]:col-span-2 min-[1024px]:mt-[20px] min-[1024px]:w-[444px] min-[1024px]:min-h-[720px] min-[1024px]:px-[50px] min-[1024px]:py-[40px]"
+                    ? "order-1 z-10 w-full bg-[#fafafa] px-6 py-8 min-[501px]:max-[1023px]:col-span-2 min-[501px]:max-[1023px]:min-h-[420px] min-[1024px]:mt-[20px] min-[1024px]:w-[444px] min-[1024px]:min-h-[720px] min-[1024px]:px-[50px] min-[1024px]:py-[40px]"
                     : column.title === "Номинации"
-                      ? "order-2 z-20 w-full bg-[#fafafa] px-6 py-8 shadow-[0_0_30px_3px_rgba(41,108,51,0.15)] min-[501px]:max-[1023px]:translate-y-[0] min-[1024px]:w-[464px] min-[1024px]:min-h-[760px] min-[1024px]:px-[40px] min-[1024px]:py-[60px]"
-                      : "order-3 z-10 mt-[-56px] w-[calc(100%-20px)] self-center bg-[#fafafa] px-6 pb-8 pt-[84px] min-[501px]:max-[1023px]:mt-0 min-[501px]:max-[1023px]:w-full min-[501px]:max-[1023px]:self-auto min-[501px]:max-[1023px]:px-6 min-[501px]:max-[1023px]:pb-8 min-[501px]:max-[1023px]:pt-8 min-[1024px]:mt-[20px] min-[1024px]:w-[444px] min-[1024px]:min-h-[720px] min-[1024px]:px-[50px] min-[1024px]:py-[40px]"
+                      ? "order-2 z-20 w-full bg-[#fafafa] px-6 py-8 shadow-[0_0_30px_3px_rgba(41,108,51,0.15)] min-[501px]:max-[1023px]:translate-y-[-12px] min-[501px]:max-[1023px]:min-h-[560px] min-[1024px]:w-[464px] min-[1024px]:min-h-[760px] min-[1024px]:px-[40px] min-[1024px]:py-[60px]"
+                      : "order-3 z-10 mt-[-56px] w-[calc(100%-20px)] self-center bg-[#fafafa] px-6 pb-8 pt-[84px] min-[501px]:max-[1023px]:mt-[20px] min-[501px]:max-[1023px]:w-[calc(100%-18px)] min-[501px]:max-[1023px]:self-start min-[501px]:max-[1023px]:-ml-5 min-[501px]:max-[1023px]:px-6 min-[501px]:max-[1023px]:pb-8 min-[501px]:max-[1023px]:pt-8 min-[501px]:max-[1023px]:min-h-[520px] min-[1024px]:mt-[20px] min-[1024px]:w-[444px] min-[1024px]:min-h-[720px] min-[1024px]:px-[50px] min-[1024px]:py-[40px]"
                 } ${
                   column.title === "Номинации"
                     ? "min-[1024px]:mx-[-24px]"
@@ -579,6 +579,15 @@ export default function Home() {
                     width={116}
                     height={116}
                     className="pointer-events-none absolute right-[8px] top-[10px] w-[136px] opacity-85"
+                  />
+                ) : null}
+                {column.title === "Стоимость" ? (
+                  <Image
+                    src="/decor/flower-side-right.png"
+                    alt=""
+                    width={112}
+                    height={112}
+                    className="pointer-events-none absolute right-[8px] top-[10px] w-[124px] opacity-85 min-[1024px]:hidden"
                   />
                 ) : null}
                 {column.button ? (

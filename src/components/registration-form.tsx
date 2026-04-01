@@ -297,6 +297,13 @@ export function RegistrationForm() {
           height={130}
           className="pointer-events-none absolute right-0 top-0 w-[90px] opacity-80 md:w-[122px]"
         />
+        <Image
+          src="/decor/flower-side-right.png"
+          alt=""
+          width={150}
+          height={150}
+          className="pointer-events-none absolute bottom-[170px] right-[-6px] hidden w-[128px] opacity-80 min-[501px]:max-[1023px]:block"
+        />
         <section className="relative z-10 grid gap-8">
           <h4 className="text-[24px] font-bold leading-none md:text-[28px]">
             Укажите данные
@@ -369,13 +376,15 @@ export function RegistrationForm() {
               ))}
             </div>
 
-            <div className="hidden min-[501px]:max-[1023px]:grid min-[501px]:max-[1023px]:grid-cols-2 min-[501px]:max-[1023px]:gap-x-5 min-[501px]:max-[1023px]:gap-y-6">
+            <div className="hidden min-[501px]:max-[1023px]:grid min-[501px]:max-[1023px]:grid-cols-2 min-[501px]:max-[1023px]:gap-x-4 min-[501px]:max-[1023px]:gap-y-4">
               {day1Options.map((option) => (
                 <label
                   key={`tablet-${option.id}`}
-                  className="grid h-[68px] grid-cols-[1fr_68px_24px] items-center gap-x-2"
+                  className="grid h-[66px] grid-cols-[minmax(0,1fr)_70px_24px] items-center gap-x-2"
                 >
-                  <span className="text-[16px] font-semibold leading-[1.1]">{option.title}</span>
+                  <span className="min-w-0 text-[16px] font-semibold leading-[1.1]">
+                    {option.title}
+                  </span>
                   <span className="text-right text-[16px] font-semibold leading-none">
                     {formatRub(getOptionDisplayPrice(option) ?? 0)}
                   </span>
@@ -419,17 +428,19 @@ export function RegistrationForm() {
               ))}
             </div>
 
-            <div className="hidden gap-x-8 gap-y-6 md:grid md:grid-cols-2 min-[1024px]:gap-x-8">
-              <div className="grid grid-rows-4 gap-6">
+            <div className="hidden gap-y-4 min-[501px]:grid min-[501px]:grid-cols-2 min-[501px]:gap-x-4 min-[1024px]:gap-x-8 min-[1024px]:gap-y-6">
+              <div className="grid grid-rows-4 gap-4 min-[1024px]:gap-6">
                 {day2LeftOptions.map((option) => (
                   <label
                     key={option.id}
-                    className="grid h-[72px] grid-cols-[184px_24px] items-center gap-x-3"
+                    className="grid h-[66px] grid-cols-[minmax(0,1fr)_24px] items-center gap-x-3 min-[1024px]:h-[72px] min-[1024px]:grid-cols-[184px_24px]"
                   >
                     <div className="grid gap-[10px]">
-                      <span className="text-[20px] font-semibold leading-none">{option.title}</span>
+                      <span className="text-[16px] font-semibold leading-none min-[1024px]:text-[20px]">
+                        {option.title}
+                      </span>
                       {option.subtitle ? (
-                        <span className="text-[12px] font-semibold leading-none text-[rgba(0,0,0,0.55)]">
+                        <span className="text-[11px] font-semibold leading-none text-[rgba(0,0,0,0.55)] min-[1024px]:text-[12px]">
                           {option.subtitle}
                         </span>
                       ) : null}
@@ -444,16 +455,18 @@ export function RegistrationForm() {
                 ))}
               </div>
 
-              <div className="grid grid-rows-4 gap-6">
+              <div className="grid grid-rows-4 gap-4 min-[1024px]:gap-6">
                 {day2RightOptions.map((option) => (
                   <label
                     key={option.id}
-                    className="grid h-[72px] grid-cols-[184px_24px] items-center gap-x-3"
+                    className="grid h-[66px] grid-cols-[minmax(0,1fr)_24px] items-center gap-x-3 min-[1024px]:h-[72px] min-[1024px]:grid-cols-[184px_24px]"
                   >
                     <div className="grid gap-[10px]">
-                      <span className="text-[20px] font-semibold leading-none">{option.title}</span>
+                      <span className="text-[16px] font-semibold leading-none min-[1024px]:text-[20px]">
+                        {option.title}
+                      </span>
                       {option.subtitle ? (
-                        <span className="text-[12px] font-semibold leading-none text-[rgba(0,0,0,0.55)]">
+                        <span className="text-[11px] font-semibold leading-none text-[rgba(0,0,0,0.55)] min-[1024px]:text-[12px]">
                           {option.subtitle}
                         </span>
                       ) : null}
