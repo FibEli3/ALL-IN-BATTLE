@@ -464,9 +464,9 @@ export default function Home() {
                 key={card.title}
                 className={`relative flex flex-col overflow-hidden rounded-[28px] border border-[#dde1de] ${
                   card.variant === "center"
-                    ? "order-2 z-20 w-full bg-[#fafafa] px-6 py-8 shadow-[0_0_30px_3px_rgba(41,108,51,0.15)] min-[501px]:max-[1023px]:col-start-1 min-[501px]:max-[1023px]:col-end-2 min-[501px]:max-[1023px]:translate-y-[-12px] min-[501px]:max-[1023px]:min-h-[560px] min-[1024px]:w-[464px] min-[1024px]:min-h-[760px] min-[1024px]:px-[40px] min-[1024px]:py-[60px]"
+                    ? "order-2 z-20 w-full bg-[#fafafa] px-6 py-8 shadow-[0_0_30px_3px_rgba(41,108,51,0.15)] min-[501px]:max-[1023px]:col-start-1 min-[501px]:max-[1023px]:col-end-2 min-[501px]:max-[1023px]:translate-y-[28px] min-[501px]:max-[1023px]:min-h-[560px] min-[1024px]:w-[464px] min-[1024px]:min-h-[760px] min-[1024px]:px-[40px] min-[1024px]:py-[60px]"
                     : card.title === "JAM"
-                      ? "order-3 z-10 mt-[-56px] w-[calc(100%-20px)] self-center bg-[#fafafa] px-6 pb-8 pt-[84px] min-[501px]:max-[1023px]:order-3 min-[501px]:max-[1023px]:mt-[15px] min-[501px]:max-[1023px]:w-[calc(100%-18px)] min-[501px]:max-[1023px]:self-center min-[501px]:max-[1023px]:px-6 min-[501px]:max-[1023px]:pb-8 min-[501px]:max-[1023px]:pt-8 min-[501px]:max-[1023px]:-ml-[30px] min-[501px]:max-[1023px]:min-h-[530px] min-[1024px]:mt-[20px] min-[1024px]:w-[444px] min-[1024px]:min-h-[720px] min-[1024px]:px-[50px] min-[1024px]:py-[40px]"
+                      ? "order-3 z-10 mt-[-56px] w-[calc(100%-20px)] self-center bg-[#fafafa] px-6 pb-8 pt-[84px] min-[501px]:max-[1023px]:order-3 min-[501px]:max-[1023px]:mt-[15px] min-[501px]:max-[1023px]:w-[calc(100%-18px)] min-[501px]:max-[1023px]:self-center min-[501px]:max-[1023px]:px-6 min-[501px]:max-[1023px]:pb-8 min-[501px]:max-[1023px]:pt-8 min-[501px]:max-[1023px]:-ml-[30px] min-[501px]:max-[1023px]:min-h-[530px] min-[1024px]:mt-[20px] min-[1024px]:w-[444px] min-[1024px]:min-h-[720px] min-[1024px]:self-start min-[1024px]:px-[50px] min-[1024px]:py-[40px]"
                       : "order-1 z-10 w-full bg-[#fafafa] px-6 py-8 min-[501px]:max-[1023px]:col-span-2 min-[1024px]:mt-[20px] min-[1024px]:w-[444px] min-[1024px]:min-h-[720px] min-[1024px]:px-[50px] min-[1024px]:py-[40px]"
                 } ${
                   card.variant === "center"
@@ -511,7 +511,11 @@ export default function Home() {
                 <ProgramRegistrationButton
                   presetId={card.registrationPresetId}
                   clearSelection
-                  className="mt-12 block w-full rounded-full bg-[#2a6a34] px-6 py-4 text-center text-[14px] font-semibold leading-none text-white transition hover:bg-[#21562a] whitespace-nowrap min-[501px]:max-[1023px]:mt-auto min-[1024px]:mt-auto min-[1024px]:text-[18px]"
+                    className={`mt-12 block w-full rounded-full bg-[#2a6a34] px-6 py-4 text-center text-[14px] font-semibold leading-none text-white transition hover:bg-[#21562a] whitespace-nowrap min-[501px]:max-[1023px]:mt-auto min-[1024px]:mt-auto min-[1024px]:text-[18px] ${
+                    card.title === "Мастер-Класс от RASH THE FLOW"
+                      ? "min-[501px]:max-[1023px]:mt-[96px]"
+                      : ""
+                  }`}
                 >
                   {card.button}
                 </ProgramRegistrationButton>
@@ -542,7 +546,7 @@ export default function Home() {
                   column.title === "Стоимость"
                     ? "order-1 z-10 w-full bg-[#fafafa] px-6 py-8 min-[501px]:max-[1023px]:col-span-2 min-[501px]:max-[1023px]:min-h-[420px] min-[1024px]:mt-[20px] min-[1024px]:w-[444px] min-[1024px]:min-h-[720px] min-[1024px]:px-[50px] min-[1024px]:py-[40px]"
                     : column.title === "Номинации"
-                      ? "order-2 z-20 w-full bg-[#fafafa] px-6 py-8 shadow-[0_0_30px_3px_rgba(41,108,51,0.15)] min-[501px]:max-[1023px]:translate-y-[-12px] min-[501px]:max-[1023px]:min-h-[560px] min-[1024px]:w-[464px] min-[1024px]:min-h-[760px] min-[1024px]:px-[40px] min-[1024px]:py-[60px]"
+                      ? "order-2 z-20 w-full bg-[#fafafa] px-6 py-8 shadow-[0_0_30px_3px_rgba(41,108,51,0.15)] min-[501px]:max-[1023px]:translate-y-[28px] min-[501px]:max-[1023px]:min-h-[560px] min-[1024px]:w-[464px] min-[1024px]:min-h-[760px] min-[1024px]:px-[40px] min-[1024px]:py-[60px]"
                       : "order-3 z-10 mt-[-56px] w-[calc(100%-20px)] self-center bg-[#fafafa] px-6 pb-8 pt-[84px] min-[501px]:max-[1023px]:mt-[15px] min-[501px]:max-[1023px]:w-[calc(100%-18px)] min-[501px]:max-[1023px]:self-center min-[501px]:max-[1023px]:-ml-[30px] min-[501px]:max-[1023px]:px-6 min-[501px]:max-[1023px]:pb-8 min-[501px]:max-[1023px]:pt-8 min-[501px]:max-[1023px]:min-h-[530px] min-[1024px]:mt-[20px] min-[1024px]:w-[444px] min-[1024px]:min-h-[720px] min-[1024px]:px-[50px] min-[1024px]:py-[40px]"
                 } ${
                   column.title === "Номинации"
