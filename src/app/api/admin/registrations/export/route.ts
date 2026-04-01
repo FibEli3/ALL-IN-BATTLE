@@ -66,6 +66,9 @@ export async function GET(request: Request) {
     "participationType",
     "selectedOptions",
     "paymentOrderId",
+    "receiptFileName",
+    "receiptFileMimeType",
+    "receiptFileBase64",
   ];
 
   const dataRows = all.map((item) => {
@@ -82,12 +85,16 @@ export async function GET(request: Request) {
       item.participationType,
       options.join(", "),
       item.paymentOrderId ?? "",
+      item.receiptFileName ?? "",
+      item.receiptFileMimeType ?? "",
+      item.receiptFileBase64 ?? "",
     ];
   });
 
+  const emptySummaryRow = new Array(header.length).fill("");
   const summaryRows: Array<string[]> = [];
-  summaryRows.push(["Summary Day 1", "", "", "", "", "", "", "", "", ""]);
-  summaryRows.push(["nomination", "registered", "paid", "", "", "", "", "", "", ""]);
+  summaryRows.push(["Summary Day 1", "", "", "", "", "", "", "", "", "", "", ""]);
+  summaryRows.push(["nomination", "registered", "paid", "", "", "", "", "", "", "", "", ""]);
   for (const option of day1Options) {
     const registered = all.filter((item) =>
       parseOptions(item.selectedOptionIds).includes(option.id),
@@ -97,12 +104,25 @@ export async function GET(request: Request) {
         item.paymentStatus === "paid" &&
         parseOptions(item.selectedOptionIds).includes(option.id),
     ).length;
-    summaryRows.push([option.title, String(registered), String(paid), "", "", "", "", "", "", ""]);
+    summaryRows.push([
+      option.title,
+      String(registered),
+      String(paid),
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+    ]);
   }
 
-  summaryRows.push(["", "", "", "", "", "", "", "", "", ""]);
-  summaryRows.push(["Summary Day 2", "", "", "", "", "", "", "", "", ""]);
-  summaryRows.push(["nomination", "registered", "paid", "", "", "", "", "", "", ""]);
+  summaryRows.push(emptySummaryRow);
+  summaryRows.push(["Summary Day 2", "", "", "", "", "", "", "", "", "", "", ""]);
+  summaryRows.push(["nomination", "registered", "paid", "", "", "", "", "", "", "", "", ""]);
   for (const option of day2Options) {
     const registered = all.filter((item) =>
       parseOptions(item.selectedOptionIds).includes(option.id),
@@ -112,7 +132,20 @@ export async function GET(request: Request) {
         item.paymentStatus === "paid" &&
         parseOptions(item.selectedOptionIds).includes(option.id),
     ).length;
-    summaryRows.push([option.title, String(registered), String(paid), "", "", "", "", "", "", ""]);
+    summaryRows.push([
+      option.title,
+      String(registered),
+      String(paid),
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+    ]);
   }
 
   const csv = [

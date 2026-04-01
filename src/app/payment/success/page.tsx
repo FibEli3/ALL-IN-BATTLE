@@ -24,7 +24,7 @@ export default function PaymentSuccessPage() {
           Заявка Отправлена
         </h1>
         <p className="mt-8 max-w-[640px] text-[22px] font-medium leading-[1.25] text-[#1b1b1b] md:text-[30px]">
-          Спасибо. Мы получили ваши данные и чек. Скоро свяжемся для подтверждения.
+          Спасибо. Мы получили ваши данные и чек. С нетерпением ждём вас!
         </p>
 
         <div className="mt-12 flex flex-wrap items-center justify-center gap-4">
@@ -32,7 +32,7 @@ export default function PaymentSuccessPage() {
             href="/"
             className="rounded-full bg-[#2a6a34] px-8 py-4 text-[18px] font-semibold leading-none text-white transition hover:bg-[#21562a]"
           >
-            Вернуться На Главную
+            Вернуться на главную
           </Link>
           <a
             href="https://t.me/all_in_battle"
@@ -47,4 +47,3 @@ export default function PaymentSuccessPage() {
     </main>
   );
 }
-
