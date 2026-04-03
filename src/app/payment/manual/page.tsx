@@ -30,8 +30,8 @@ function formatRub(value: number) {
 
 export default function ManualPaymentPage() {
   const router = useRouter();
-  const cardNumber = "4276 3000 6626 9609";
-  const cardNumberCopy = "4276300066269609";
+  const cardNumber = "5469 3003 0678 7307";
+  const cardNumberCopy = "5469300306787307";
   const phoneNumber = "89186765222";
 
   const [draft, setDraft] = useState<PaymentDraft | null>(null);
