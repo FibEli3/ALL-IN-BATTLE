@@ -32,6 +32,8 @@ const initialForm: FormValues = {
 
 const day1Options = getOptionsByDay("day1");
 const day2Options = getOptionsByDay("day2");
+const day1OptionIdSet = new Set(day1Options.map((option) => option.id));
+const day2OptionIdSet = new Set(day2Options.map((option) => option.id));
 const day2DisplayOrder = [
   "day2-baby",
   "day2-kids-beg",
@@ -42,6 +44,104 @@ const day2DisplayOrder = [
   "day2-pro-16-plus",
   "day2-spectator",
 ] as const;
+
+const day2SpectatorId = "day2-spectator";
+const day2ProId = "day2-pro-16-plus";
+const day2KidsProId = "day2-kids-pro";
+const day2JunProId = "day2-jun-pro";
+const day2RestrictedGroupIds = new Set([
+  "day2-baby",
+  "day2-kids-beg",
+  "day2-jun-beg",
+  "day2-beg-16-plus",
+]);
+
+function normalizeSelectedOptionIds(optionIds: string[], preferredId?: string) {
+  const day1Selected = optionIds.filter((id) => day1OptionIdSet.has(id));
+  const day2Selected = optionIds.filter((id) => day2OptionIdSet.has(id));
+
+  const hasSpectator = day2Selected.includes(day2SpectatorId);
+  const competitive = day2Selected.filter((id) => id !== day2SpectatorId);
+
+  const selectedRestricted = competitive.filter((id) => day2RestrictedGroupIds.has(id));
+  const selectedKidsOrJunPro = competitive.filter(
+    (id) => id === day2KidsProId || id === day2JunProId,
+  );
+  const hasPro = competitive.includes(day2ProId);
+
+  const allowedCompetitive = new Set<string>();
+
+  if (selectedRestricted.length > 0) {
+    const preferredRestricted =
+      preferredId && selectedRestricted.includes(preferredId) ? preferredId : selectedRestricted[0];
+    allowedCompetitive.add(preferredRestricted);
+  } else if (selectedKidsOrJunPro.length > 0) {
+    const preferredKidsOrJunPro =
+      preferredId === day2KidsProId || preferredId === day2JunProId
+        ? preferredId
+        : selectedKidsOrJunPro[0];
+    allowedCompetitive.add(preferredKidsOrJunPro);
+    if (hasPro) {
+      allowedCompetitive.add(day2ProId);
+    }
+  } else if (hasPro) {
+    allowedCompetitive.add(day2ProId);
+  }
+
+  const normalizedDay2: string[] = [];
+  if (hasSpectator) {
+    normalizedDay2.push(day2SpectatorId);
+  }
+
+  for (const id of day2DisplayOrder) {
+    if (id === day2SpectatorId) {
+      continue;
+    }
+    if (allowedCompetitive.has(id)) {
+      normalizedDay2.push(id);
+    }
+  }
+
+  return [...day1Selected, ...normalizedDay2];
+}
+
+function getDay2DisabledIds(selectedOptionIds: string[]) {
+  const selectedDay2 = selectedOptionIds.filter((id) => day2OptionIdSet.has(id));
+  const selectedCompetitive = selectedDay2.filter((id) => id !== day2SpectatorId);
+  const selectedRestricted = selectedCompetitive.filter((id) => day2RestrictedGroupIds.has(id));
+  const selectedKidsOrJunPro = selectedCompetitive.filter(
+    (id) => id === day2KidsProId || id === day2JunProId,
+  );
+  const hasPro = selectedCompetitive.includes(day2ProId);
+
+  const allowed = new Set<string>([day2SpectatorId]);
+
+  if (selectedRestricted.length > 0) {
+    for (const id of selectedRestricted) {
+      allowed.add(id);
+    }
+  } else if (selectedKidsOrJunPro.length > 0) {
+    for (const id of selectedKidsOrJunPro) {
+      allowed.add(id);
+    }
+    allowed.add(day2ProId);
+  } else if (hasPro) {
+    allowed.add(day2ProId);
+    allowed.add(day2KidsProId);
+    allowed.add(day2JunProId);
+  } else {
+    return new Set<string>();
+  }
+
+  const disabled = new Set<string>();
+  for (const id of day2DisplayOrder) {
+    if (!allowed.has(id)) {
+      disabled.add(id);
+    }
+  }
+
+  return disabled;
+}
 
 function maskPhoneInput(value: string) {
   const digitsOnly = value.replace(/\D/g, "");
@@ -141,6 +241,10 @@ export function RegistrationForm() {
     .filter((option): option is (typeof day2Options)[number] => Boolean(option));
   const day2LeftOptions = orderedDay2Options.slice(0, 4);
   const day2RightOptions = orderedDay2Options.slice(4, 8);
+  const day2DisabledIds = useMemo(
+    () => getDay2DisabledIds(values.selectedOptionIds),
+    [values.selectedOptionIds],
+  );
   const registerPreset = searchParams.get("register");
   const focusPreset = searchParams.get("focus");
 
@@ -215,12 +319,21 @@ export function RegistrationForm() {
 
   const toggleOption = (optionId: string) => {
     setValues((prev) => {
+      if (day2DisabledIds.has(optionId)) {
+        return prev;
+      }
+
       const exists = prev.selectedOptionIds.includes(optionId);
+      const nextRaw = exists
+        ? prev.selectedOptionIds.filter((id) => id !== optionId)
+        : [...prev.selectedOptionIds, optionId];
+
       return {
         ...prev,
-        selectedOptionIds: exists
-          ? prev.selectedOptionIds.filter((id) => id !== optionId)
-          : [...prev.selectedOptionIds, optionId],
+        selectedOptionIds: normalizeSelectedOptionIds(
+          nextRaw,
+          exists ? undefined : optionId,
+        ),
       };
     });
   };
@@ -406,9 +519,15 @@ export function RegistrationForm() {
 
             <div className="mx-auto grid w-full max-w-[320px] gap-6 md:hidden">
               {orderedDay2Options.map((option) => (
+                (() => {
+                  const isDisabled = day2DisabledIds.has(option.id);
+
+                  return (
                 <label
                   key={option.id}
-                  className="grid min-h-[56px] grid-cols-[minmax(0,1fr)_24px] items-center gap-x-3"
+                  className={`grid min-h-[56px] grid-cols-[minmax(0,1fr)_24px] items-center gap-x-3 ${
+                    isDisabled ? "opacity-45" : ""
+                  }`}
                 >
                   <div className="grid gap-[8px]">
                     <span className="text-[16px] font-semibold leading-none">{option.title}</span>
@@ -421,19 +540,28 @@ export function RegistrationForm() {
                   <input
                     type="checkbox"
                     checked={values.selectedOptionIds.includes(option.id)}
+                    disabled={isDisabled}
                     onChange={() => toggleOption(option.id)}
-                    className={checkboxClasses()}
+                    className={`${checkboxClasses()} ${isDisabled ? "cursor-not-allowed" : ""}`}
                   />
                 </label>
+                  );
+                })()
               ))}
             </div>
 
             <div className="hidden gap-y-4 min-[501px]:grid min-[501px]:grid-cols-2 min-[501px]:gap-x-12 min-[1024px]:gap-x-8 min-[1024px]:gap-y-6">
               <div className="grid grid-rows-4 gap-4 min-[1024px]:gap-6">
                 {day2LeftOptions.map((option) => (
+                  (() => {
+                    const isDisabled = day2DisabledIds.has(option.id);
+
+                    return (
                   <label
                     key={option.id}
-                    className="grid h-[66px] grid-cols-[minmax(0,1fr)_24px] items-center gap-x-3 min-[1024px]:h-[72px] min-[1024px]:grid-cols-[184px_24px]"
+                    className={`grid h-[66px] grid-cols-[minmax(0,1fr)_24px] items-center gap-x-3 min-[1024px]:h-[72px] min-[1024px]:grid-cols-[184px_24px] ${
+                      isDisabled ? "opacity-45" : ""
+                    }`}
                   >
                     <div className="grid gap-[10px]">
                       <span className="text-[16px] font-semibold leading-none min-[1024px]:text-[20px]">
@@ -448,18 +576,27 @@ export function RegistrationForm() {
                     <input
                       type="checkbox"
                       checked={values.selectedOptionIds.includes(option.id)}
+                      disabled={isDisabled}
                       onChange={() => toggleOption(option.id)}
-                      className={checkboxClasses()}
+                      className={`${checkboxClasses()} ${isDisabled ? "cursor-not-allowed" : ""}`}
                     />
                   </label>
+                    );
+                  })()
                 ))}
               </div>
 
               <div className="grid grid-rows-4 gap-4 min-[1024px]:gap-6">
                 {day2RightOptions.map((option) => (
+                  (() => {
+                    const isDisabled = day2DisabledIds.has(option.id);
+
+                    return (
                   <label
                     key={option.id}
-                    className="grid h-[66px] grid-cols-[minmax(0,1fr)_24px] items-center gap-x-3 min-[1024px]:h-[72px] min-[1024px]:grid-cols-[184px_24px]"
+                    className={`grid h-[66px] grid-cols-[minmax(0,1fr)_24px] items-center gap-x-3 min-[1024px]:h-[72px] min-[1024px]:grid-cols-[184px_24px] ${
+                      isDisabled ? "opacity-45" : ""
+                    }`}
                   >
                     <div className="grid gap-[10px]">
                       <span className="text-[16px] font-semibold leading-none min-[1024px]:text-[20px]">
@@ -474,10 +611,13 @@ export function RegistrationForm() {
                     <input
                       type="checkbox"
                       checked={values.selectedOptionIds.includes(option.id)}
+                      disabled={isDisabled}
                       onChange={() => toggleOption(option.id)}
-                      className={checkboxClasses()}
+                      className={`${checkboxClasses()} ${isDisabled ? "cursor-not-allowed" : ""}`}
                     />
                   </label>
+                    );
+                  })()
                 ))}
               </div>
             </div>
