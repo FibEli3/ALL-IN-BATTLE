@@ -144,6 +144,11 @@ const dayOneCards: DayCard[] = [
         title: "Длительность:",
         details: ["1,5 часа"],
       },
+      {
+        bullet: "black",
+        title: "Место проведения:",
+        details: ["Калинина 291"],
+      },
     ],
     button: "Зарегистрироваться на МК",
     registrationPresetId: "day1-option-1",
@@ -155,6 +160,7 @@ const dayOneCards: DayCard[] = [
     price: "900₽",
     items: [
       { bullet: "black", title: "Судит:", details: ["RASH"] },
+      { bullet: "black", title: "Место проведения:", details: ["Калинина 291"] },
       { bullet: "black", title: "Играют:", details: ["BAMBOOK/WHYDEAP"] },
       {
         bullet: "black",
@@ -212,7 +218,7 @@ const dayTwoColumns: DayCard[] = [
   {
     title: "Важно",
     items: [
-      { bullet: "black", title: "Место проведения:", details: ["Скоро появится!"] },
+      { bullet: "black", title: "Место проведения:", details: ["Калинина 291"] },
       {
         bullet: "red",
         title:

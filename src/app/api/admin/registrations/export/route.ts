@@ -1,6 +1,17 @@
 ﻿import { listRegistrations } from "@/lib/db";
 import { EVENT_OPTIONS, getOptionsByDay } from "@/lib/event-options";
 
+const day2SummaryOrder = [
+  "day2-baby",
+  "day2-kids-beg",
+  "day2-kids-pro",
+  "day2-jun-beg",
+  "day2-jun-pro",
+  "day2-beg-16-plus",
+  "day2-pro-16-plus",
+  "day2-spectator",
+] as const;
+
 function checkAccess(request: Request) {
   const adminToken = process.env.ADMIN_DASHBOARD_TOKEN?.trim();
   if (!adminToken) {
@@ -89,7 +100,9 @@ export async function GET(request: Request) {
 
   const all = await listRegistrations();
   const day1Options = getOptionsByDay("day1");
-  const day2Options = getOptionsByDay("day2");
+  const day2Options = day2SummaryOrder
+    .map((id) => getOptionsByDay("day2").find((option) => option.id === id))
+    .filter((option): option is ReturnType<typeof getOptionsByDay>[number] => Boolean(option));
   const url = new URL(request.url);
   const token = access.token ?? url.searchParams.get("token") ?? "";
 

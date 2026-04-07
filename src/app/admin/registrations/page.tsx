@@ -17,6 +17,17 @@ type OptionStat = {
   paid: number;
 };
 
+const day2SummaryOrder = [
+  "day2-baby",
+  "day2-kids-beg",
+  "day2-kids-pro",
+  "day2-jun-beg",
+  "day2-jun-pro",
+  "day2-beg-16-plus",
+  "day2-pro-16-plus",
+  "day2-spectator",
+] as const;
+
 function rub(value: number) {
   return `${new Intl.NumberFormat("ru-RU").format(value)} ₽`;
 }
@@ -52,7 +63,12 @@ function mapOptionIdsToTitles(optionIds: string[]) {
 }
 
 function buildStats(registrations: RegistrationAdminRecord[], day: "day1" | "day2"): OptionStat[] {
-  const options = getOptionsByDay(day);
+  const options =
+    day === "day2"
+      ? day2SummaryOrder
+          .map((id) => getOptionsByDay("day2").find((option) => option.id === id))
+          .filter((option): option is ReturnType<typeof getOptionsByDay>[number] => Boolean(option))
+      : getOptionsByDay(day);
 
   return options.map((option) => {
     let registered = 0;
