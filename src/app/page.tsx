@@ -147,7 +147,7 @@ const dayOneCards: DayCard[] = [
       {
         bullet: "black",
         title: "Место проведения:",
-        details: ["Калинина 291"],
+        details: ["Красных Партизан 299"],
       },
     ],
     button: "Зарегистрироваться на МК",
@@ -520,6 +520,8 @@ export default function Home() {
                     className={`mt-12 block w-full rounded-full bg-[#2a6a34] px-6 py-4 text-center text-[14px] font-semibold leading-none text-white transition hover:bg-[#21562a] whitespace-nowrap min-[1024px]:mt-auto min-[1024px]:text-[18px] ${
                     card.title === "Мастер-Класс от RASH THE FLOW"
                       ? "min-[501px]:max-[1023px]:mt-[48px]"
+                      : card.title === "Contest 3x3"
+                        ? "min-[501px]:max-[1023px]:mt-12 min-[1024px]:mt-12"
                       : "min-[501px]:max-[1023px]:mt-auto"
                   }`}
                 >
