@@ -463,7 +463,7 @@ export function RegistrationForm() {
         </section>
 
         <section className="relative z-10 mt-10 grid gap-10 lg:grid-cols-2 lg:gap-14">
-          <div className="grid content-start gap-8">
+          <div className="grid content-start gap-8 min-[1024px]:gap-12">
             <h4 className="w-full text-center text-[38px] font-bold leading-none md:h-[34px] md:text-[28px] md:leading-[34px]">
               ALL IN DAY 1
             </h4>
