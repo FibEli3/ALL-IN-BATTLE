@@ -32,14 +32,13 @@ export default function ManualPaymentPage() {
   const router = useRouter();
   const cardNumber = "5469 3003 0678 7307";
   const cardNumberCopy = "5469300306787307";
-  const phoneNumber = "89186765222";
 
   const [draft, setDraft] = useState<PaymentDraft | null>(null);
   const [receiptFile, setReceiptFile] = useState<File | null>(null);
   const [isDragging, setIsDragging] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-  const [copiedTarget, setCopiedTarget] = useState<"card" | "phone" | null>(null);
+  const [copiedTarget, setCopiedTarget] = useState<"card" | null>(null);
 
   useEffect(() => {
     const raw = sessionStorage.getItem(MANUAL_PAYMENT_DRAFT_KEY);
@@ -75,7 +74,7 @@ export default function ManualPaymentPage() {
     );
   }, [draft]);
 
-  const copyValue = async (value: string, target: "card" | "phone") => {
+  const copyValue = async (value: string, target: "card") => {
     try {
       if (navigator.clipboard?.writeText) {
         await navigator.clipboard.writeText(value);
@@ -195,22 +194,6 @@ export default function ManualPaymentPage() {
                 <Image src="/icons/copy.svg" alt="" width={18} height={18} className="h-[18px] w-[18px]" />
               </button>
               {copiedTarget === "card" ? (
-                <span className="text-[12px] font-semibold text-[#2a6a34] md:text-[14px]">Скопировано</span>
-              ) : null}
-            </div>
-
-            <div className="mt-2 flex flex-wrap items-center gap-2">
-              <p className="text-[16px] font-medium md:text-[22px]">{phoneNumber}, Эдуард М.</p>
-              <button
-                type="button"
-                onClick={() => copyValue(phoneNumber, "phone")}
-                className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-[#2a6a34] transition hover:bg-[#eaf2eb] md:h-9 md:w-9"
-                aria-label="Скопировать номер телефона"
-                title="Скопировать номер телефона"
-              >
-                <Image src="/icons/copy.svg" alt="" width={16} height={16} className="h-[16px] w-[16px] md:h-[18px] md:w-[18px]" />
-              </button>
-              {copiedTarget === "phone" ? (
                 <span className="text-[12px] font-semibold text-[#2a6a34] md:text-[14px]">Скопировано</span>
               ) : null}
             </div>
