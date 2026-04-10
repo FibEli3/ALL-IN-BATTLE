@@ -49,55 +49,61 @@ const day2SpectatorId = "day2-spectator";
 const day2ProId = "day2-pro-16-plus";
 const day2KidsProId = "day2-kids-pro";
 const day2JunProId = "day2-jun-pro";
-const day2RestrictedGroupIds = new Set([
-  "day2-baby",
-  "day2-kids-beg",
-  "day2-jun-beg",
-  "day2-beg-16-plus",
-]);
+const day2KidsBegId = "day2-kids-beg";
+const day2JunBegId = "day2-jun-beg";
+const day2BabyId = "day2-baby";
+const day2Beg16PlusId = "day2-beg-16-plus";
+
+type Day2BaseGroup = "baby" | "beg16" | "kids" | "jun" | null;
+
+function getDay2BaseGroup(id: string): Day2BaseGroup {
+  if (id === day2BabyId) {
+    return "baby";
+  }
+  if (id === day2Beg16PlusId) {
+    return "beg16";
+  }
+  if (id === day2KidsBegId || id === day2KidsProId) {
+    return "kids";
+  }
+  if (id === day2JunBegId || id === day2JunProId) {
+    return "jun";
+  }
+  return null;
+}
 
 function normalizeSelectedOptionIds(optionIds: string[], preferredId?: string) {
   const day1Selected = optionIds.filter((id) => day1OptionIdSet.has(id));
   const day2Selected = optionIds.filter((id) => day2OptionIdSet.has(id));
 
   const hasSpectator = day2Selected.includes(day2SpectatorId);
-  const competitive = day2Selected.filter((id) => id !== day2SpectatorId);
-
-  const selectedRestricted = competitive.filter((id) => day2RestrictedGroupIds.has(id));
-  const selectedKidsOrJunPro = competitive.filter(
-    (id) => id === day2KidsProId || id === day2JunProId,
+  const hasPro = day2Selected.includes(day2ProId);
+  const baseSelections = day2Selected.filter(
+    (id) => id !== day2SpectatorId && id !== day2ProId,
   );
-  const hasPro = competitive.includes(day2ProId);
 
-  const allowedCompetitive = new Set<string>();
+  const preferredGroup = preferredId ? getDay2BaseGroup(preferredId) : null;
+  const fallbackGroup = baseSelections.length > 0 ? getDay2BaseGroup(baseSelections[0]) : null;
+  const activeGroup = preferredGroup ?? fallbackGroup;
 
-  if (selectedRestricted.length > 0) {
-    const preferredRestricted =
-      preferredId && selectedRestricted.includes(preferredId) ? preferredId : selectedRestricted[0];
-    allowedCompetitive.add(preferredRestricted);
-  } else if (selectedKidsOrJunPro.length > 0) {
-    const preferredKidsOrJunPro =
-      preferredId === day2KidsProId || preferredId === day2JunProId
-        ? preferredId
-        : selectedKidsOrJunPro[0];
-    allowedCompetitive.add(preferredKidsOrJunPro);
-    if (hasPro) {
-      allowedCompetitive.add(day2ProId);
-    }
-  } else if (hasPro) {
-    allowedCompetitive.add(day2ProId);
-  }
+  const normalizedBase =
+    activeGroup === null
+      ? []
+      : baseSelections.filter((id) => getDay2BaseGroup(id) === activeGroup);
 
   const normalizedDay2: string[] = [];
   if (hasSpectator) {
     normalizedDay2.push(day2SpectatorId);
   }
+  if (hasPro) {
+    normalizedDay2.push(day2ProId);
+  }
 
   for (const id of day2DisplayOrder) {
-    if (id === day2SpectatorId) {
+    if (id === day2SpectatorId || id === day2ProId) {
       continue;
     }
-    if (allowedCompetitive.has(id)) {
+    if (normalizedBase.includes(id)) {
       normalizedDay2.push(id);
     }
   }
@@ -107,30 +113,31 @@ function normalizeSelectedOptionIds(optionIds: string[], preferredId?: string) {
 
 function getDay2DisabledIds(selectedOptionIds: string[]) {
   const selectedDay2 = selectedOptionIds.filter((id) => day2OptionIdSet.has(id));
-  const selectedCompetitive = selectedDay2.filter((id) => id !== day2SpectatorId);
-  const selectedRestricted = selectedCompetitive.filter((id) => day2RestrictedGroupIds.has(id));
-  const selectedKidsOrJunPro = selectedCompetitive.filter(
-    (id) => id === day2KidsProId || id === day2JunProId,
+  const baseSelections = selectedDay2.filter(
+    (id) => id !== day2SpectatorId && id !== day2ProId,
   );
-  const hasPro = selectedCompetitive.includes(day2ProId);
 
-  const allowed = new Set<string>([day2SpectatorId]);
+  const activeGroup = baseSelections.length > 0 ? getDay2BaseGroup(baseSelections[0]) : null;
 
-  if (selectedRestricted.length > 0) {
-    for (const id of selectedRestricted) {
-      allowed.add(id);
-    }
-  } else if (selectedKidsOrJunPro.length > 0) {
-    for (const id of selectedKidsOrJunPro) {
-      allowed.add(id);
-    }
-    allowed.add(day2ProId);
-  } else if (hasPro) {
-    allowed.add(day2ProId);
-    allowed.add(day2KidsProId);
-    allowed.add(day2JunProId);
-  } else {
+  if (!activeGroup) {
     return new Set<string>();
+  }
+
+  const allowed = new Set<string>([day2SpectatorId, day2ProId]);
+
+  if (activeGroup === "baby") {
+    allowed.add(day2BabyId);
+  }
+  if (activeGroup === "beg16") {
+    allowed.add(day2Beg16PlusId);
+  }
+  if (activeGroup === "kids") {
+    allowed.add(day2KidsBegId);
+    allowed.add(day2KidsProId);
+  }
+  if (activeGroup === "jun") {
+    allowed.add(day2JunBegId);
+    allowed.add(day2JunProId);
   }
 
   const disabled = new Set<string>();
