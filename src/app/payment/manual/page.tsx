@@ -30,6 +30,7 @@ function formatRub(value: number) {
 
 export default function ManualPaymentPage() {
   const router = useRouter();
+  const isPaymentDisabled = true;
   const cardNumber = "5469 3003 0678 7307";
   const cardNumberCopy = "5469300306787307";
 
@@ -75,6 +76,10 @@ export default function ManualPaymentPage() {
   }, [draft]);
 
   const copyValue = async (value: string, target: "card") => {
+    if (isPaymentDisabled) {
+      return;
+    }
+
     try {
       if (navigator.clipboard?.writeText) {
         await navigator.clipboard.writeText(value);
@@ -100,7 +105,7 @@ export default function ManualPaymentPage() {
   };
 
   const submitRegistration = async () => {
-    if (!draft || !receiptFile || isSubmitting) {
+    if (isPaymentDisabled || !draft || !receiptFile || isSubmitting) {
       return;
     }
 
@@ -187,7 +192,12 @@ export default function ManualPaymentPage() {
               <button
                 type="button"
                 onClick={() => copyValue(cardNumberCopy, "card")}
-                className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-[#2a6a34] transition hover:bg-[#eaf2eb]"
+                disabled={isPaymentDisabled}
+                className={`inline-flex h-9 w-9 items-center justify-center rounded-full border border-[#2a6a34] transition ${
+                  isPaymentDisabled
+                    ? "cursor-not-allowed opacity-45"
+                    : "hover:bg-[#eaf2eb]"
+                }`}
                 aria-label="Скопировать номер карты"
                 title="Скопировать номер карты"
               >
@@ -209,23 +219,39 @@ export default function ManualPaymentPage() {
 
           <label
             onDragOver={(event) => {
+              if (isPaymentDisabled) {
+                return;
+              }
               event.preventDefault();
               setIsDragging(true);
             }}
-            onDragLeave={() => setIsDragging(false)}
+            onDragLeave={() => {
+              if (isPaymentDisabled) {
+                return;
+              }
+              setIsDragging(false);
+            }}
             onDrop={(event) => {
+              if (isPaymentDisabled) {
+                return;
+              }
               event.preventDefault();
               setIsDragging(false);
               const file = event.dataTransfer.files?.[0] ?? null;
               setReceiptFile(file);
             }}
-            className={`mt-4 flex min-h-[150px] cursor-pointer items-center justify-center rounded-2xl border-2 border-dashed px-4 text-center transition ${
-              isDragging ? "border-[#2a6a34] bg-[#edf6ef]" : "border-[#c9c9c9] bg-white"
+            className={`mt-4 flex min-h-[150px] items-center justify-center rounded-2xl border-2 border-dashed px-4 text-center transition ${
+              isPaymentDisabled
+                ? "cursor-not-allowed border-[#c9c9c9] bg-white opacity-60"
+                : isDragging
+                  ? "cursor-pointer border-[#2a6a34] bg-[#edf6ef]"
+                  : "cursor-pointer border-[#c9c9c9] bg-white"
             }`}
           >
             <input
               type="file"
               accept="image/*,.pdf,.heic,.HEIC"
+              disabled={isPaymentDisabled}
               className="hidden"
               onChange={(event) => setReceiptFile(event.target.files?.[0] ?? null)}
             />
@@ -255,11 +281,11 @@ export default function ManualPaymentPage() {
 
           <button
             type="button"
-            disabled={!receiptFile || isSubmitting}
+            disabled={isPaymentDisabled || !receiptFile || isSubmitting}
             onClick={submitRegistration}
             className="mt-6 h-[50px] w-full rounded-full bg-[#2a6a34] px-8 text-[15px] font-semibold leading-none text-white transition hover:bg-[#21562a] disabled:cursor-not-allowed disabled:bg-[#8ead93]"
           >
-            {isSubmitting ? "Отправка..." : "Отправить"}
+            {isPaymentDisabled ? "Оплата недоступна" : isSubmitting ? "Отправка..." : "Отправить"}
           </button>
         </div>
       </section>

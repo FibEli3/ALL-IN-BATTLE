@@ -197,6 +197,7 @@ function Field(props: {
   onFocus?: () => void;
   inputId?: string;
   hasError?: boolean;
+  disabled?: boolean;
 }) {
   return (
     <label className="grid gap-2 md:gap-3">
@@ -212,13 +213,14 @@ function Field(props: {
         id={props.inputId}
         value={props.value}
         placeholder={props.placeholder}
+        disabled={props.disabled}
         onChange={(event) => props.onChange(event.target.value)}
         onFocus={props.onFocus}
         className={`h-[44px] bg-transparent px-[6px] text-[18px] font-semibold leading-none text-[#131417] outline-none placeholder:text-[rgba(0,0,0,0.48)] md:h-[56px] md:px-[10px] md:text-[22px] ${
           props.hasError
             ? "border-b-2 border-[#bd2d2d]"
             : "border-b border-[rgba(0,0,0,0.38)]"
-        }`}
+        } ${props.disabled ? "cursor-not-allowed opacity-60" : ""}`}
       />
     </label>
   );
@@ -227,6 +229,7 @@ function Field(props: {
 export function RegistrationForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const isRegistrationDisabled = true;
   const [values, setValues] = useState<FormValues>(initialForm);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
@@ -258,7 +261,7 @@ export function RegistrationForm() {
   useEffect(() => {
     const shouldFocus = registerPreset !== null || focusPreset === "fullName";
 
-    if (registerPreset !== null) {
+    if (!isRegistrationDisabled && registerPreset !== null) {
       const isSupported = day1Options.some((option) => option.id === registerPreset);
       setValues((prev) => ({
         ...prev,
@@ -278,10 +281,14 @@ export function RegistrationForm() {
         }
       });
     }
-  }, [registerPreset, focusPreset]);
+  }, [registerPreset, focusPreset, isRegistrationDisabled]);
 
   useEffect(() => {
     const handleProgramPreset = (event: Event) => {
+      if (isRegistrationDisabled) {
+        return;
+      }
+
       const customEvent = event as CustomEvent<{
         presetId?: string | null;
         clearSelection?: boolean;
@@ -322,9 +329,13 @@ export function RegistrationForm() {
         handleProgramPreset as EventListener,
       );
     };
-  }, []);
+  }, [isRegistrationDisabled]);
 
   const toggleOption = (optionId: string) => {
+    if (isRegistrationDisabled) {
+      return;
+    }
+
     setValues((prev) => {
       if (day2DisabledIds.has(optionId)) {
         return prev;
@@ -352,6 +363,11 @@ export function RegistrationForm() {
   const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setErrorMessage("");
+
+    if (isRegistrationDisabled) {
+      setErrorMessage("Регистрация сейчас закрыта.");
+      return;
+    }
 
     const nextRequiredErrors: Record<RequiredFieldKey, boolean> = {
       fullName: values.fullName.trim().length === 0,
@@ -435,6 +451,7 @@ export function RegistrationForm() {
               required
               value={values.fullName}
               placeholder="Иванов Иван Иванович"
+              disabled={isRegistrationDisabled}
               inputId="registration-full-name"
               onChange={(value) => setValues((prev) => ({ ...prev, fullName: value }))}
               onFocus={() => clearRequiredFieldError("fullName")}
@@ -445,6 +462,7 @@ export function RegistrationForm() {
               required
               value={values.nickname}
               placeholder="Baban"
+              disabled={isRegistrationDisabled}
               onChange={(value) => setValues((prev) => ({ ...prev, nickname: value }))}
               onFocus={() => clearRequiredFieldError("nickname")}
               hasError={requiredFieldErrors.nickname}
@@ -453,6 +471,7 @@ export function RegistrationForm() {
               label="Возраст"
               value={values.age}
               placeholder="14"
+              disabled={isRegistrationDisabled}
               onChange={(value) => setValues((prev) => ({ ...prev, age: value }))}
             />
             <Field
@@ -460,6 +479,7 @@ export function RegistrationForm() {
               required
               value={values.phone}
               placeholder="+7(***)***-**-**"
+              disabled={isRegistrationDisabled}
               onChange={(value) =>
                 setValues((prev) => ({ ...prev, phone: maskPhoneInput(value) }))
               }
@@ -489,8 +509,11 @@ export function RegistrationForm() {
                   <input
                     type="checkbox"
                     checked={values.selectedOptionIds.includes(option.id)}
+                    disabled={isRegistrationDisabled}
                     onChange={() => toggleOption(option.id)}
-                    className={checkboxClasses()}
+                    className={`${checkboxClasses()} ${
+                      isRegistrationDisabled ? "cursor-not-allowed opacity-45" : ""
+                    }`}
                   />
                 </label>
               ))}
@@ -511,8 +534,11 @@ export function RegistrationForm() {
                   <input
                     type="checkbox"
                     checked={values.selectedOptionIds.includes(option.id)}
+                    disabled={isRegistrationDisabled}
                     onChange={() => toggleOption(option.id)}
-                    className={checkboxClasses()}
+                    className={`${checkboxClasses()} ${
+                      isRegistrationDisabled ? "cursor-not-allowed opacity-45" : ""
+                    }`}
                   />
                 </label>
               ))}
@@ -527,7 +553,7 @@ export function RegistrationForm() {
             <div className="mx-auto grid w-full max-w-[320px] gap-6 md:hidden">
               {orderedDay2Options.map((option) => (
                 (() => {
-                  const isDisabled = day2DisabledIds.has(option.id);
+                  const isDisabled = day2DisabledIds.has(option.id) || isRegistrationDisabled;
 
                   return (
                 <label
@@ -561,7 +587,7 @@ export function RegistrationForm() {
               <div className="grid grid-rows-4 gap-4 min-[1024px]:gap-6">
                 {day2LeftOptions.map((option) => (
                   (() => {
-                    const isDisabled = day2DisabledIds.has(option.id);
+                    const isDisabled = day2DisabledIds.has(option.id) || isRegistrationDisabled;
 
                     return (
                   <label
@@ -596,7 +622,7 @@ export function RegistrationForm() {
               <div className="grid grid-rows-4 gap-4 min-[1024px]:gap-6">
                 {day2RightOptions.map((option) => (
                   (() => {
-                    const isDisabled = day2DisabledIds.has(option.id);
+                    const isDisabled = day2DisabledIds.has(option.id) || isRegistrationDisabled;
 
                     return (
                   <label
@@ -648,10 +674,14 @@ export function RegistrationForm() {
           </p>
           <button
             type="submit"
-            disabled={isSubmitting || totalRub <= 0}
+            disabled={isRegistrationDisabled || isSubmitting || totalRub <= 0}
             className="h-[46px] w-full rounded-full bg-[#2a6a34] px-8 text-[14px] font-semibold leading-none text-white transition hover:brightness-95 disabled:cursor-not-allowed disabled:bg-[#7da57f] disabled:opacity-100 md:h-[56px] md:min-w-[382px] md:w-auto md:px-10 md:text-[18px]"
           >
-            {isSubmitting ? "Отправка..." : "Перейти к оплате"}
+            {isRegistrationDisabled
+              ? "Регистрация закрыта"
+              : isSubmitting
+                ? "Отправка..."
+                : "Перейти к оплате"}
           </button>
         </section>
 
