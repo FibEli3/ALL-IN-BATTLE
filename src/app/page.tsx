@@ -147,7 +147,7 @@ const dayOneCards: DayCard[] = [
       {
         bullet: "black",
         title: "Место проведения:",
-        details: ["Красных Партизан 299"],
+        details: ["Дальняя 43"],
       },
     ],
     button: "Зарегистрироваться на МК",
