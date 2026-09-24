@@ -1,0 +1,302 @@
+/*
+ * Responsive composition overrides.
+ * Loaded after globals.css so the hero positioning can be tuned or reverted
+ * independently without touching the functional styles or component logic.
+ */
+
+/* Mobile navigation: warm paper instead of a full red takeover. */
+.mobile-menu {
+  background:
+    radial-gradient(circle at 88% 10%, rgba(229, 48, 0, 0.12), transparent 30%),
+    var(--paper);
+  color: var(--ink);
+}
+
+.mobile-menu-top button {
+  border-color: var(--ink);
+  background: var(--ink);
+  color: var(--paper);
+}
+
+.mobile-menu-top .mobile-menu-logo {
+  object-fit: contain;
+}
+
+.mobile-menu nav a {
+  border-bottom-color: rgba(25, 14, 1, 0.2);
+}
+
+.mobile-menu nav span {
+  color: var(--accent);
+}
+
+/*
+ * Desktop composition (1200–1599px).
+ * Portrait width is still allowed a small responsive range, while the crop is
+ * anchored in pixels. This keeps the people stable on screens with different
+ * aspect ratios. Katya is intentionally raised above the shared baseline.
+ */
+@media (min-width: 1200px) {
+  .hero-wood-right {
+    right: 0;
+  }
+
+  .hero-person {
+    bottom: -340px;
+    width: clamp(560px, 43vw, 640px);
+  }
+
+  .hero-person-left {
+    left: clamp(18px, 2vw, 42px);
+  }
+
+  .hero-person-center {
+    bottom: -340px;
+    width: clamp(590px, 45vw, 680px);
+  }
+
+  .hero-person-right {
+    right: clamp(18px, 2vw, 42px);
+    bottom: -270px;
+  }
+}
+
+/* Wide desktop: slightly deeper crop so the trio stays grounded. */
+@media (min-width: 1600px) {
+  .hero-person,
+  .hero-person-center {
+    bottom: -360px;
+  }
+
+  .hero-person-right {
+    bottom: -280px;
+  }
+}
+
+/* Short desktop screens need a deeper crop to protect the headline area. */
+@media (min-width: 1200px) and (max-height: 940px) {
+  .hero-person,
+  .hero-person-center {
+    bottom: -410px;
+  }
+
+  .hero-person-right {
+    bottom: -310px;
+  }
+}
+
+@media (min-width: 1600px) and (max-height: 940px) {
+  .hero-person,
+  .hero-person-center {
+    bottom: -440px;
+  }
+
+  .hero-person-right {
+    bottom: -310px;
+  }
+}
+
+@media (min-width: 1200px) and (max-height: 780px) {
+  .hero-person,
+  .hero-person-center {
+    bottom: -460px;
+  }
+
+  .hero-person-right {
+    bottom: -360px;
+  }
+}
+
+/* Compact desktop and laptop composition. */
+@media (min-width: 901px) and (max-width: 1199px) {
+  .hero-person {
+    bottom: -285px;
+    width: clamp(460px, 52vw, 560px);
+  }
+
+  .hero-person-left {
+    left: -6vw;
+  }
+
+  .hero-person-center {
+    bottom: -285px;
+    width: clamp(490px, 55vw, 600px);
+  }
+
+  .hero-person-right {
+    right: -6vw;
+    bottom: -220px;
+  }
+}
+
+@media (min-width: 901px) and (max-width: 1199px) and (max-height: 820px) {
+  .hero-person,
+  .hero-person-center {
+    bottom: -330px;
+  }
+
+  .hero-person-right {
+    bottom: -235px;
+  }
+}
+
+/*
+ * Low laptop viewports and very wide browser windows need a protected text
+ * zone. Anchoring portraits from the top keeps heads below the subtitle even
+ * when the viewport is short or has an ultra-wide aspect ratio.
+ */
+@media (min-width: 901px) and (max-height: 820px),
+  (min-width: 1200px) and (min-aspect-ratio: 19/10) {
+  .hero-copy {
+    top: clamp(108px, 15vh, 148px);
+  }
+
+  .hero h1 {
+    font-size: clamp(58px, min(7.4vw, 14vh), 118px);
+  }
+
+  .hero-meta {
+    margin-bottom: 16px;
+  }
+
+  .hero-subtitle {
+    margin-top: 16px;
+  }
+
+  .hero-person,
+  .hero-person-center,
+  .hero-person-right {
+    top: clamp(360px, 60vh, 650px);
+    bottom: auto;
+  }
+
+  .hero-person {
+    width: clamp(440px, 39vw, 590px);
+  }
+
+  .hero-person-left {
+    left: clamp(-42px, 1vw, 24px);
+  }
+
+  .hero-person-center {
+    width: clamp(470px, 41vw, 620px);
+  }
+
+  .hero-person-right {
+    right: clamp(-42px, 1vw, 24px);
+  }
+}
+
+/* On wide desktop monitors the portraits should enter the first screen sooner. */
+@media (min-width: 1200px) and (min-aspect-ratio: 19/10) {
+  .hero-person,
+  .hero-person-center,
+  .hero-person-right {
+    top: clamp(340px, 51vh, 570px);
+  }
+}
+
+/* Tablet composition: equal baseline and deliberate overlap. */
+@media (min-width: 641px) and (max-width: 900px) {
+  .hero-person {
+    bottom: -80px;
+    width: 52.5vw;
+  }
+
+  .hero-person-left {
+    left: -9vw;
+  }
+
+  .hero-person-center {
+    bottom: -90px;
+    width: 56vw;
+  }
+
+  .hero-person-right {
+    right: -9vw;
+  }
+}
+
+@media (min-width: 641px) and (max-width: 900px) and (orientation: landscape) {
+  .hero-person {
+    bottom: -200px;
+    width: 45vw;
+  }
+
+  .hero-person-center {
+    bottom: -210px;
+    width: 49vw;
+  }
+}
+
+/* Large phones and narrow portrait tablets. */
+@media (min-width: 481px) and (max-width: 640px) {
+  .hero {
+    min-height: max(860px, 100svh);
+  }
+
+  .hero-person {
+    bottom: 40px;
+    width: 58vw;
+  }
+
+  .hero-person-left {
+    left: -16vw;
+  }
+
+  .hero-person-center {
+    bottom: -6px;
+    width: 62vw;
+  }
+
+  .hero-person-right {
+    right: -18vw;
+    bottom: 44px;
+  }
+}
+
+/* Phone composition: fixed vertical anchors prevent aspect-ratio drift. */
+@media (max-width: 480px) {
+  .hero {
+    min-height: max(800px, 100svh);
+  }
+
+  .hero-copy {
+    top: clamp(248px, calc(310px - 12vw), 270px);
+  }
+
+  .hero-person {
+    bottom: 0;
+    width: 76vw;
+  }
+
+  .hero-person-left {
+    left: -25vw;
+    bottom: -72px;
+  }
+
+  .hero-person-center {
+    bottom: -90px;
+    width: 80vw;
+  }
+
+  .hero-person-right {
+    right: -30vw;
+    bottom: -104px;
+    width: 84vw;
+  }
+}
+
+/* Keep both invited-team cards aligned at the mobile breakpoint. */
+@media (max-width: 640px) {
+  .invited article + article {
+    padding-left: 24px;
+  }
+
+  .registration-section .section-header h2 {
+    max-width: 100%;
+    font-size: clamp(42px, 13.5vw, 58px);
+    letter-spacing: -0.075em;
+    white-space: nowrap;
+  }
+}

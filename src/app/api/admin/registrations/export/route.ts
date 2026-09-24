@@ -1,5 +1,12 @@
-﻿import { listRegistrations } from "@/lib/db";
-import { EVENT_OPTIONS, getOptionsByDay } from "@/lib/event-options";
+import { listRegistrations } from "@/lib/db";
+import { getOptionsByDay } from "@/lib/event-options";
+import {
+  mapOptionIdsToTitles,
+  parseSelectedOptionIds,
+} from "@/lib/registration-admin";
+import ExcelJS from "exceljs";
+
+export const runtime = "nodejs";
 
 const day2SummaryOrder = [
   "day2-baby",
@@ -31,65 +38,20 @@ function checkAccess(request: Request) {
     return { ok: false, message: "Unauthorized", status: 401 };
   }
 
-  return { ok: true, status: 200, token: providedToken };
+  return { ok: true, status: 200 };
 }
 
-function parseOptions(raw: string | null) {
-  if (!raw) {
-    return [] as string[];
-  }
-
-  try {
-    const parsed = JSON.parse(raw) as string[];
-    return Array.isArray(parsed) ? parsed : [];
-  } catch {
-    return [];
-  }
-}
-
-function mapOptionIdsToTitles(optionIds: string[]) {
-  return optionIds.map((id) => EVENT_OPTIONS.find((item) => item.id === id)?.title ?? id);
-}
-
-function xmlEscape(value: string | number | null | undefined) {
-  const text = value === null || value === undefined ? "" : String(value);
-  return text
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;")
-    .replaceAll("'", "&apos;");
-}
-
-function cell(value: string | number | null | undefined) {
-  return `<Cell><Data ss:Type="String">${xmlEscape(value)}</Data></Cell>`;
-}
-
-function worksheet(name: string, headers: string[], rows: Array<Array<string | number | null | undefined>>) {
-  const headerRow = `<Row>${headers.map((h) => cell(h)).join("")}</Row>`;
-  const bodyRows = rows.map((row) => `<Row>${row.map((v) => cell(v)).join("")}</Row>`).join("");
-
-  return `
-    <Worksheet ss:Name="${xmlEscape(name)}">
-      <Table>
-        ${headerRow}
-        ${bodyRows}
-      </Table>
-    </Worksheet>
-  `;
-}
-
-function formatDateTimeRu(value: string) {
-  return new Intl.DateTimeFormat("ru-RU", {
-    timeZone: "Europe/Moscow",
-    year: "numeric",
-    month: "2-digit",
-    day: "2-digit",
-    hour: "2-digit",
-    minute: "2-digit",
-    second: "2-digit",
-    hour12: false,
-  }).format(new Date(value));
+function styleHeader(row: ExcelJS.Row) {
+  row.height = 28;
+  row.eachCell((cell) => {
+    cell.font = { bold: true, color: { argb: "FFFFFFFF" } };
+    cell.fill = {
+      type: "pattern",
+      pattern: "solid",
+      fgColor: { argb: "FF2A6A34" },
+    };
+    cell.alignment = { vertical: "middle" };
+  });
 }
 
 export async function GET(request: Request) {
@@ -99,86 +61,103 @@ export async function GET(request: Request) {
   }
 
   const all = await listRegistrations();
-  const day1Options = getOptionsByDay("day1");
-  const day2Options = day2SummaryOrder
-    .map((id) => getOptionsByDay("day2").find((option) => option.id === id))
-    .filter((option): option is ReturnType<typeof getOptionsByDay>[number] => Boolean(option));
-  const url = new URL(request.url);
-  const token = access.token ?? url.searchParams.get("token") ?? "";
+  const workbook = new ExcelJS.Workbook();
+  workbook.creator = "ALL IN BATTLE";
+  workbook.created = new Date();
 
-  const registrationsHeaders = [
-    "ID",
-    "Дата",
-    "Сумма (₽)",
-    "ФИО",
-    "Ник",
-    "Телефон",
-    "Возраст",
-    "Опции",
-    "Есть чек",
-    "Имя файла чека",
-    "Ссылка на чек",
+  const registrationsSheet = workbook.addWorksheet("Заявки", {
+    views: [{ state: "frozen", ySplit: 1 }],
+  });
+  registrationsSheet.columns = [
+    { header: "ID", key: "id", width: 38 },
+    { header: "Дата", key: "createdAt", width: 20 },
+    { header: "Сумма (₽)", key: "amountRub", width: 15 },
+    { header: "ФИО", key: "fullName", width: 28 },
+    { header: "Ник", key: "nickname", width: 22 },
+    { header: "Телефон", key: "phone", width: 20 },
+    { header: "Возраст", key: "age", width: 12 },
+    { header: "Тип участия", key: "participationType", width: 18 },
+    { header: "Опции", key: "options", width: 48 },
+    { header: "Есть чек", key: "hasReceipt", width: 13 },
+    { header: "Имя файла чека", key: "receiptFileName", width: 32 },
   ];
 
-  const registrationRows = all.map((item) => {
-    const options = mapOptionIdsToTitles(parseOptions(item.selectedOptionIds));
-    const hasReceipt = Boolean(item.receiptFileBase64);
-    const receiptDownloadUrl = hasReceipt
-      ? `${url.origin}/api/admin/registrations/receipt?token=${encodeURIComponent(token)}&id=${encodeURIComponent(item.id)}`
-      : "";
+  for (const registration of all) {
+    const optionTitles = mapOptionIdsToTitles(
+      parseSelectedOptionIds(registration.selectedOptionIds),
+    );
 
-    return [
-      item.id,
-      formatDateTimeRu(item.createdAt),
-      item.amountRub,
-      item.fullName,
-      item.nickname ?? "",
-      item.phone,
-      item.age ?? "",
-      options.join(", "),
-      hasReceipt ? "Да" : "Нет",
-      item.receiptFileName ?? "",
-      receiptDownloadUrl,
+    registrationsSheet.addRow({
+      id: registration.id,
+      createdAt: new Date(registration.createdAt),
+      amountRub: registration.amountRub,
+      fullName: registration.fullName,
+      nickname: registration.nickname ?? "",
+      phone: registration.phone,
+      age: registration.age ?? "",
+      participationType:
+        registration.participationType === "spectator" ? "Зритель" : "Участник",
+      options: optionTitles.join(", "),
+      hasReceipt: registration.hasReceipt ? "Да" : "Нет",
+      receiptFileName: registration.receiptFileName ?? "",
+    });
+  }
+
+  styleHeader(registrationsSheet.getRow(1));
+  registrationsSheet.autoFilter = "A1:K1";
+  registrationsSheet.getColumn("createdAt").numFmt = "dd.mm.yyyy hh:mm";
+  registrationsSheet.getColumn("amountRub").numFmt = '#,##0 "₽"';
+  registrationsSheet.eachRow((row, rowNumber) => {
+    if (rowNumber > 1) {
+      row.alignment = { vertical: "top", wrapText: true };
+    }
+  });
+
+  const summaryHeaders = ["Номинация", "Зарегистрировано", "С чеком"];
+  const summarySheets = [
+    { name: "Сводка День 1", options: getOptionsByDay("day1") },
+    {
+      name: "Сводка День 2",
+      options: day2SummaryOrder
+        .map((id) => getOptionsByDay("day2").find((option) => option.id === id))
+        .filter((option): option is ReturnType<typeof getOptionsByDay>[number] => Boolean(option)),
+    },
+  ];
+
+  for (const summary of summarySheets) {
+    const sheet = workbook.addWorksheet(summary.name, {
+      views: [{ state: "frozen", ySplit: 1 }],
+    });
+    sheet.columns = [
+      { header: summaryHeaders[0], key: "title", width: 42 },
+      { header: summaryHeaders[1], key: "registered", width: 22 },
+      { header: summaryHeaders[2], key: "paid", width: 16 },
     ];
-  });
 
-  const summaryHeaders = ["Номинация", "Зарегистрировано", "Оплачено"];
+    for (const option of summary.options) {
+      const matching = all.filter((registration) =>
+        parseSelectedOptionIds(registration.selectedOptionIds).includes(option.id),
+      );
+      sheet.addRow({
+        title: option.title,
+        registered: matching.length,
+        paid: matching.filter((registration) => registration.hasReceipt).length,
+      });
+    }
 
-  const day1Rows = day1Options.map((option) => {
-    const registered = all.filter((item) => parseOptions(item.selectedOptionIds).includes(option.id)).length;
-    const paid = all.filter(
-      (item) => parseOptions(item.selectedOptionIds).includes(option.id),
-    ).length;
+    styleHeader(sheet.getRow(1));
+    sheet.autoFilter = "A1:C1";
+  }
 
-    return [option.title, registered, paid];
-  });
+  const buffer = await workbook.xlsx.writeBuffer();
 
-  const day2Rows = day2Options.map((option) => {
-    const registered = all.filter((item) => parseOptions(item.selectedOptionIds).includes(option.id)).length;
-    const paid = all.filter(
-      (item) => parseOptions(item.selectedOptionIds).includes(option.id),
-    ).length;
-
-    return [option.title, registered, paid];
-  });
-
-  const xml = `<?xml version="1.0" encoding="UTF-8"?>
-<?mso-application progid="Excel.Sheet"?>
-<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet"
- xmlns:o="urn:schemas-microsoft-com:office:office"
- xmlns:x="urn:schemas-microsoft-com:office:excel"
- xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet"
- xmlns:html="http://www.w3.org/TR/REC-html40">
-  ${worksheet("Заявки", registrationsHeaders, registrationRows)}
-  ${worksheet("Сводка День 1", summaryHeaders, day1Rows)}
-  ${worksheet("Сводка День 2", summaryHeaders, day2Rows)}
-</Workbook>`;
-
-  return new Response(xml, {
+  return new Response(Buffer.from(buffer), {
     status: 200,
     headers: {
-      "Content-Type": "application/vnd.ms-excel; charset=utf-8",
-      "Content-Disposition": 'attachment; filename="all-in-battle-registrations.xls"',
+      "Content-Type":
+        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      "Content-Disposition":
+        'attachment; filename="all-in-battle-registrations.xlsx"',
       "Cache-Control": "no-store",
     },
   });

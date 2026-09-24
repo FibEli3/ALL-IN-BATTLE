@@ -7,7 +7,7 @@ Current scope:
 - lineup and program sections;
 - registration form;
 - manual payment flow (bank transfer + receipt upload);
-- admin dashboard and CSV export;
+- admin dashboard with filters and Excel export;
 - database storage with PostgreSQL (Vercel) or local fallback.
 
 ## Run locally
@@ -43,7 +43,6 @@ Current scope:
 ## Useful routes
 
 - `POST /api/registrations/manual`
-- `GET /api/admin/registrations?token=<ADMIN_DASHBOARD_TOKEN>&status=paid`
+- `GET /api/admin/registrations?token=<ADMIN_DASHBOARD_TOKEN>`
 - `GET /api/admin/registrations/export?token=<ADMIN_DASHBOARD_TOKEN>`
 - `GET /admin/registrations?token=<ADMIN_DASHBOARD_TOKEN>`
-

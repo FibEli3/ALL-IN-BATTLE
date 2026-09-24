@@ -49,7 +49,7 @@ export type RegistrationAdminRecord = {
   paymentId: string | null;
   receiptFileName: string | null;
   receiptFileMimeType: string | null;
-  receiptFileBase64: string | null;
+  hasReceipt: boolean;
   amountRub: number;
   createdAt: string;
 };
@@ -62,8 +62,13 @@ type DbClient = {
 function createClient(): DbClient {
   const databaseUrl = process.env.DATABASE_URL;
 
-  if (databaseUrl) {
-    const sql = postgres(databaseUrl, { prepare: false });
+  if (databaseUrl?.match(/^postgres(?:ql)?:\/\//i)) {
+    const sql = postgres(databaseUrl, {
+      prepare: false,
+      max: 1,
+      idle_timeout: 20,
+      connect_timeout: 10,
+    });
 
     return {
       async query<T>(query: string, params: unknown[] = []) {
@@ -74,6 +79,12 @@ function createClient(): DbClient {
         await sql.unsafe(query);
       },
     };
+  }
+
+  if (process.env.VERCEL) {
+    throw new Error(
+      "DATABASE_URL must be a PostgreSQL connection string in Vercel",
+    );
   }
 
   const dataDir = join(process.cwd(), ".data");
@@ -90,13 +101,23 @@ function createClient(): DbClient {
   };
 }
 
-const db = createClient();
+let db: DbClient | null = null;
 let initialized: Promise<void> | null = null;
+
+function getDb() {
+  if (!db) {
+    db = createClient();
+  }
+
+  return db;
+}
 
 async function ensureSchema() {
   if (!initialized) {
     initialized = (async () => {
-      await db.exec(`
+      const client = getDb();
+
+      await client.exec(`
         CREATE TABLE IF NOT EXISTS registrations (
           id TEXT PRIMARY KEY,
           full_name TEXT NOT NULL,
@@ -119,37 +140,38 @@ async function ensureSchema() {
         );
       `);
 
-      await db.exec(`
-        ALTER TABLE registrations
-        DROP COLUMN IF EXISTS payment_status;
-      `);
-      await db.exec(`
+      await client.exec(`
         ALTER TABLE registrations
         ADD COLUMN IF NOT EXISTS nickname TEXT;
       `);
-      await db.exec(`
+      await client.exec(`
         ALTER TABLE registrations
         ADD COLUMN IF NOT EXISTS selected_option_ids TEXT;
       `);
-      await db.exec(`
+      await client.exec(`
         ALTER TABLE registrations
         ADD COLUMN IF NOT EXISTS age TEXT;
       `);
-      await db.exec(`
+      await client.exec(`
         ALTER TABLE registrations
         ADD COLUMN IF NOT EXISTS amount_rub INTEGER;
       `);
-      await db.exec(`
+      await client.exec(`
         ALTER TABLE registrations
         ADD COLUMN IF NOT EXISTS receipt_file_name TEXT;
       `);
-      await db.exec(`
+      await client.exec(`
         ALTER TABLE registrations
         ADD COLUMN IF NOT EXISTS receipt_file_mime_type TEXT;
       `);
-      await db.exec(`
+      await client.exec(`
         ALTER TABLE registrations
         ADD COLUMN IF NOT EXISTS receipt_file_base64 TEXT;
+      `);
+
+      await client.exec(`
+        CREATE INDEX IF NOT EXISTS registrations_created_at_idx
+        ON registrations (created_at DESC);
       `);
     })();
   }
@@ -162,8 +184,9 @@ export async function createRegistration(
 ): Promise<RegistrationRecord> {
   await ensureSchema();
   const id = crypto.randomUUID();
+  const client = getDb();
 
-  const result = await db.query<RegistrationRecord>(
+  const result = await client.query<RegistrationRecord>(
     `INSERT INTO registrations (
       id,
       full_name,
@@ -209,8 +232,9 @@ export async function createRegistration(
 
 export async function listRegistrations(): Promise<RegistrationAdminRecord[]> {
   await ensureSchema();
+  const client = getDb();
 
-  const result = await db.query<RegistrationAdminRecord>(
+  const result = await client.query<RegistrationAdminRecord>(
     `SELECT
       id,
       full_name as "fullName",
@@ -227,7 +251,7 @@ export async function listRegistrations(): Promise<RegistrationAdminRecord[]> {
       payment_id as "paymentId",
       receipt_file_name as "receiptFileName",
       receipt_file_mime_type as "receiptFileMimeType",
-      receipt_file_base64 as "receiptFileBase64",
+      (receipt_file_base64 IS NOT NULL AND receipt_file_base64 <> '') as "hasReceipt",
       COALESCE(amount_rub, 0) as "amountRub",
       created_at as "createdAt"
     FROM registrations
@@ -241,8 +265,9 @@ export async function getRegistrationReceiptById(
   id: string,
 ): Promise<RegistrationReceiptRecord | null> {
   await ensureSchema();
+  const client = getDb();
 
-  const result = await db.query<RegistrationReceiptRecord>(
+  const result = await client.query<RegistrationReceiptRecord>(
     `SELECT
       id,
       receipt_file_name as "receiptFileName",

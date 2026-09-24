@@ -1,14 +1,15 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import "./responsive-polish.css";
 
 export const metadata: Metadata = {
-  title: "ALL IN BATTLE | Hip-Hop Event in Krasnodar",
+  title: "ALL IN BATTLE 5: ANNIVERSARY | 24–25 октября 2026",
   description:
-    "Landing page for the ALL IN BATTLE hip-hop improvisation event in Krasnodar.",
+    "Юбилейный хип-хоп баттл ALL IN BATTLE 5 в Краснодаре. Судьи, программа двух дней и регистрация участников.",
   icons: {
-    icon: "/logo/IMG_6184.PNG",
-    shortcut: "/logo/IMG_6184.PNG",
-    apple: "/logo/IMG_6184.PNG",
+    icon: "/event/logo.png",
+    shortcut: "/event/logo.png",
+    apple: "/event/logo.png",
   },
 };
 

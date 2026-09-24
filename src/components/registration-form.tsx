@@ -1,14 +1,16 @@
-﻿"use client";
+"use client";
 
+import { MANUAL_PAYMENT_DRAFT_KEY, type PaymentDraft } from "@/lib/payment-draft";
 import {
   calculateSelection,
+  CONTEST_OPTION_IDS,
   getOptionDisplayPrice,
   getOptionsByDay,
+  JAM_OPTION_ID,
+  type EventOption,
 } from "@/lib/event-options";
-import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
 import { FormEvent, useEffect, useMemo, useState } from "react";
-import { MANUAL_PAYMENT_DRAFT_KEY, type PaymentDraft } from "@/lib/payment-draft";
 
 type FormValues = {
   fullName: string;
@@ -20,6 +22,7 @@ type FormValues = {
 };
 
 type RequiredFieldKey = "fullName" | "nickname" | "phone";
+type Day2BaseGroup = "baby" | "beg16" | "kids" | "jun" | null;
 
 const initialForm: FormValues = {
   fullName: "",
@@ -34,193 +37,154 @@ const day1Options = getOptionsByDay("day1");
 const day2Options = getOptionsByDay("day2");
 const day1OptionIdSet = new Set(day1Options.map((option) => option.id));
 const day2OptionIdSet = new Set(day2Options.map((option) => option.id));
+const contestOptionIdSet = new Set<string>(CONTEST_OPTION_IDS);
 const day2DisplayOrder = [
-  "day2-baby",
-  "day2-kids-beg",
-  "day2-kids-pro",
-  "day2-jun-beg",
-  "day2-jun-pro",
-  "day2-beg-16-plus",
-  "day2-pro-16-plus",
-  "day2-spectator",
+  "day2-baby", "day2-kids-beg", "day2-kids-pro", "day2-jun-beg",
+  "day2-jun-pro", "day2-beg-16-plus", "day2-pro-16-plus", "day2-spectator",
 ] as const;
 
 const day2SpectatorId = "day2-spectator";
 const day2ProId = "day2-pro-16-plus";
-const day2KidsProId = "day2-kids-pro";
-const day2JunProId = "day2-jun-pro";
-const day2KidsBegId = "day2-kids-beg";
-const day2JunBegId = "day2-jun-beg";
-const day2BabyId = "day2-baby";
-const day2Beg16PlusId = "day2-beg-16-plus";
-
-type Day2BaseGroup = "baby" | "beg16" | "kids" | "jun" | null;
+const requiredFieldOrder: Array<{ key: RequiredFieldKey; selector: string }> = [
+  { key: "fullName", selector: "#registration-full-name" },
+  { key: "nickname", selector: "#registration-nickname" },
+  { key: "phone", selector: "#registration-phone" },
+];
 
 function getDay2BaseGroup(id: string): Day2BaseGroup {
-  if (id === day2BabyId) {
-    return "baby";
-  }
-  if (id === day2Beg16PlusId) {
-    return "beg16";
-  }
-  if (id === day2KidsBegId || id === day2KidsProId) {
-    return "kids";
-  }
-  if (id === day2JunBegId || id === day2JunProId) {
-    return "jun";
-  }
+  if (id === "day2-baby") return "baby";
+  if (id === "day2-beg-16-plus") return "beg16";
+  if (id === "day2-kids-beg" || id === "day2-kids-pro") return "kids";
+  if (id === "day2-jun-beg" || id === "day2-jun-pro") return "jun";
   return null;
 }
 
 function normalizeSelectedOptionIds(optionIds: string[], preferredId?: string) {
-  const day1Selected = optionIds.filter((id) => day1OptionIdSet.has(id));
+  const rawDay1Selected = optionIds.filter((id) => day1OptionIdSet.has(id));
+  const selectedContestId = preferredId && contestOptionIdSet.has(preferredId)
+    ? preferredId
+    : rawDay1Selected.find((id) => contestOptionIdSet.has(id));
+  const day1Selected = rawDay1Selected.filter((id) => !contestOptionIdSet.has(id));
+  if (selectedContestId) day1Selected.push(selectedContestId);
   const day2Selected = optionIds.filter((id) => day2OptionIdSet.has(id));
-
-  const hasSpectator = day2Selected.includes(day2SpectatorId);
-  const hasPro = day2Selected.includes(day2ProId);
-  const baseSelections = day2Selected.filter(
-    (id) => id !== day2SpectatorId && id !== day2ProId,
-  );
-
-  const preferredGroup = preferredId ? getDay2BaseGroup(preferredId) : null;
-  const fallbackGroup = baseSelections.length > 0 ? getDay2BaseGroup(baseSelections[0]) : null;
-  const activeGroup = preferredGroup ?? fallbackGroup;
-
-  const normalizedBase =
-    activeGroup === null
-      ? []
-      : baseSelections.filter((id) => getDay2BaseGroup(id) === activeGroup);
+  const baseSelections = day2Selected.filter((id) => id !== day2SpectatorId && id !== day2ProId);
+  const activeGroup = (preferredId ? getDay2BaseGroup(preferredId) : null) ??
+    (baseSelections[0] ? getDay2BaseGroup(baseSelections[0]) : null);
 
   const normalizedDay2: string[] = [];
-  if (hasSpectator) {
-    normalizedDay2.push(day2SpectatorId);
-  }
-  if (hasPro) {
-    normalizedDay2.push(day2ProId);
-  }
+  if (day2Selected.includes(day2SpectatorId)) normalizedDay2.push(day2SpectatorId);
+  if (day2Selected.includes(day2ProId)) normalizedDay2.push(day2ProId);
 
-  for (const id of day2DisplayOrder) {
-    if (id === day2SpectatorId || id === day2ProId) {
-      continue;
-    }
-    if (normalizedBase.includes(id)) {
-      normalizedDay2.push(id);
-    }
-  }
+  day2DisplayOrder.forEach((id) => {
+    if (id === day2SpectatorId || id === day2ProId) return;
+    if (baseSelections.includes(id) && getDay2BaseGroup(id) === activeGroup) normalizedDay2.push(id);
+  });
 
   return [...day1Selected, ...normalizedDay2];
 }
 
 function getDay2DisabledIds(selectedOptionIds: string[]) {
-  const selectedDay2 = selectedOptionIds.filter((id) => day2OptionIdSet.has(id));
-  const baseSelections = selectedDay2.filter(
-    (id) => id !== day2SpectatorId && id !== day2ProId,
+  const base = selectedOptionIds.find((id) => day2OptionIdSet.has(id) && id !== day2SpectatorId && id !== day2ProId);
+  const activeGroup = base ? getDay2BaseGroup(base) : null;
+  if (!activeGroup) return new Set<string>();
+
+  return new Set(
+    day2DisplayOrder.filter((id) => {
+      if (id === day2SpectatorId || id === day2ProId) return false;
+      return getDay2BaseGroup(id) !== activeGroup;
+    }),
   );
+}
 
-  const activeGroup = baseSelections.length > 0 ? getDay2BaseGroup(baseSelections[0]) : null;
-
-  if (!activeGroup) {
-    return new Set<string>();
-  }
-
-  const allowed = new Set<string>([day2SpectatorId, day2ProId]);
-
-  if (activeGroup === "baby") {
-    allowed.add(day2BabyId);
-  }
-  if (activeGroup === "beg16") {
-    allowed.add(day2Beg16PlusId);
-  }
-  if (activeGroup === "kids") {
-    allowed.add(day2KidsBegId);
-    allowed.add(day2KidsProId);
-  }
-  if (activeGroup === "jun") {
-    allowed.add(day2JunBegId);
-    allowed.add(day2JunProId);
-  }
-
-  const disabled = new Set<string>();
-  for (const id of day2DisplayOrder) {
-    if (!allowed.has(id)) {
-      disabled.add(id);
-    }
-  }
-
-  return disabled;
+function getContestDisabledIds(selectedOptionIds: string[]) {
+  const selectedContestId = selectedOptionIds.find((id) => contestOptionIdSet.has(id));
+  if (!selectedContestId) return new Set<string>();
+  return new Set<string>(CONTEST_OPTION_IDS.filter((id) => id !== selectedContestId));
 }
 
 function maskPhoneInput(value: string) {
   const digitsOnly = value.replace(/\D/g, "");
-  const normalized = digitsOnly.startsWith("8")
-    ? `7${digitsOnly.slice(1)}`
-    : digitsOnly;
-  const local = normalized.startsWith("7")
-    ? normalized.slice(1, 11)
-    : normalized.slice(0, 10);
-
+  const normalized = digitsOnly.startsWith("8") ? `7${digitsOnly.slice(1)}` : digitsOnly;
+  const local = normalized.startsWith("7") ? normalized.slice(1, 11) : normalized.slice(0, 10);
   let result = "+7";
-
-  if (local.length > 0) {
-    result += `(${local.slice(0, 3)}`;
-  }
-  if (local.length >= 3) {
-    result += ")";
-  }
-  if (local.length > 3) {
-    result += local.slice(3, 6);
-  }
-  if (local.length > 6) {
-    result += `-${local.slice(6, 8)}`;
-  }
-  if (local.length > 8) {
-    result += `-${local.slice(8, 10)}`;
-  }
-
+  if (local.length > 0) result += `(${local.slice(0, 3)}`;
+  if (local.length >= 3) result += ")";
+  if (local.length > 3) result += local.slice(3, 6);
+  if (local.length > 6) result += `-${local.slice(6, 8)}`;
+  if (local.length > 8) result += `-${local.slice(8, 10)}`;
   return result;
 }
 
 function formatRub(value: number) {
-  return `${new Intl.NumberFormat("ru-RU").format(value)}₽`;
+  return `${new Intl.NumberFormat("ru-RU").format(value)} ₽`;
 }
 
-function checkboxClasses() {
-  return "checkbox-mark h-6 w-6 shrink-0 appearance-none rounded-[6px]";
+function focusValidationTarget(selector: string) {
+  window.requestAnimationFrame(() => {
+    const target = document.querySelector<HTMLElement>(selector);
+    if (!target) return;
+    target.focus({ preventScroll: true });
+    target.scrollIntoView({ behavior: "smooth", block: "center" });
+  });
 }
 
 function Field(props: {
   label: string;
-  required?: boolean;
   value: string;
   placeholder: string;
-  onChange: (value: string) => void;
-  onFocus?: () => void;
   inputId?: string;
+  inputMode?: "text" | "numeric" | "tel";
   hasError?: boolean;
-  disabled?: boolean;
+  required?: boolean;
+  onChange: (value: string) => void;
 }) {
+  const isRequired = props.required !== false;
   return (
-    <label className="grid gap-2 md:gap-3">
-      <span
-        className={`text-[16px] font-semibold leading-none md:text-[20px] ${
-          props.hasError ? "text-[#bd2d2d]" : "text-[#131417]"
-        }`}
-      >
-        {props.label}
-        {props.required ? <span className="text-[#bd2d2d]">*</span> : null}
-      </span>
+    <label className="field">
+      <span className={props.hasError ? "is-error" : ""}>{props.label}{isRequired ? " *" : ""}</span>
       <input
         id={props.inputId}
         value={props.value}
         placeholder={props.placeholder}
-        disabled={props.disabled}
+        inputMode={props.inputMode}
+        required={isRequired}
+        aria-required={isRequired}
+        aria-invalid={props.hasError || undefined}
         onChange={(event) => props.onChange(event.target.value)}
-        onFocus={props.onFocus}
-        className={`h-[44px] bg-transparent px-[6px] text-[18px] font-semibold leading-none text-[#131417] outline-none placeholder:text-[rgba(0,0,0,0.48)] md:h-[56px] md:px-[10px] md:text-[22px] ${
-          props.hasError
-            ? "border-b-2 border-[#bd2d2d]"
-            : "border-b border-[rgba(0,0,0,0.38)]"
-        } ${props.disabled ? "cursor-not-allowed opacity-60" : ""}`}
+      />
+    </label>
+  );
+}
+
+function OptionRow({
+  option,
+  checked,
+  disabled,
+  complimentary,
+  onToggle,
+}: {
+  option: EventOption;
+  checked: boolean;
+  disabled: boolean;
+  complimentary?: boolean;
+  onToggle: () => void;
+}) {
+  const fixedPrice = getOptionDisplayPrice(option);
+  return (
+    <label className={`option-row ${disabled ? "is-disabled" : ""}`}>
+      <span className="option-copy">
+        <strong>{option.title}</strong>
+        {option.subtitle ? <small>{option.subtitle}</small> : null}
+      </span>
+      <span className="option-price">
+        {complimentary ? "Бесплатно" : fixedPrice !== null ? formatRub(fixedPrice) : "по тарифу"}
+      </span>
+      <input
+        type="checkbox"
+        className="checkbox-mark"
+        checked={checked}
+        disabled={disabled}
+        onChange={onToggle}
       />
     </label>
   );
@@ -229,165 +193,86 @@ function Field(props: {
 export function RegistrationForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const isRegistrationDisabled = true;
   const [values, setValues] = useState<FormValues>(initialForm);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-  const [requiredFieldErrors, setRequiredFieldErrors] = useState<
-    Record<RequiredFieldKey, boolean>
-  >({
-    fullName: false,
-    nickname: false,
-    phone: false,
+  const [fieldErrors, setFieldErrors] = useState<Record<RequiredFieldKey, boolean>>({
+    fullName: false, nickname: false, phone: false,
   });
 
-  const selection = useMemo(
-    () => calculateSelection(values.selectedOptionIds),
-    [values.selectedOptionIds],
-  );
-  const totalRub = selection.totalRub;
+  const selection = useMemo(() => calculateSelection(values.selectedOptionIds), [values.selectedOptionIds]);
   const orderedDay2Options = day2DisplayOrder
     .map((id) => day2Options.find((option) => option.id === id))
-    .filter((option): option is (typeof day2Options)[number] => Boolean(option));
-  const day2LeftOptions = orderedDay2Options.slice(0, 4);
-  const day2RightOptions = orderedDay2Options.slice(4, 8);
-  const day2DisabledIds = useMemo(
-    () => getDay2DisabledIds(values.selectedOptionIds),
-    [values.selectedOptionIds],
-  );
+    .filter((option): option is EventOption => Boolean(option));
+  const day2DisabledIds = useMemo(() => getDay2DisabledIds(values.selectedOptionIds), [values.selectedOptionIds]);
+  const contestDisabledIds = useMemo(() => getContestDisabledIds(values.selectedOptionIds), [values.selectedOptionIds]);
   const registerPreset = searchParams.get("register");
   const focusPreset = searchParams.get("focus");
 
   useEffect(() => {
-    const shouldFocus = registerPreset !== null || focusPreset === "fullName";
-
-    if (!isRegistrationDisabled && registerPreset !== null) {
-      const isSupported = day1Options.some((option) => option.id === registerPreset);
-      setValues((prev) => ({
-        ...prev,
-        selectedOptionIds: isSupported ? [registerPreset] : [],
-      }));
-    }
-
-    if (shouldFocus) {
-      requestAnimationFrame(() => {
-        const input = document.getElementById("registration-full-name");
-        if (input instanceof HTMLInputElement) {
-          try {
-            input.focus({ preventScroll: true });
-          } catch {
-            input.focus();
-          }
-        }
-      });
-    }
-  }, [registerPreset, focusPreset, isRegistrationDisabled]);
+    const frame = requestAnimationFrame(() => {
+      if (registerPreset && day1OptionIdSet.has(registerPreset)) {
+        setValues((previous) => ({ ...previous, selectedOptionIds: [registerPreset] }));
+      }
+      if (registerPreset !== null || focusPreset === "fullName") {
+        document.getElementById("registration-full-name")?.focus({ preventScroll: true });
+      }
+    });
+    return () => cancelAnimationFrame(frame);
+  }, [registerPreset, focusPreset]);
 
   useEffect(() => {
-    const handleProgramPreset = (event: Event) => {
-      if (isRegistrationDisabled) {
-        return;
-      }
-
-      const customEvent = event as CustomEvent<{
-        presetId?: string | null;
-        clearSelection?: boolean;
-      }>;
-      const presetId = customEvent.detail?.presetId ?? null;
-      const clearSelection = Boolean(customEvent.detail?.clearSelection);
-
-      const isSupportedPreset = presetId
-        ? day1Options.some((option) => option.id === presetId)
-        : false;
-
-      setValues((prev) => ({
-        ...prev,
-        selectedOptionIds: isSupportedPreset
-          ? [presetId as string]
-          : clearSelection
-            ? []
-            : prev.selectedOptionIds,
+    const handlePreset = (event: Event) => {
+      const detail = (event as CustomEvent<{ presetId?: string | null; clearSelection?: boolean }>).detail;
+      const presetId = detail?.presetId ?? null;
+      setValues((previous) => ({
+        ...previous,
+        selectedOptionIds: presetId && day1OptionIdSet.has(presetId)
+          ? [presetId]
+          : detail?.clearSelection ? [] : previous.selectedOptionIds,
       }));
-
-      requestAnimationFrame(() => {
-        const input = document.getElementById("registration-full-name");
-        if (input instanceof HTMLInputElement) {
-          try {
-            input.focus({ preventScroll: true });
-          } catch {
-            input.focus();
-          }
-        }
-      });
     };
+    window.addEventListener("program-registration-preset", handlePreset as EventListener);
+    return () => window.removeEventListener("program-registration-preset", handlePreset as EventListener);
+  }, []);
 
-    window.addEventListener("program-registration-preset", handleProgramPreset as EventListener);
-
-    return () => {
-      window.removeEventListener(
-        "program-registration-preset",
-        handleProgramPreset as EventListener,
-      );
-    };
-  }, [isRegistrationDisabled]);
+  const clearError = (key: RequiredFieldKey) => setFieldErrors((previous) => ({ ...previous, [key]: false }));
 
   const toggleOption = (optionId: string) => {
-    if (isRegistrationDisabled) {
-      return;
-    }
-
-    setValues((prev) => {
-      if (day2DisabledIds.has(optionId)) {
-        return prev;
-      }
-
-      const exists = prev.selectedOptionIds.includes(optionId);
-      const nextRaw = exists
-        ? prev.selectedOptionIds.filter((id) => id !== optionId)
-        : [...prev.selectedOptionIds, optionId];
-
-      return {
-        ...prev,
-        selectedOptionIds: normalizeSelectedOptionIds(
-          nextRaw,
-          exists ? undefined : optionId,
-        ),
-      };
+    setValues((previous) => {
+      if (day2DisabledIds.has(optionId) || contestDisabledIds.has(optionId)) return previous;
+      const exists = previous.selectedOptionIds.includes(optionId);
+      const next = exists
+        ? previous.selectedOptionIds.filter((id) => id !== optionId)
+        : [...previous.selectedOptionIds, optionId];
+      return { ...previous, selectedOptionIds: normalizeSelectedOptionIds(next, exists ? undefined : optionId) };
     });
   };
 
-  const clearRequiredFieldError = (field: RequiredFieldKey) => {
-    setRequiredFieldErrors((prev) => ({ ...prev, [field]: false }));
-  };
-
-  const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
+  const onSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setErrorMessage("");
 
-    if (isRegistrationDisabled) {
-      setErrorMessage("Регистрация сейчас закрыта.");
-      return;
-    }
-
-    const nextRequiredErrors: Record<RequiredFieldKey, boolean> = {
-      fullName: values.fullName.trim().length === 0,
-      nickname: values.nickname.trim().length === 0,
+    const nextErrors: Record<RequiredFieldKey, boolean> = {
+      fullName: values.fullName.trim().length < 2,
+      nickname: values.nickname.trim().length < 2,
       phone: values.phone.replace(/\D/g, "").length < 11,
     };
-    setRequiredFieldErrors(nextRequiredErrors);
+    setFieldErrors(nextErrors);
 
-    if (Object.values(nextRequiredErrors).some(Boolean)) {
-      setErrorMessage("Заполните обязательные поля, выделенные красным.");
+    const firstInvalidField = requiredFieldOrder.find(({ key }) => nextErrors[key]);
+    if (firstInvalidField) {
+      setErrorMessage("Проверьте обязательные поля.");
+      focusValidationTarget(firstInvalidField.selector);
       return;
     }
-
     if (selection.selected.length < 1) {
-      setErrorMessage("Выберите хотя бы одну номинацию перед оплатой.");
+      setErrorMessage("Выберите хотя бы одну позицию программы.");
+      focusValidationTarget(".option-row input:not(:disabled)");
       return;
     }
 
     setIsSubmitting(true);
-
     try {
       const draft: PaymentDraft = {
         fullName: values.fullName.trim(),
@@ -397,301 +282,63 @@ export function RegistrationForm() {
         participationType: values.participationType,
         selectedOptionIds: selection.selected.map((item) => item.id),
       };
-
       sessionStorage.setItem(MANUAL_PAYMENT_DRAFT_KEY, JSON.stringify(draft));
       router.push("/payment/manual");
     } catch (error) {
-      setErrorMessage(
-        error instanceof Error ? error.message : "Не удалось перейти к оплате.",
-      );
-    } finally {
+      setErrorMessage(error instanceof Error ? error.message : "Не удалось перейти к оплате.");
       setIsSubmitting(false);
     }
   };
 
   return (
-    <div className="mx-auto w-full max-w-[1312px] text-[#131417]">
-      <h3 className="font-display text-[30px] font-black uppercase leading-none tracking-tight">
-        РЕГИСТРАЦИЯ
-      </h3>
+    <form className="registration-form" onSubmit={onSubmit} noValidate>
+      <section className="registration-form-section">
+        <div className="registration-form-title"><span>01 / Данные</span><h3>Расскажите о себе</h3></div>
+        <div className="registration-fields">
+          <Field label="ФИО" value={values.fullName} placeholder="Иванов Иван Иванович" inputId="registration-full-name" hasError={fieldErrors.fullName} onChange={(fullName) => { clearError("fullName"); setValues((previous) => ({ ...previous, fullName })); }} />
+          <Field label="Никнейм" value={values.nickname} placeholder="Ваш танцевальный ник" inputId="registration-nickname" hasError={fieldErrors.nickname} onChange={(nickname) => { clearError("nickname"); setValues((previous) => ({ ...previous, nickname })); }} />
+          <Field label="Возраст" value={values.age} placeholder="14" inputMode="numeric" required={false} onChange={(age) => setValues((previous) => ({ ...previous, age: age.replace(/\D/g, "").slice(0, 2) }))} />
+          <Field label="Телефон" value={values.phone} placeholder="+7 (999) 000-00-00" inputId="registration-phone" inputMode="tel" hasError={fieldErrors.phone} onChange={(phone) => { clearError("phone"); setValues((previous) => ({ ...previous, phone: maskPhoneInput(phone) })); }} />
+        </div>
+      </section>
 
-      <form
-        className="relative mt-6 overflow-hidden rounded-[30px] border border-[#cdcdcd] bg-[#fafafa] px-5 py-8 md:mt-8 md:rounded-[34px] md:px-[60px] md:py-[40px]"
-        onSubmit={onSubmit}
-      >
-        <Image
-          src="/decor/flower-side-left.png"
-          alt=""
-          width={130}
-          height={130}
-          className="pointer-events-none absolute -left-1 top-[240px] w-[84px] opacity-80 md:-left-2 md:top-[230px] md:w-[122px]"
-        />
-        <Image
-          src="/decor/flower-side-right.png"
-          alt=""
-          width={130}
-          height={130}
-          className="pointer-events-none absolute right-0 top-0 w-[90px] opacity-80 md:w-[122px]"
-        />
-        <Image
-          src="/decor/flower-side-right.png"
-          alt=""
-          width={150}
-          height={150}
-          className="pointer-events-none absolute bottom-[170px] right-[-6px] hidden w-[128px] opacity-80 min-[501px]:max-[1023px]:block"
-        />
-        <section className="relative z-10 grid gap-8">
-          <h4 className="text-[24px] font-bold leading-none md:text-[28px]">
-            Укажите данные
-          </h4>
-
-          <div className="grid gap-6 md:grid-cols-2 md:gap-x-8 md:gap-y-8">
-            <Field
-              label="ФИО"
-              required
-              value={values.fullName}
-              placeholder="Иванов Иван Иванович"
-              disabled={isRegistrationDisabled}
-              inputId="registration-full-name"
-              onChange={(value) => setValues((prev) => ({ ...prev, fullName: value }))}
-              onFocus={() => clearRequiredFieldError("fullName")}
-              hasError={requiredFieldErrors.fullName}
-            />
-            <Field
-              label="Никнейм"
-              required
-              value={values.nickname}
-              placeholder="Baban"
-              disabled={isRegistrationDisabled}
-              onChange={(value) => setValues((prev) => ({ ...prev, nickname: value }))}
-              onFocus={() => clearRequiredFieldError("nickname")}
-              hasError={requiredFieldErrors.nickname}
-            />
-            <Field
-              label="Возраст"
-              value={values.age}
-              placeholder="14"
-              disabled={isRegistrationDisabled}
-              onChange={(value) => setValues((prev) => ({ ...prev, age: value }))}
-            />
-            <Field
-              label="Телефон"
-              required
-              value={values.phone}
-              placeholder="+7(***)***-**-**"
-              disabled={isRegistrationDisabled}
-              onChange={(value) =>
-                setValues((prev) => ({ ...prev, phone: maskPhoneInput(value) }))
-              }
-              onFocus={() => clearRequiredFieldError("phone")}
-              hasError={requiredFieldErrors.phone}
-            />
-          </div>
-        </section>
-
-        <section className="relative z-10 mt-10 grid gap-10 lg:grid-cols-2 lg:gap-14">
-          <div className="grid content-start gap-8 min-[1024px]:gap-12">
-            <h4 className="w-full text-center text-[38px] font-bold leading-none md:h-[34px] md:text-[28px] md:leading-[34px]">
-              ALL IN DAY 1
-            </h4>
-            <div className="mx-auto grid w-full max-w-[320px] gap-6 min-[501px]:max-[1023px]:hidden min-[1024px]:max-w-none">
+      <section className="registration-form-section">
+        <div className="registration-form-title"><span>02 / Программа</span><h3>Выберите участие</h3></div>
+        <div className="options-layout">
+          <div className="option-group">
+            <h4>24 октября · День 1</h4>
+            <div className="option-list">
               {day1Options.map((option) => (
-                <label
+                <OptionRow
                   key={option.id}
-                  className="grid min-h-[56px] grid-cols-[minmax(0,1fr)_72px_24px] items-center gap-x-3 min-[1024px]:h-[72px] min-[1024px]:grid-cols-[250px_84px_24px]"
-                >
-                  <span className="min-w-0 text-[16px] font-semibold leading-[1.15] min-[1024px]:text-[20px]">
-                    {option.title}
-                  </span>
-                  <span className="text-right text-[16px] font-semibold leading-none min-[1024px]:text-[20px]">
-                    {formatRub(getOptionDisplayPrice(option) ?? 0)}
-                  </span>
-                  <input
-                    type="checkbox"
-                    checked={values.selectedOptionIds.includes(option.id)}
-                    disabled={isRegistrationDisabled}
-                    onChange={() => toggleOption(option.id)}
-                    className={`${checkboxClasses()} ${
-                      isRegistrationDisabled ? "cursor-not-allowed opacity-45" : ""
-                    }`}
-                  />
-                </label>
-              ))}
-            </div>
-
-            <div className="hidden min-[501px]:max-[1023px]:grid min-[501px]:max-[1023px]:grid-cols-2 min-[501px]:max-[1023px]:gap-x-12 min-[501px]:max-[1023px]:gap-y-4">
-              {day1Options.map((option) => (
-                <label
-                  key={`tablet-${option.id}`}
-                  className="grid h-[66px] grid-cols-[minmax(0,1fr)_70px_24px] items-center gap-x-2"
-                >
-                  <span className="min-w-0 text-[16px] font-semibold leading-[1.1]">
-                    {option.title}
-                  </span>
-                  <span className="text-right text-[16px] font-semibold leading-none">
-                    {formatRub(getOptionDisplayPrice(option) ?? 0)}
-                  </span>
-                  <input
-                    type="checkbox"
-                    checked={values.selectedOptionIds.includes(option.id)}
-                    disabled={isRegistrationDisabled}
-                    onChange={() => toggleOption(option.id)}
-                    className={`${checkboxClasses()} ${
-                      isRegistrationDisabled ? "cursor-not-allowed opacity-45" : ""
-                    }`}
-                  />
-                </label>
+                  option={option}
+                  checked={values.selectedOptionIds.includes(option.id)}
+                  disabled={contestDisabledIds.has(option.id)}
+                  complimentary={option.id === JAM_OPTION_ID && selection.hasContest}
+                  onToggle={() => toggleOption(option.id)}
+                />
               ))}
             </div>
           </div>
-
-          <div className="grid gap-8 md:gap-12">
-            <h4 className="w-full text-center text-[38px] font-bold leading-none md:h-[34px] md:text-[28px] md:leading-[34px]">
-              ALL IN BATTLE
-            </h4>
-
-            <div className="mx-auto grid w-full max-w-[320px] gap-6 md:hidden">
+          <div className="option-group">
+            <h4>25 октября · День 2</h4>
+            <div className="option-list">
               {orderedDay2Options.map((option) => (
-                (() => {
-                  const isDisabled = day2DisabledIds.has(option.id) || isRegistrationDisabled;
-
-                  return (
-                <label
-                  key={option.id}
-                  className={`grid min-h-[56px] grid-cols-[minmax(0,1fr)_24px] items-center gap-x-3 ${
-                    isDisabled ? "opacity-45" : ""
-                  }`}
-                >
-                  <div className="grid gap-[8px]">
-                    <span className="text-[16px] font-semibold leading-none">{option.title}</span>
-                    {option.subtitle ? (
-                      <span className="text-[11px] font-semibold leading-none text-[rgba(0,0,0,0.55)]">
-                        {option.subtitle}
-                      </span>
-                    ) : null}
-                  </div>
-                  <input
-                    type="checkbox"
-                    checked={values.selectedOptionIds.includes(option.id)}
-                    disabled={isDisabled}
-                    onChange={() => toggleOption(option.id)}
-                    className={`${checkboxClasses()} ${isDisabled ? "cursor-not-allowed" : ""}`}
-                  />
-                </label>
-                  );
-                })()
+                <OptionRow key={option.id} option={option} checked={values.selectedOptionIds.includes(option.id)} disabled={day2DisabledIds.has(option.id)} onToggle={() => toggleOption(option.id)} />
               ))}
             </div>
-
-            <div className="hidden gap-y-4 min-[501px]:grid min-[501px]:grid-cols-2 min-[501px]:gap-x-12 min-[1024px]:gap-x-8 min-[1024px]:gap-y-6">
-              <div className="grid grid-rows-4 gap-4 min-[1024px]:gap-6">
-                {day2LeftOptions.map((option) => (
-                  (() => {
-                    const isDisabled = day2DisabledIds.has(option.id) || isRegistrationDisabled;
-
-                    return (
-                  <label
-                    key={option.id}
-                    className={`grid h-[66px] grid-cols-[minmax(0,1fr)_24px] items-center gap-x-3 min-[1024px]:h-[72px] min-[1024px]:grid-cols-[184px_24px] ${
-                      isDisabled ? "opacity-45" : ""
-                    }`}
-                  >
-                    <div className="grid gap-[10px]">
-                      <span className="text-[16px] font-semibold leading-none min-[1024px]:text-[20px]">
-                        {option.title}
-                      </span>
-                      {option.subtitle ? (
-                        <span className="text-[11px] font-semibold leading-none text-[rgba(0,0,0,0.55)] min-[1024px]:text-[12px]">
-                          {option.subtitle}
-                        </span>
-                      ) : null}
-                    </div>
-                    <input
-                      type="checkbox"
-                      checked={values.selectedOptionIds.includes(option.id)}
-                      disabled={isDisabled}
-                      onChange={() => toggleOption(option.id)}
-                      className={`${checkboxClasses()} ${isDisabled ? "cursor-not-allowed" : ""}`}
-                    />
-                  </label>
-                    );
-                  })()
-                ))}
-              </div>
-
-              <div className="grid grid-rows-4 gap-4 min-[1024px]:gap-6">
-                {day2RightOptions.map((option) => (
-                  (() => {
-                    const isDisabled = day2DisabledIds.has(option.id) || isRegistrationDisabled;
-
-                    return (
-                  <label
-                    key={option.id}
-                    className={`grid h-[66px] grid-cols-[minmax(0,1fr)_24px] items-center gap-x-3 min-[1024px]:h-[72px] min-[1024px]:grid-cols-[184px_24px] ${
-                      isDisabled ? "opacity-45" : ""
-                    }`}
-                  >
-                    <div className="grid gap-[10px]">
-                      <span className="text-[16px] font-semibold leading-none min-[1024px]:text-[20px]">
-                        {option.title}
-                      </span>
-                      {option.subtitle ? (
-                        <span className="text-[11px] font-semibold leading-none text-[rgba(0,0,0,0.55)] min-[1024px]:text-[12px]">
-                          {option.subtitle}
-                        </span>
-                      ) : null}
-                    </div>
-                    <input
-                      type="checkbox"
-                      checked={values.selectedOptionIds.includes(option.id)}
-                      disabled={isDisabled}
-                      onChange={() => toggleOption(option.id)}
-                      className={`${checkboxClasses()} ${isDisabled ? "cursor-not-allowed" : ""}`}
-                    />
-                  </label>
-                    );
-                  })()
-                ))}
-              </div>
-            </div>
-
-            <p className="mx-auto w-full max-w-[320px] text-right text-[12px] font-medium leading-[1.2] text-[rgba(0,0,0,0.55)] md:justify-self-end md:max-w-none md:text-[16px]">
-              Первая номинация - 1700₽, каждая следующая - 800₽,
-              <br />
-              зрительский билет - 700₽
-            </p>
           </div>
-        </section>
+        </div>
+      </section>
 
-        <div className="relative z-10 mt-10 h-px w-full bg-[#d2d2d2]" />
-
-        <section className="relative z-10 mt-8 grid items-center gap-4 md:gap-6 lg:grid-cols-[1fr_auto]">
-          <p className="text-[18px] font-semibold leading-none md:text-[24px]">
-            Итого:{" "}
-            <span className="text-[22px] font-bold text-[#19411f] md:text-[28px]">
-              {formatRub(totalRub)}
-            </span>
-          </p>
-          <button
-            type="submit"
-            disabled={isRegistrationDisabled || isSubmitting || totalRub <= 0}
-            className="h-[46px] w-full rounded-full bg-[#2a6a34] px-8 text-[14px] font-semibold leading-none text-white transition hover:brightness-95 disabled:cursor-not-allowed disabled:bg-[#7da57f] disabled:opacity-100 md:h-[56px] md:min-w-[382px] md:w-auto md:px-10 md:text-[18px]"
-          >
-            {isRegistrationDisabled
-              ? "Регистрация закрыта"
-              : isSubmitting
-                ? "Отправка..."
-                : "Перейти к оплате"}
-          </button>
-        </section>
-
-        {errorMessage ? (
-          <p className="relative z-10 mt-6 rounded-lg border border-red-300 bg-red-50 px-3 py-2 text-sm text-red-700">
-            {errorMessage}
-          </p>
-        ) : null}
-      </form>
-    </div>
+      <div className="form-summary">
+        <p className="form-total">Итого к оплате<strong>{formatRub(selection.totalRub)}</strong></p>
+        <button type="submit" className="submit-button" disabled={isSubmitting}>
+          {isSubmitting ? "Переходим…" : "Перейти к оплате"}
+        </button>
+      </div>
+      {errorMessage ? <p className="form-error" role="alert">{errorMessage}</p> : null}
+      <p className="form-footnote">Нажимая кнопку, вы соглашаетесь на обработку данных для регистрации на мероприятие. Для несовершеннолетних согласие подтверждает законный представитель.</p>
+    </form>
   );
 }
-

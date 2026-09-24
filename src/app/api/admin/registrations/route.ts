@@ -1,6 +1,9 @@
 import { listRegistrations } from "@/lib/db";
-import { getOptionsByDay } from "@/lib/event-options";
+import { EVENT_OPTIONS } from "@/lib/event-options";
+import { filterRegistrations } from "@/lib/registration-admin";
 import { NextResponse } from "next/server";
+
+export const runtime = "nodejs";
 
 function checkAccess(request: Request) {
   const adminToken = process.env.ADMIN_DASHBOARD_TOKEN?.trim();
@@ -37,23 +40,21 @@ export async function GET(request: Request) {
     const url = new URL(request.url);
     const dayParam = url.searchParams.get("day");
     const day = dayParam === "day1" || dayParam === "day2" ? dayParam : undefined;
+    const receiptParam = url.searchParams.get("receipt");
+    const receipt = receiptParam === "yes" || receiptParam === "no" ? receiptParam : undefined;
+    const optionParam = (url.searchParams.get("option") ?? "").trim();
+    const optionId = EVENT_OPTIONS.some((option) => option.id === optionParam)
+      ? optionParam
+      : undefined;
+    const query = (url.searchParams.get("q") ?? "").trim();
 
     const allRegistrations = await listRegistrations();
-    const registrations = day
-      ? allRegistrations.filter((item) => {
-          const dayOptionIds = new Set(getOptionsByDay(day).map((option) => option.id));
-          if (!item.selectedOptionIds) {
-            return false;
-          }
-
-          try {
-            const parsed = JSON.parse(item.selectedOptionIds) as string[];
-            return Array.isArray(parsed) && parsed.some((id) => dayOptionIds.has(id));
-          } catch {
-            return false;
-          }
-        })
-      : allRegistrations;
+    const registrations = filterRegistrations(allRegistrations, {
+      day,
+      optionId,
+      query,
+      receipt,
+    });
 
     return NextResponse.json({
       ok: true,

@@ -1,677 +1,225 @@
-﻿import Image from "next/image";
+import Image from "next/image";
 import { Suspense } from "react";
-import { RegistrationForm } from "@/components/registration-form";
-import { ProgramRegistrationButton } from "@/components/program-registration-button";
-import { ScrollEffectsController } from "@/components/scroll-effects-controller";
+import {
+  ArrowDownRightIcon,
+  ArrowUpIcon,
+  ArrowUpRightIcon,
+} from "@phosphor-icons/react/dist/ssr";
 import { HeroNavigation } from "@/components/hero-navigation";
+import { ProgramRegistrationButton } from "@/components/program-registration-button";
+import { RegistrationForm } from "@/components/registration-form";
+import { ScrollEffectsController } from "@/components/scroll-effects-controller";
 
-type PersonCardProps = {
+type Person = {
   name: string;
-  image: string;
+  role: string;
   city?: string;
-  tiltClass?: string;
-  orderClass?: string;
-  offsetClass?: string;
-  revealIndex?: number;
-};
-
-type BulletTone = "black" | "red";
-
-type DayListItem = {
-  bullet: BulletTone;
-  title: string;
-  details?: string[];
-};
-
-type DayCard = {
-  title: string;
-  price?: string;
-  items: DayListItem[];
-  button?: string;
-  registrationPresetId?: string;
-  focusOnly?: boolean;
-  variant: "side" | "center";
-  decor?: "left-bottom" | "right-mid" | "right-top";
+  image: string;
 };
 
 const navItems = [
   { label: "Судьи", href: "#judges" },
-  { label: "DJ", href: "#dj" },
-  { label: "MC", href: "#mc" },
-  { label: "Media", href: "#media" },
+  { label: "Программа", href: "#program" },
+  { label: "Команда", href: "#team" },
   { label: "Регистрация", href: "#registration" },
 ];
 
-const footerLinks = [
-  { label: "TELEGRAM", href: "https://t.me/all_in_battle" },
-  { label: "VKONTAKTE", href: "https://vk.ru/allinbattlehop" },
-  {
-    label: "INSTAGRAMM",
-    href: "https://www.instagram.com/all_in_battlehop?igsh=MTZtODN6YmlnbTdyNg==",
-  },
+const judges: Person[] = [
+  { name: "GLADI", role: "Судья", city: "Симферополь", image: "/event/people/gladi.png" },
+  { name: "PRADAZOMBIE", role: "Судья", city: "Ницца, Франция", image: "/event/people/pradazombie.png" },
+  { name: "KHARKOVSKAYA", role: "Судья", city: "Санкт-Петербург", image: "/event/people/kharkovskaya.png" },
 ];
 
-const judges: PersonCardProps[] = [
-  {
-    name: "ASHPI",
-    city: "г. Донецк",
-    image: "/judges/ashpi.jpg",
-    tiltClass:
-      "min-[501px]:max-[1023px]:-rotate-[5deg] min-[1024px]:-rotate-[5deg]",
-    orderClass:
-      "min-[501px]:max-[1023px]:order-1 min-[1024px]:order-1 min-[1024px]:pt-0",
-    revealIndex: 1,
-  },
-  {
-    name: "RASH THE FLOW",
-    city: "г. Санкт-Петербург",
-    image: "/judges/rash-the-flow.jpg",
-    tiltClass: "",
-    orderClass:
-      "min-[501px]:max-[1023px]:order-3 min-[1024px]:order-2 min-[1024px]:pt-16",
-    revealIndex: 3,
-  },
-  {
-    name: "RUBA",
-    city: "г. Москва",
-    image: "/judges/ruba.jpg",
-    tiltClass:
-      "min-[501px]:max-[1023px]:rotate-[5deg] min-[1024px]:rotate-[5deg]",
-    orderClass:
-      "min-[501px]:max-[1023px]:order-2 min-[1024px]:order-3 min-[1024px]:pt-0",
-    revealIndex: 2,
-  },
+const djs: Person[] = [
+  { name: "CHEREPASHKA", role: "DJ", city: "Санкт-Петербург", image: "/event/people/cherepashka.png" },
+  { name: "WHYDEAP", role: "DJ", city: "Краснодар", image: "/event/people/whydeap.png" },
+  { name: "ALBERT FTH", role: "DJ", city: "Горячий Ключ", image: "/event/people/albert-fth.png" },
 ];
 
-const djs: PersonCardProps[] = [
-  {
-    name: "WHYDEAP",
-    city: "г. Краснодар",
-    image: "/dj/whydeap.jpg",
-    tiltClass:
-      "min-[501px]:max-[1023px]:-rotate-[5deg] min-[1024px]:-rotate-[5deg]",
-    orderClass:
-      "min-[501px]:max-[1023px]:order-1 min-[1024px]:order-1 min-[1024px]:pt-0",
-    revealIndex: 1,
-  },
-  {
-    name: "ELMI",
-    city: "г. Симферополь",
-    image: "/dj/elmi.jpg",
-    tiltClass: "",
-    orderClass:
-      "min-[501px]:max-[1023px]:order-3 min-[1024px]:order-2 min-[1024px]:pt-16",
-    revealIndex: 3,
-  },
-  {
-    name: "BAMBOOK",
-    city: "г. Краснодар",
-    image: "/dj/bambook.jpg",
-    tiltClass:
-      "min-[501px]:max-[1023px]:rotate-[5deg] min-[1024px]:rotate-[5deg]",
-    orderClass:
-      "min-[501px]:max-[1023px]:order-2 min-[1024px]:order-3 min-[1024px]:pt-0",
-    revealIndex: 2,
-  },
+const mcs: Person[] = [
+  { name: "MAVI", role: "MC", city: "Симферополь", image: "/event/people/mavi.png" },
+  { name: "ARTEM TITUKH", role: "MC", city: "Горячий Ключ", image: "/event/people/artem-titukh.png" },
 ];
 
-const mcs: PersonCardProps[] = [
-  {
-    name: "EMILE",
-    city: "г. Краснодар",
-    image: "/mc/emile.jpg",
-    tiltClass:
-      "min-[501px]:max-[1023px]:-rotate-[5deg] min-[1024px]:-rotate-[5deg]",
-    revealIndex: 1,
-  },
-  {
-    name: "MAVI",
-    city: "г. Симферополь",
-    image: "/mc/mavi.jpg",
-    tiltClass:
-      "min-[501px]:max-[1023px]:rotate-[5deg] min-[1024px]:rotate-[5deg]",
-    revealIndex: 2,
-  },
+const media: Person[] = [
+  { name: "ALESYAAA", role: "Видео", image: "/event/people/alesyaaa.png" },
+  { name: "RADON", role: "Видео", image: "/event/people/radon.png" },
+  { name: "YASHNAYA ELENA", role: "Фото", image: "/event/people/yashnaya-elena.png" },
 ];
 
-const dayOneCards: DayCard[] = [
-  {
-    title: "Мастер-Класс от RASH THE FLOW",
-    price: "2900₽",
-    items: [
-      {
-        bullet: "black",
-        title: "Длительность:",
-        details: ["1,5 часа"],
-      },
-      {
-        bullet: "black",
-        title: "Место проведения:",
-        details: ["Дальняя 43"],
-      },
-    ],
-    button: "Зарегистрироваться на МК",
-    registrationPresetId: "day1-option-1",
-    variant: "side",
-    decor: "left-bottom",
-  },
-  {
-    title: "Contest 3x3",
-    price: "900₽",
-    items: [
-      { bullet: "black", title: "Судит:", details: ["RASH"] },
-      { bullet: "black", title: "Место проведения:", details: ["Калинина 291"] },
-      { bullet: "black", title: "Играют:", details: ["BAMBOOK/WHYDEAP"] },
-      {
-        bullet: "black",
-        title: "Номинации:",
-        details: ["KIDS (до 12 лет)", "JUN (13-18 лет)", "OLD (18+)"],
-      },
-      { bullet: "black", title: "Зрительский билет:", details: ["700₽"] },
-    ],
-    button: "Зарегистрироваться на контест",
-    registrationPresetId: "day1-option-2",
-    variant: "center",
-  },
-  {
-    title: "JAM",
-    price: "600₽",
-    items: [
-      { bullet: "black", title: "Играют:", details: ["BAMBOOK/WHYDEAP"] },
-      {
-        bullet: "red",
-        title: "Участникам Мастер-Класса/Contest 3x3 – джем бесплатный",
-      },
-    ],
-    button: "Зарегистрироваться на джем",
-    registrationPresetId: "day1-option-3",
-    variant: "side",
-    decor: "right-mid",
-  },
+const dayTwoCategories = [
+  ["BABY", "до 7 лет"],
+  ["KIDS BEG", "7–11 лет · до 3 лет обучения"],
+  ["KIDS PRO", "7–11 лет · опыт от 3 лет"],
+  ["JUN BEG", "12–15 лет · до 3 лет обучения"],
+  ["JUN PRO", "12–15 лет · опыт от 3 лет"],
+  ["BEG 16+", "до 3 лет обучения"],
+  ["PRO", "опыт от 3 лет"],
 ];
 
-const dayTwoColumns: DayCard[] = [
-  {
-    title: "Номинации",
-    items: [
-      { bullet: "black", title: "BABY", details: ["(до 7 лет)"] },
-      { bullet: "black", title: "KIDS BEG", details: ["(7-11 лет, до 3 лет обучения)"] },
-      { bullet: "black", title: "KIDS PRO", details: ["(7-11 лет, опыт 3+ года)"] },
-      { bullet: "black", title: "JUN BEG", details: ["(12-15 лет, до 3-х лет обучения)"] },
-      { bullet: "black", title: "JUN PRO", details: ["(12-15 лет, опыт 3+ года)"] },
-      { bullet: "black", title: "BEG 16+", details: ["(до 3-х лет обучения)"] },
-      { bullet: "black", title: "PRO", details: ["(опыт 3+ года)"] },
-    ],
-    variant: "side",
-  },
-  {
-    title: "Стоимость",
-    items: [
-      { bullet: "black", title: "Первая номинация:", details: ["1700₽"] },
-      { bullet: "black", title: "Каждая следующая:", details: ["800₽"] },
-      { bullet: "black", title: "Зрительский билет:", details: ["700₽"] },
-    ],
-    variant: "center",
-    button: "Зарегистрироваться на баттл",
-    focusOnly: true,
-  },
-  {
-    title: "Важно",
-    items: [
-      { bullet: "black", title: "Место проведения:", details: ["Калинина 291"] },
-      {
-        bullet: "red",
-        title:
-          "Опыт танцевания определяется категориями BEG (начинающие до 3х лет обучения), PRO (более 3х лет обучения). Организаторы вправе самостоятельно перевести вас в другую категорию при несоответствии уровня BEG/PRO.",
-      },
-      {
-        bullet: "red",
-        title: "После того, как вы отправили заявку и зарегистрировались, номинацию поменять нельзя!",
-      },
-      {
-        bullet: "red",
-        title: "Возврат денежных средств за участие возможен до 17.04.26 включительно",
-      },
-    ],
-    variant: "side",
-    decor: "right-top",
-  },
-];
-
-const sectionHeadingClass =
-  "font-display text-[56px] font-black uppercase leading-none tracking-tight text-[#2a6a34] min-[501px]:max-[1023px]:text-[72px] min-[1024px]:text-[80px]";
-
-const personNameClass =
-  "mx-auto inline-block max-w-[14ch] whitespace-normal break-words font-display text-[32px] font-semibold uppercase leading-[0.92] tracking-[-0.01em] text-[#111]";
-
-const personCityClass = "mt-3 font-body text-[20px] font-bold leading-none text-[#242424]";
-
-function PersonCard({
-  name,
-  image,
-  city,
-  tiltClass = "",
-  orderClass = "",
-  offsetClass = "",
-  revealIndex,
-}: PersonCardProps) {
+function SectionHeader({ kicker, title }: { kicker: string; title: string }) {
   return (
-    <article
-      className={`lineup-card mx-auto w-full max-w-[335px] text-center min-[501px]:max-[1023px]:max-w-[260px] min-[501px]:max-[1023px]:justify-self-center min-[1024px]:max-w-[395px] ${orderClass} ${offsetClass}`}
-      data-reveal={revealIndex}
-    >
-      <div className="lineup-card-reveal">
-        <div className={`mx-auto w-full max-w-[335px] origin-top min-[501px]:max-[1023px]:max-w-[260px] min-[501px]:max-[1023px]:origin-center min-[1024px]:max-w-[395px] ${tiltClass}`}>
-          <div className="mx-auto w-full max-w-[335px] overflow-hidden rounded-[28px] min-[501px]:max-[1023px]:max-w-[260px] min-[1024px]:max-w-[395px]">
-            <Image
-              src={image}
-              alt={name}
-              width={395}
-              height={519}
-              className="aspect-[395/519] h-auto w-full object-cover"
-            />
-          </div>
-          <div className="mt-6">
-            <h3 className={personNameClass}>{name}</h3>
-            {city ? <p className={personCityClass}>{city}</p> : null}
-          </div>
-        </div>
+    <header className="section-header" data-reveal>
+      <p>{kicker}</p>
+      <h2>{title}</h2>
+    </header>
+  );
+}
+
+function PortraitCard({ person, index }: { person: Person; index: number }) {
+  return (
+    <article className="portrait-card" data-reveal style={{ "--reveal-delay": `${index * 90}ms` } as React.CSSProperties}>
+      <div className="portrait-frame">
+        <Image
+          src={person.image}
+          alt={`${person.name} — ${person.role}`}
+          width={2480}
+          height={3306}
+          sizes="(max-width: 640px) 92vw, (max-width: 1024px) 44vw, 31vw"
+          className="portrait-image"
+        />
+      </div>
+      <div className="portrait-caption">
+        <div><p>{person.role}</p><h3>{person.name}</h3></div>
+        {person.city ? <span>{person.city}</span> : null}
       </div>
     </article>
   );
 }
 
-function TrioSection({
-  id,
-  title,
-  people,
-  completePhase = 4,
-}: {
-  id: string;
-  title: string;
-  people: PersonCardProps[];
-  completePhase?: number;
-}) {
+function LineupSection({ id, eyebrow, title, people }: { id: string; eyebrow: string; title: string; people: Person[] }) {
   return (
-    <section
-      id={id}
-      data-snap-section
-      data-lineup-anim
-      data-complete-phase={completePhase}
-      className="snap-section relative mx-auto w-full max-w-[1440px] overflow-hidden px-5 py-16 md:px-8 md:py-24 min-[501px]:max-[1023px]:py-20"
-    >
-      <h2 className={`lineup-title relative z-10 text-center ${sectionHeadingClass}`}>{title}</h2>
-      <div className="mx-auto mt-8 grid w-full max-w-[1400px] justify-items-center gap-8 min-[501px]:max-[1023px]:grid-cols-1 min-[501px]:max-[1023px]:gap-12 min-[1024px]:grid-cols-3 min-[1024px]:items-start min-[1024px]:gap-x-16">
-        {people.map((person, index) => (
-          <PersonCard key={person.name} revealIndex={person.revealIndex ?? index + 1} {...person} />
-        ))}
+    <section id={id} className="site-section lineup-section">
+      <SectionHeader kicker={eyebrow} title={title} />
+      <div className={`lineup-grid ${people.length === 2 ? "lineup-grid-two" : ""}`}>
+        {people.map((person, index) => <PortraitCard key={person.name} person={person} index={index} />)}
       </div>
     </section>
   );
 }
 
-function FlowerMark({ warning = false }: { warning?: boolean }) {
+function RegisterButton({ label, presetId, clearSelection }: { label: string; presetId?: string; clearSelection?: boolean }) {
   return (
-    <Image
-      src={warning ? "/decor/flower-bullet-red.png" : "/decor/flower-bullet-black.png"}
-      alt=""
-      width={26}
-      height={23}
-      className="mt-[1px] h-[23px] w-[26px] shrink-0"
-    />
+    <ProgramRegistrationButton presetId={presetId} clearSelection={clearSelection} className="text-link-button">
+      <span>{label}</span><ArrowDownRightIcon className="action-arrow" aria-hidden="true" />
+    </ProgramRegistrationButton>
   );
 }
 
 export default function Home() {
   return (
-    <main className="bg-white font-body text-[#1b1b1b]">
+    <main>
       <ScrollEffectsController />
 
-      <section className="relative isolate flex min-h-[100svh] items-center justify-center overflow-hidden py-10 md:min-h-screen">
-        <Image
-          src="/bg/bg-mob.png"
-          alt=""
-          fill
-          sizes="100vw"
-          className="pointer-events-none absolute inset-0 object-cover md:hidden"
-          priority
-        />
-        <Image
-          src="/bg/bg-tab.png"
-          alt=""
-          fill
-          sizes="100vw"
-          className="pointer-events-none absolute inset-0 hidden object-cover md:block lg:hidden"
-          priority
-        />
-        <Image
-          src="/bg/bg-desk.png"
-          alt=""
-          fill
-          sizes="100vw"
-          className="pointer-events-none absolute inset-0 hidden object-cover lg:block"
-          priority
-        />
-        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_center,_rgba(255,255,255,0)_42%,_rgba(30,80,44,0.18)_100%)]" />
-        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_center,_rgba(255,255,255,0)_58%,_rgba(71,116,80,0.22)_100%)]" />
+      <section className="hero" id="top">
         <HeroNavigation items={navItems} />
+        <Image src="/event/wood.png" alt="" width={1440} height={2560} sizes="40vw" className="hero-wood hero-wood-left" priority />
+        <Image src="/event/background.png" alt="" width={1440} height={2560} sizes="40vw" className="hero-wood hero-wood-right" priority />
 
-        <div className="relative z-10 w-full max-w-[980px] px-4">
-          <div className="mt-24 text-center md:mt-28">
-            <h1 className="font-display text-[58px] font-black uppercase leading-[0.94] tracking-[0.01em] text-[#174b24] min-[375px]:text-[64px] md:text-[140px]">
-              ALL IN
-              <br />
-              BATTLE
-            </h1>
-            <p className="mt-[26px] inline-flex flex-row items-center justify-center gap-3 text-[20px] font-medium leading-[1.05] text-[#808286] min-[375px]:text-[24px] md:text-[32px] md:leading-none">
-              <span className="whitespace-nowrap">25-26 апреля</span>
-              <span className="whitespace-nowrap">г. Краснодар</span>
-            </p>
-            <div className="mt-10 flex flex-row items-center justify-center gap-3 min-[375px]:gap-4">
-              <a
-                href="#day-one"
-                className="rounded-full bg-[#2a6a34] px-6 py-[14px] text-[14px] font-medium leading-none text-white transition hover:bg-[#21562a] min-[375px]:px-8 md:px-[40px] md:py-[16px] md:text-[20px]"
-              >
-                Первый день
-              </a>
-              <a
-                href="#day-two"
-                className="rounded-full bg-[#2a6a34] px-6 py-[14px] text-[14px] font-medium leading-none text-white transition hover:bg-[#21562a] min-[375px]:px-8 md:px-[40px] md:py-[16px] md:text-[20px]"
-              >
-                Второй день
-              </a>
-            </div>
+        <div className="hero-copy">
+          <p className="hero-meta">24–25 октября 2026 · Краснодар</p>
+          <h1><span>ALL IN BATTLE</span><span>ANNIVERSARY 5</span></h1>
+          <p className="hero-subtitle">Два дня хип-хопа, импровизации и настоящего баттла</p>
+        </div>
+
+        <div className="hero-portraits" aria-label="Судьи ALL IN BATTLE 5">
+          <Image src="/event/people/gladi-cutout.png" alt="GLADI" width={1087} height={1447} sizes="40vw" className="hero-person hero-person-left" priority />
+          <Image src="/event/people/pradazombie-cutout.png" alt="PRADAZOMBIE" width={1087} height={1447} sizes="42vw" className="hero-person hero-person-center" loading="eager" fetchPriority="high" />
+          <Image src="/event/people/kharkovskaya-cutout.png" alt="KHARKOVSKAYA" width={1087} height={1447} sizes="40vw" className="hero-person hero-person-right" priority />
+        </div>
+
+        <a className="hero-cta" href="#registration">Регистрация <ArrowDownRightIcon className="action-arrow" aria-hidden="true" /></a>
+        <p className="hero-scroll">Листай, чтобы увидеть программу</p>
+      </section>
+
+      <section className="intro site-section" aria-labelledby="intro-title">
+        <div className="intro-number" data-reveal>05</div>
+        <div className="intro-copy" data-reveal>
+          <p>Пятый год подряд</p>
+          <h2 id="intro-title">Не просто баттлы. Место, где встречается комьюнити.</h2>
+        </div>
+        <p className="intro-note" data-reveal>Юбилейный ALL IN объединит танцоров разных возрастов и уровня — от первого выхода в круг до уверенного PRO.</p>
+      </section>
+
+      <LineupSection id="judges" eyebrow="Лайн-ап / 01" title="Судьи" people={judges} />
+
+      <section id="program" className="site-section program-section">
+        <SectionHeader kicker="24 октября / 01" title="Первый день" />
+        <div className="program-grid">
+          <article className="program-card" data-reveal>
+            <p className="program-index">01</p><h3>Мастер-класс PRADAZOMBIE</h3><p className="program-price">3 200 ₽</p>
+            <dl><div><dt>Длительность</dt><dd>1,5 часа</dd></div><div><dt>Адрес</dt><dd>Будет объявлен</dd></div></dl>
+            <RegisterButton label="Иду на Мастер-Класс" presetId="day1-option-1" />
+          </article>
+          <article className="program-card program-card-accent" data-reveal>
+            <p className="program-index">02</p><h3>Contest 3×3</h3><p className="program-price">3 000 ₽ <small>/ команда</small></p>
+            <dl><div><dt>Судья</dt><dd>PRADAZOMBIE</dd></div><div><dt>Категории</dt><dd>До 18 лет / PRO</dd></div><div><dt>Музыка</dt><dd>ALBERT FTH / WHYDEAP</dd></div><div><dt>Зритель</dt><dd>800 ₽</dd></div></dl>
+            <RegisterButton label="Зарегистрироваться на контест" />
+          </article>
+          <article className="program-card" data-reveal>
+            <p className="program-index">03</p><h3>Jam</h3><p className="program-price">800 ₽</p>
+            <dl><div><dt>Музыка</dt><dd>ALBERT FTH / WHYDEAP</dd></div><div><dt>Участникам Contest 3×3</dt><dd>Бесплатно</dd></div></dl>
+            <RegisterButton label="Иду на джем" presetId="day1-option-3" />
+          </article>
+        </div>
+
+        <div className="invited" data-reveal>
+          <p>Приглашённые тройки</p>
+          <div>
+            <article><span>TEENS</span><h3>Nikita LSK<br />Настя Sowa<br />Arina Shtorm</h3></article>
+            <article><span>PRO</span><h3>Zaytsev<br />Ashpi<br />Keti</h3></article>
           </div>
         </div>
       </section>
 
-      <TrioSection id="judges" title="JUDGES" people={judges} />
-      <TrioSection id="dj" title="DJ" people={djs} />
-
-      <section
-        id="mc"
-        data-snap-section
-        data-lineup-anim
-        data-complete-phase="3"
-        className="snap-section relative mx-auto w-full max-w-[1440px] overflow-hidden px-5 py-16 md:px-8 md:py-24 min-[501px]:max-[1023px]:py-20"
-      >
-        <h2 className={`lineup-title relative z-10 text-center ${sectionHeadingClass}`}>MC</h2>
-        <div className="mx-auto mt-8 grid max-w-[1240px] gap-10 min-[501px]:max-[1023px]:grid-cols-1 min-[501px]:max-[1023px]:gap-12 min-[1024px]:grid-cols-2 min-[1024px]:gap-x-28">
-          {mcs.map((person, index) => (
-            <PersonCard key={person.name} revealIndex={(index + 1) as 1 | 2 | 3} {...person} />
-          ))}
-        </div>
-      </section>
-
-      <section
-        id="media"
-        data-snap-section
-        data-lineup-anim
-        data-complete-phase="5"
-        data-lineup-kind="media"
-        className="snap-section relative mx-auto w-full max-w-[1440px] overflow-hidden px-5 py-16 md:px-8 md:py-24 min-[501px]:max-[1023px]:py-20"
-      >
-        <div className="grid items-start gap-10 min-[501px]:max-[1023px]:grid-cols-1 min-[1024px]:grid-cols-3">
-          <div className="order-1 min-[1024px]:order-none min-[1024px]:pt-10">
-            <h2 className={`lineup-title relative z-10 text-center ${sectionHeadingClass} min-[1024px]:text-left`}>
-              PHOTO
-            </h2>
-            <div className="mt-16 mx-auto max-w-[395px] min-[1024px]:mx-0">
-              <PersonCard
-                name="VALENTINA"
-                image="/photo/valentina.jpg"
-                tiltClass="min-[501px]:max-[1023px]:-rotate-[2deg] min-[1024px]:-rotate-[2deg]"
-                orderClass="max-w-[395px]"
-                revealIndex={1}
-              />
-            </div>
-          </div>
-
-          <div className="order-3 mt-12 min-[1024px]:hidden">
-            <h2 className="lineup-video-title text-center font-display text-[56px] font-black uppercase leading-none tracking-tight text-[#2a6a34] min-[501px]:max-[1023px]:text-[72px]">
-              VIDEO
-            </h2>
-          </div>
-
-          <div className="order-4 min-[1024px]:order-none min-[1024px]:pt-16">
-            <PersonCard
-              name="RADON"
-              image="/video/radon.jpg"
-              tiltClass="min-[501px]:max-[1023px]:-rotate-[5.5deg] min-[1024px]:-rotate-[5.5deg]"
-              offsetClass="min-[1024px]:-translate-x-12"
-              revealIndex={4}
-            />
-          </div>
-
-          <div className="order-5 min-[1024px]:order-none min-[1024px]:pt-10">
-            <PersonCard
-              name="DIMA SOKOLOV"
-              image="/video/dima-sokolov.jpg"
-              tiltClass="min-[501px]:max-[1023px]:rotate-[6deg] min-[1024px]:rotate-[6deg]"
-              offsetClass="min-[1024px]:translate-x-12"
-              revealIndex={4}
-            />
-            <h2 className="lineup-video-title mt-10 hidden text-center font-display text-[56px] font-black uppercase leading-none tracking-tight text-[#2a6a34] min-[1024px]:relative min-[1024px]:left-[-240px] min-[1024px]:block min-[1024px]:text-center min-[1024px]:text-[80px]">
-              VIDEO
-            </h2>
-          </div>
-        </div>
-      </section>
-
-      <section id="day-one" className="mx-auto w-full max-w-[1440px] px-5 py-10 md:px-8 md:py-16">
-        <div className="relative px-2 py-6 md:px-0">
-          <header className="mb-10 flex flex-col items-start gap-3 text-[24px] font-display font-black uppercase leading-[0.9] tracking-tight text-[#1b1b1b] md:mb-12 md:flex-row md:items-start md:justify-between md:gap-4 min-[1024px]:text-[30px]">
-            <h2>День 1: Workshop / Jam / Contest</h2>
-            <p>25 апреля</p>
-          </header>
-          <div className="relative mt-8 flex flex-col gap-4 md:mt-12 min-[501px]:max-[1023px]:grid min-[501px]:max-[1023px]:grid-cols-2 min-[501px]:max-[1023px]:items-start min-[501px]:max-[1023px]:gap-4 min-[1024px]:flex min-[1024px]:flex-row min-[1024px]:items-start min-[1024px]:justify-center min-[1024px]:gap-6">
-            {dayOneCards.map((card) => (
-              <article
-                key={card.title}
-                className={`relative flex flex-col overflow-hidden rounded-[28px] border border-[#dde1de] ${
-                  card.variant === "center"
-                    ? "order-2 z-20 w-full bg-[#fafafa] px-6 py-8 shadow-[0_0_30px_3px_rgba(41,108,51,0.15)] min-[501px]:max-[1023px]:col-start-1 min-[501px]:max-[1023px]:col-end-2 min-[501px]:max-[1023px]:translate-y-[20px] min-[501px]:max-[1023px]:min-h-[560px] min-[1024px]:w-[464px] min-[1024px]:min-h-[760px] min-[1024px]:px-[40px] min-[1024px]:py-[60px]"
-                    : card.title === "JAM"
-                      ? "order-3 z-10 mt-[-56px] w-[calc(100%-20px)] self-center bg-[#fafafa] px-6 pb-8 pt-[84px] min-[501px]:max-[1023px]:order-3 min-[501px]:max-[1023px]:mt-[40px] min-[501px]:max-[1023px]:w-[calc(100%-18px)] min-[501px]:max-[1023px]:self-center min-[501px]:max-[1023px]:px-6 min-[501px]:max-[1023px]:pb-8 min-[501px]:max-[1023px]:pt-8 min-[501px]:max-[1023px]:min-h-[520px] min-[1024px]:mt-[20px] min-[1024px]:w-[444px] min-[1024px]:min-h-[720px] min-[1024px]:self-start min-[1024px]:px-[50px] min-[1024px]:py-[40px]"
-                      : "order-1 z-10 w-full bg-[#fafafa] px-6 py-8 min-[501px]:max-[1023px]:col-span-2 min-[1024px]:mt-[20px] min-[1024px]:w-[444px] min-[1024px]:min-h-[720px] min-[1024px]:px-[50px] min-[1024px]:py-[40px]"
-                } ${
-                  card.variant === "center"
-                    ? "min-[1024px]:mx-[-24px]"
-                    : card.title === "Мастер-Класс от RASH THE FLOW"
-                      ? "min-[1024px]:mr-[-24px]"
-                      : "min-[1024px]:ml-[-24px]"
-                }`}
-              >
-                <h3 className="h-[40px] font-body text-[18px] font-bold leading-[1.1] min-[1024px]:h-[68px] min-[1024px]:text-[28px]">
-                  {card.title}
-                </h3>
-                <p className="mt-4 text-[32px] font-bold leading-none text-[#095d13] min-[1024px]:mt-6 min-[1024px]:text-[42px]">
-                  {card.price}
-                </p>
-                <div className="mt-8 space-y-4 text-[16px] font-semibold leading-[1.2] text-[#1f1f1f] min-[1024px]:mt-12 min-[1024px]:text-[20px]">
-                  {card.items.map((item, itemIndex) => (
-                    <div key={`${item.title}-${itemIndex}`} className="flex gap-3">
-                      <FlowerMark warning={item.bullet === "red"} />
-                      <div className="pt-[1px]">
-                        <p className="text-[#1f1f1f]">{item.title}</p>
-                        {item.details ? (
-                          <div className="mt-[10px] space-y-2 text-[#626262]">
-                            {item.details.map((detail) => (
-                              <p key={`${item.title}-${detail}`}>{detail}</p>
-                            ))}
-                          </div>
-                        ) : null}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-                {card.decor === "right-mid" ? (
-                  <Image
-                    src="/decor/flower-side-right.png"
-                    alt=""
-                    width={110}
-                    height={110}
-                    className="pointer-events-none absolute right-[8px] bottom-[170px] w-[132px] opacity-85"
-                  />
-                ) : null}
-                <ProgramRegistrationButton
-                  presetId={card.registrationPresetId}
-                  clearSelection
-                    className={`mt-12 block w-full rounded-full bg-[#2a6a34] px-6 py-4 text-center text-[14px] font-semibold leading-none text-white transition hover:bg-[#21562a] whitespace-nowrap min-[1024px]:text-[18px] ${
-                    card.title === "Мастер-Класс от RASH THE FLOW"
-                      ? "min-[501px]:max-[1023px]:mt-[48px] min-[1024px]:mt-auto"
-                      : card.title === "Contest 3x3"
-                        ? "min-[501px]:max-[1023px]:mt-12 min-[1024px]:!mt-12"
-                      : "min-[501px]:max-[1023px]:mt-auto min-[1024px]:mt-auto"
-                  }`}
-                >
-                  {card.button}
-                </ProgramRegistrationButton>
+      <section className="site-section day-two-section">
+        <SectionHeader kicker="25 октября / 02" title="Второй день" />
+        <div className="day-two-layout">
+          <div className="category-list">
+            {dayTwoCategories.map(([name, description], index) => (
+              <article key={name} data-reveal style={{ "--reveal-delay": `${index * 45}ms` } as React.CSSProperties}>
+                <span>{String(index + 1).padStart(2, "0")}</span><h3>{name}</h3><p>{description}</p>
               </article>
             ))}
           </div>
-          <div className="mt-8 flex items-start gap-3">
-            <FlowerMark warning />
-            <p className="text-[16px] font-semibold leading-[1.2] text-[#1f1f1f] min-[1024px]:text-[20px]">
-              Возврат денежных средств за участие в jam/contest/workshop возможен до 17.04.2026
-              включительно
-            </p>
-          </div>
+          <aside className="price-panel" data-reveal>
+            <p>Стоимость участия</p>
+            <div><span>Первая номинация</span><strong>1 900 ₽</strong></div>
+            <div><span>Каждая следующая</span><strong>900 ₽</strong></div>
+            <div><span>Зрительский билет</span><strong>800 ₽</strong></div>
+            <p className="price-note">Категории BEG — до 3 лет обучения. PRO — опыт от 3 лет. Организаторы могут скорректировать категорию, если уровень участника ей не соответствует.</p>
+            <RegisterButton label="Зарегистрироваться" clearSelection />
+          </aside>
         </div>
       </section>
 
-      <section id="day-two" className="mx-auto w-full max-w-[1440px] px-5 py-10 md:px-8 md:py-16">
-        <div className="relative px-2 py-6 md:px-0">
-          <header className="mb-10 flex flex-col items-start gap-3 text-[24px] font-display font-black uppercase leading-[0.9] tracking-tight text-[#1b1b1b] md:mb-12 md:flex-row md:items-start md:justify-between md:gap-4 min-[1024px]:text-[30px]">
-            <h2>День 2: ALL IN BATTLE</h2>
-            <p>26 апреля</p>
-          </header>
-          <div className="relative mt-8 flex flex-col gap-4 md:mt-12 min-[501px]:max-[1023px]:grid min-[501px]:max-[1023px]:grid-cols-2 min-[501px]:max-[1023px]:items-start min-[501px]:max-[1023px]:gap-4 min-[1024px]:flex min-[1024px]:flex-row min-[1024px]:items-start min-[1024px]:justify-center min-[1024px]:gap-6">
-            {dayTwoColumns.map((column) => (
-              <article
-                key={column.title}
-                className={`relative flex flex-col overflow-hidden rounded-[28px] border border-[#dde1de] ${
-                  column.title === "Стоимость"
-                    ? "order-1 z-10 w-full bg-[#fafafa] px-6 py-8 min-[501px]:max-[1023px]:col-span-2 min-[501px]:max-[1023px]:min-h-[420px] min-[1024px]:mt-[20px] min-[1024px]:w-[444px] min-[1024px]:min-h-[720px] min-[1024px]:px-[50px] min-[1024px]:py-[40px]"
-                    : column.title === "Номинации"
-                      ? "order-2 z-20 w-full bg-[#fafafa] px-6 py-8 shadow-[0_0_30px_3px_rgba(41,108,51,0.15)] min-[501px]:max-[1023px]:translate-y-[20px] min-[501px]:max-[1023px]:min-h-[560px] min-[1024px]:w-[464px] min-[1024px]:min-h-[760px] min-[1024px]:px-[40px] min-[1024px]:py-[60px]"
-                      : "order-3 z-10 mt-[-56px] w-[calc(100%-20px)] self-center bg-[#fafafa] px-6 pb-8 pt-[84px] min-[501px]:max-[1023px]:mt-[40px] min-[501px]:max-[1023px]:w-[calc(100%-18px)] min-[501px]:max-[1023px]:self-center min-[501px]:max-[1023px]:px-6 min-[501px]:max-[1023px]:pb-8 min-[501px]:max-[1023px]:pt-8 min-[501px]:max-[1023px]:min-h-[520px] min-[1024px]:mt-[20px] min-[1024px]:w-[444px] min-[1024px]:min-h-[720px] min-[1024px]:px-[50px] min-[1024px]:py-[40px]"
-                } ${
-                  column.title === "Номинации"
-                    ? "min-[1024px]:mx-[-24px]"
-                    : column.title === "Стоимость"
-                      ? "min-[1024px]:mr-[-24px]"
-                      : "min-[1024px]:ml-[-24px]"
-                }`}
-              >
-                <h3 className="h-[40px] font-body text-[18px] font-bold leading-[1.1] min-[1024px]:h-auto min-[1024px]:text-[28px]">
-                  {column.title}
-                </h3>
-                <div className="mt-8 space-y-4 text-[16px] font-semibold leading-[1.2] text-[#1f1f1f] min-[1024px]:mt-12 min-[1024px]:text-[20px]">
-                  {column.items.map((item, itemIndex) => (
-                    <div key={`${item.title}-${itemIndex}`} className="flex gap-3">
-                      <FlowerMark warning={item.bullet === "red"} />
-                      <div className="pt-[1px]">
-                        <p className="text-[#1f1f1f]">{item.title}</p>
-                        {item.details ? (
-                          <div className="mt-[10px] space-y-2 text-[#626262]">
-                            {item.details.map((detail) => (
-                              <p key={`${item.title}-${detail}`}>{detail}</p>
-                            ))}
-                          </div>
-                        ) : null}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-                {column.decor === "right-top" ? (
-                  <Image
-                    src="/decor/flower-side-right.png"
-                    alt=""
-                    width={116}
-                    height={116}
-                    className="pointer-events-none absolute right-[8px] top-[10px] w-[136px] opacity-85"
-                  />
-                ) : null}
-                {column.title === "Стоимость" ? (
-                  <Image
-                    src="/decor/flower-side-right.png"
-                    alt=""
-                    width={112}
-                    height={112}
-                    className="pointer-events-none absolute right-[8px] top-[10px] w-[124px] opacity-85 min-[1024px]:hidden"
-                  />
-                ) : null}
-                {column.button ? (
-                  <ProgramRegistrationButton
-                    clearSelection
-                    className="mt-12 block w-full rounded-full bg-[#2a6a34] px-6 py-4 text-center text-[14px] font-semibold leading-none text-white transition hover:bg-[#21562a] whitespace-nowrap min-[1024px]:mt-auto min-[1024px]:text-[18px]"
-                  >
-                    {column.button}
-                  </ProgramRegistrationButton>
-                ) : null}
-              </article>
-            ))}
-          </div>
+      <LineupSection id="team" eyebrow="За пультом / 03" title="DJ" people={djs} />
+      <LineupSection id="mc" eyebrow="У микрофона / 04" title="MC" people={mcs} />
+      <LineupSection id="media" eyebrow="За кадром / 05" title="Медиа" people={media} />
+
+      <section className="site-section location-section">
+        <SectionHeader kicker="Краснодар / 06" title="Место" />
+        <div className="location-layout">
+          <div data-reveal><p>Второй день</p><h3>«Бронзовая лошадь»</h3><address>ул. Калинина, 291</address></div>
+          <Image src="/event/logo.png" alt="Логотип ALL IN BATTLE 5" width={1920} height={1920} sizes="(max-width: 768px) 72vw, 34vw" className="location-logo" />
         </div>
       </section>
 
-      <section id="registration" className="mx-auto w-full max-w-[1440px] px-5 pb-20 md:px-8 md:pb-24">
-        <Suspense fallback={null}>
-          <RegistrationForm />
-        </Suspense>
+      <section id="registration" className="site-section registration-section">
+        <SectionHeader kicker="Финальный шаг / 07" title="Регистрация" />
+        <Suspense fallback={<p className="form-loading">Загружаем форму…</p>}><RegistrationForm /></Suspense>
       </section>
 
-      <footer className="relative overflow-hidden px-5 pb-28 pt-10 md:px-8 md:pb-40 md:pt-16">
-        <Image
-          src="/decor/footer-left.jpg"
-          alt=""
-          width={520}
-          height={420}
-          className="pointer-events-none absolute bottom-0 left-[-64px] h-auto w-[44vw] min-w-[320px] max-w-[700px] md:left-[-56px]"
-        />
-        <Image
-          src="/decor/footer-right.jpg"
-          alt=""
-          width={420}
-          height={420}
-          className="pointer-events-none absolute bottom-0 right-[-44px] h-auto w-[34vw] min-w-[270px] max-w-[580px] md:right-[-36px]"
-        />
-
-        <div className="relative z-10 mx-auto flex w-full max-w-[1440px] justify-center">
-          <div className="flex flex-col items-center gap-5 text-center md:gap-7">
-            {footerLinks.map((link) => (
-              <a
-                key={link.label}
-                href={link.href}
-                target="_blank"
-                rel="noreferrer"
-                className="group inline-flex items-center gap-3 font-display text-[32px] font-black uppercase leading-none text-[#131417] transition hover:opacity-80 md:text-[50px]"
-              >
-                <span>{link.label}</span>
-                <Image
-                  src="/decor/arrow.svg"
-                  alt=""
-                  width={32}
-                  height={32}
-                  className="h-[22px] w-[22px] md:h-[34px] md:w-[34px]"
-                />
-              </a>
-            ))}
-          </div>
-        </div>
+      <footer className="site-footer">
+        <Image src="/event/logo.png" alt="ALL IN BATTLE 5" width={1920} height={1920} className="footer-logo" />
+        <p>24–25 октября 2026<br />Краснодар</p>
+        <nav aria-label="Социальные сети">
+          <a href="https://t.me/all_in_battle" target="_blank" rel="noreferrer"><span>Telegram</span><ArrowUpRightIcon className="external-arrow" aria-hidden="true" /></a>
+          <a href="https://vk.ru/allinbattlehop" target="_blank" rel="noreferrer"><span>VKontakte</span><ArrowUpRightIcon className="external-arrow" aria-hidden="true" /></a>
+          <a href="https://www.instagram.com/all_in_battlehop" target="_blank" rel="noreferrer"><span>Instagram</span><ArrowUpRightIcon className="external-arrow" aria-hidden="true" /></a>
+        </nav>
+        <a href="#top"><span>Наверх</span><ArrowUpIcon className="external-arrow" aria-hidden="true" /></a>
       </footer>
     </main>
   );
 }
-
-
-
-
-
-
-
-
-
-
-

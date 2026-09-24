@@ -3,26 +3,68 @@
   day: "day1" | "day2";
   title: string;
   subtitle?: string;
-  kind: "fixed" | "competitive" | "spectator";
+  kind: "fixed" | "contest" | "competitive" | "spectator";
   priceRub?: number;
+  hidden?: boolean;
 };
+
+export const CONTEST_OPTION_IDS = [
+  "day1-contest-under-18",
+  "day1-contest-pro",
+] as const;
+
+export const JAM_OPTION_ID = "day1-option-3";
+
+export function isContestOptionId(id: string) {
+  return CONTEST_OPTION_IDS.some((contestId) => contestId === id);
+}
 
 export const EVENT_OPTIONS: EventOption[] = [
   {
     id: "day1-option-1",
     day: "day1",
-    title: "Мастер-Класс от RASH THE FLOW",
+    title: "Мастер-класс PRADAZOMBIE",
     kind: "fixed",
-    priceRub: 2900,
+    priceRub: 3200,
   },
-  { id: "day1-option-2", day: "day1", title: "Contest 3x3", kind: "fixed", priceRub: 900 },
-  { id: "day1-option-3", day: "day1", title: "JAM", kind: "fixed", priceRub: 600 },
+  {
+    id: "day1-option-2",
+    day: "day1",
+    title: "Contest 3×3 (старая заявка)",
+    kind: "contest",
+    priceRub: 3000,
+    hidden: true,
+  },
+  {
+    id: "day1-contest-under-18",
+    day: "day1",
+    title: "Contest 3×3 — до 18 лет",
+    subtitle: "Команда · только одна категория контеста",
+    kind: "contest",
+    priceRub: 3000,
+  },
+  {
+    id: "day1-contest-pro",
+    day: "day1",
+    title: "Contest 3×3 — PRO",
+    subtitle: "Без ограничений по возрасту · только одна категория контеста",
+    kind: "contest",
+    priceRub: 3000,
+  },
+  {
+    id: "day1-option-3",
+    day: "day1",
+    title: "JAM",
+    subtitle: "Бесплатно при участии в Contest 3×3",
+    kind: "fixed",
+    priceRub: 800,
+  },
   {
     id: "day1-option-4",
     day: "day1",
-    title: "Зрительский билет (contest + jam)",
+    title: "Зрительский билет — день 1",
     kind: "fixed",
-    priceRub: 700,
+    priceRub: 800,
   },
   {
     id: "day2-baby",
@@ -78,16 +120,18 @@ export const EVENT_OPTIONS: EventOption[] = [
     day: "day2",
     title: "Зрительский билет",
     kind: "spectator",
-    priceRub: 700,
+    priceRub: 800,
   },
 ];
 
-export function getOptionsByDay(day: EventOption["day"]) {
-  return EVENT_OPTIONS.filter((option) => option.day === day);
+export function getOptionsByDay(day: EventOption["day"], includeHidden = false) {
+  return EVENT_OPTIONS.filter(
+    (option) => option.day === day && (includeHidden || !option.hidden),
+  );
 }
 
 export function getOptionDisplayPrice(option: EventOption) {
-  if (option.kind === "fixed" || option.kind === "spectator") {
+  if (option.kind === "fixed" || option.kind === "contest" || option.kind === "spectator") {
     return option.priceRub ?? 0;
   }
 
@@ -104,9 +148,14 @@ export function calculateSelection(optionIds: string[]) {
     (id) => !selected.some((option) => option.id === id),
   );
 
+  const contestSelectionCount = selected.filter((option) => option.kind === "contest").length;
+  const hasContest = contestSelectionCount > 0;
   const day1Total = selected
-    .filter((option) => option.day === "day1" && option.kind === "fixed")
-    .reduce((sum, option) => sum + (option.priceRub ?? 0), 0);
+    .filter((option) => option.day === "day1" && (option.kind === "fixed" || option.kind === "contest"))
+    .reduce(
+      (sum, option) => sum + (option.id === JAM_OPTION_ID && hasContest ? 0 : (option.priceRub ?? 0)),
+      0,
+    );
 
   const day2SpectatorTotal = selected
     .filter((option) => option.day === "day2" && option.kind === "spectator")
@@ -117,11 +166,13 @@ export function calculateSelection(optionIds: string[]) {
   ).length;
 
   const day2CompetitiveTotal =
-    day2CompetitiveCount > 0 ? 1700 + (day2CompetitiveCount - 1) * 800 : 0;
+    day2CompetitiveCount > 0 ? 1900 + (day2CompetitiveCount - 1) * 900 : 0;
 
   return {
     selected,
     unknownIds,
+    hasContest,
+    contestSelectionCount,
     totalRub: day1Total + day2SpectatorTotal + day2CompetitiveTotal,
   };
 }

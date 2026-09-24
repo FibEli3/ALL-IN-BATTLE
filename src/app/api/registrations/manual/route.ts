@@ -6,7 +6,7 @@ import { z } from "zod";
 const manualRegistrationSchema = z.object({
   fullName: z.string().trim().min(2, "Укажите имя и фамилию"),
   nickname: z.string().trim().min(2, "Укажите никнейм"),
-  age: z.string().trim().max(20).optional().or(z.literal("")),
+  age: z.string().trim().max(3).optional().or(z.literal("")),
   phone: z.string().trim().min(8, "Проверьте номер телефона"),
   participationType: z.enum(["participant", "spectator"]),
   selectedOptionIds: z.array(z.string()).min(1, "Выберите хотя бы одну номинацию"),
@@ -28,6 +28,13 @@ export async function POST(request: Request) {
       );
     }
 
+    if (selection.contestSelectionCount > 1) {
+      return NextResponse.json(
+        { ok: false, message: "Для Contest 3×3 можно выбрать только одну категорию" },
+        { status: 400 },
+      );
+    }
+
     if (selection.totalRub <= 0) {
       return NextResponse.json(
         { ok: false, message: "Сумма оплаты должна быть больше нуля" },
@@ -35,9 +42,9 @@ export async function POST(request: Request) {
       );
     }
 
-    if (payload.receiptFileBase64.length > 14_000_000) {
+    if (payload.receiptFileBase64.length > 3_700_000) {
       return NextResponse.json(
-        { ok: false, message: "Файл чека слишком большой. Загрузите файл до 10 МБ." },
+        { ok: false, message: "Файл чека слишком большой. Загрузите скриншот или файл меньшего размера." },
         { status: 400 },
       );
     }
@@ -67,6 +74,10 @@ export async function POST(request: Request) {
         { status: 400 },
       );
     }
+
+    console.error("[api/registrations/manual] failed", {
+      error: error instanceof Error ? error.message : String(error),
+    });
 
     return NextResponse.json(
       { ok: false, message: "Не удалось отправить заявку. Попробуйте ещё раз." },

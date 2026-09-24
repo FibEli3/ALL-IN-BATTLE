@@ -29,6 +29,13 @@ export async function POST(request: Request) {
       );
     }
 
+    if (selection.contestSelectionCount > 1) {
+      return NextResponse.json(
+        { ok: false, message: "Для Contest 3×3 можно выбрать только одну категорию" },
+        { status: 400 },
+      );
+    }
+
     const created = await createRegistration({
       fullName: payload.fullName,
       nickname: payload.nickname,
