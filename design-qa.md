@@ -169,6 +169,21 @@ No additional crop was needed for the hero because the title, portraits, edge gr
 - `npm run lint`, `npm run build`, and `git diff --check` complete successfully.
 - Final comparison result: no actionable P0, P1, or P2 differences remain for the requested compact mobile hero adjustment.
 
+### Pass 13 — mobile right-portrait scale balance
+
+- Source visual truth: `C:\Users\Vadim\AppData\Local\Temp\codex-clipboard-626692ef-5a84-4ff0-8c57-a245f2b03556.png` (399 × 219 px focused hero crop). The screenshot identifies the undersized face in the right portrait; the user's written direction defines the corrected scale and allows vertical compensation.
+- Implementation evidence: `http://localhost:3000/`, captured inline in the Codex in-app browser at 390 × 844 and 540 × 900 CSS px after the entrance animations settled; the browser surface does not expose a persistent screenshot path.
+- State: home-page hero at the default top position, closed mobile navigation.
+- [P2] KHARKOVSKAYA's face remained visually smaller than the other two heads because the hood and transparent padding occupy more of her source canvas.
+- Iteration 1: increased the narrow-phone image from 84vw to 94vw and lowered the canvas to preserve the hood line. Evidence showed a better face scale but an overly low eye line.
+- Iteration 2: increased the narrow-phone image to 104vw, shifted it farther beyond the right edge, and raised it by 90 px from the intermediate position. For 481–640 px, the portrait now uses 74vw with a milder compensated offset.
+- Post-fix full-view evidence: at 390 px the right face is close to the central face in visual size, its eye line remains within the portrait cluster, and the larger hood does not collide with the subtitle. At 540 px all three portraits retain a deliberate overlapping hierarchy and the right face no longer reads as undersized.
+- Focused region evidence: the supplied crop and the post-fix hero capture both expose the complete three-head cluster, so no additional crop was necessary.
+- Responsive guard evidence: hero height, copy placement, left/center portraits, CTA, tablet, and desktop rules remain unchanged. No horizontal document overflow or framework overlay was observed.
+- Fidelity surfaces: typography, palette/tokens, source portrait image quality, red outline, and all copy remain unchanged; only the requested right-portrait scale and mobile position were adjusted.
+- `npm run lint`, `npm run build`, and `git diff --check` complete successfully.
+- Final comparison result: no actionable P0, P1, or P2 differences remain for the requested mobile portrait balance.
+
 ## Interaction Verification
 
 - Home route rendered meaningful content with no framework error overlay.

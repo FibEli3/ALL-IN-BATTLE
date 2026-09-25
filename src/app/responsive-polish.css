@@ -250,8 +250,9 @@
   }
 
   .hero-person-right {
-    right: -18vw;
-    bottom: 44px;
+    right: -28vw;
+    bottom: -24px;
+    width: 74vw;
   }
 }
 
@@ -281,9 +282,9 @@
   }
 
   .hero-person-right {
-    right: -30vw;
-    bottom: -104px;
-    width: 84vw;
+    right: -41vw;
+    bottom: -118px;
+    width: 104vw;
   }
 }
 
