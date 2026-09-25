@@ -184,6 +184,18 @@ No additional crop was needed for the hero because the title, portraits, edge gr
 - `npm run lint`, `npm run build`, and `git diff --check` complete successfully.
 - Final comparison result: no actionable P0, P1, or P2 differences remain for the requested mobile portrait balance.
 
+### Pass 14 — mobile right-portrait vertical alignment
+
+- Source visual truth: `C:\Users\Vadim\Pictures\HcyvHa8bMSOq85LpX9tOaZeedMwH7e-ElJr4ceumV9OA3DQ9uYWISY9KQE6iusfpiTjBYfscJT3pSkoxoaoUBR59.jpg` (1177 × 2560 px phone screenshot). The requested correction is limited to lowering the already-approved right-portrait scale.
+- Implementation evidence: `http://localhost:3000/`, captured inline in the Codex in-app browser at 390 × 844 and 540 × 900 CSS px after the entrance animations settled; the browser surface does not expose a persistent screenshot path.
+- State: home-page hero at the default top position, closed mobile navigation.
+- [P2] At the narrow-phone state the top of KHARKOVSKAYA's hood sat visibly above the left cap and central head, making the right portrait appear vertically detached despite the corrected face scale.
+- Fix: preserved the existing 104vw / 74vw image sizes and horizontal offsets, lowering only the right portrait by 22 px at up to 480 px and 20 px at 481–640 px.
+- Post-fix full-view evidence: at 390 px the hood top now aligns with the left cap while the face remains close to the central face in scale; at 540 px the three portraits preserve their intended overlap and share a balanced top line.
+- Focused region evidence: the supplied hero screenshot and both post-fix hero captures clearly expose the portrait head line, so no additional crop was required.
+- Fidelity surfaces: typography, spacing outside the portrait cluster, palette/tokens, image quality, CTA placement, and copy are unchanged. Desktop and tablet rules above 640 px are untouched.
+- Final comparison result: no actionable P0, P1, or P2 differences remain for the requested mobile vertical alignment.
+
 ## Interaction Verification
 
 - Home route rendered meaningful content with no framework error overlay.
