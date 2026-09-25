@@ -196,6 +196,17 @@ No additional crop was needed for the hero because the title, portraits, edge gr
 - Fidelity surfaces: typography, spacing outside the portrait cluster, palette/tokens, image quality, CTA placement, and copy are unchanged. Desktop and tablet rules above 640 px are untouched.
 - Final comparison result: no actionable P0, P1, or P2 differences remain for the requested mobile vertical alignment.
 
+### Pass 15 — stronger mobile face-and-shoulder alignment
+
+- Source visual truth: `C:\Users\Vadim\Pictures\HcyvHa8bMSOq85LpX9tOaZeedMwH7e-ElJr4ceumV9OA3DQ9uYWISY9KQE6iusfpiTjBYfscJT3pSkoxoaoUBR59.jpg` (1177 × 2560 px phone screenshot), plus the user's follow-up that the portrait still read as too high after Pass 14.
+- Implementation evidence: `http://localhost:3000/`, captured inline in the Codex in-app browser at 390 × 844 and 540 × 900 CSS px after the entrance animations settled; the browser surface does not expose a persistent screenshot path.
+- State: home-page hero at the default top position, closed mobile navigation.
+- [P2] Pass 14 aligned the hood apex, but the large hood canvas still made the right figure read higher when judged by the face-and-shoulder mass.
+- Fix: preserved the approved portrait scale and horizontal crop, lowering KHARKOVSKAYA an additional 44 px at up to 480 px and 40 px at 481–640 px.
+- Post-fix evidence: at both tested widths the right portrait is now visibly lower than the cap/head line rather than appearing above it; the face remains readable, the CTA remains unobstructed, and the source image continues to fill the hero bottom edge.
+- Fidelity surfaces: fonts, copy, colors/tokens, image sharpness, CTA, hero height, and the other two portraits are unchanged. Rules above 640 px remain untouched.
+- Final comparison result: no actionable P0, P1, or P2 differences remain for the user's requested stronger downward adjustment.
+
 ## Interaction Verification
 
 - Home route rendered meaningful content with no framework error overlay.
