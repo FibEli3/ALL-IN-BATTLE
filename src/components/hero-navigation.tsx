@@ -27,7 +27,7 @@ export function HeroNavigation({ items }: { items: NavItem[] }) {
     <>
       <header className="site-nav">
         <a href="#top" className="site-nav-logo" aria-label="ALL IN BATTLE — на главную">
-          <Image src="/event/logo.png" alt="" width={1920} height={1920} priority />
+          <Image src="/event/logo-nav.webp" alt="" width={192} height={192} priority unoptimized />
         </a>
         <p className="site-nav-date">24–25 октября</p>
         <nav className="site-nav-links" aria-label="Главная навигация">
@@ -38,7 +38,7 @@ export function HeroNavigation({ items }: { items: NavItem[] }) {
 
       <div id="mobile-navigation" className={`mobile-menu ${open ? "is-open" : ""}`} aria-hidden={!open}>
         <div className="mobile-menu-top">
-          <Image className="mobile-menu-logo" src="/event/logo-transparent.png" alt="ALL IN BATTLE" width={256} height={256} priority />
+          <Image className="mobile-menu-logo" src="/event/logo-transparent.webp" alt="ALL IN BATTLE" width={256} height={256} unoptimized />
           <button type="button" onClick={() => setOpen(false)}>Закрыть</button>
         </div>
         <nav aria-label="Мобильная навигация">

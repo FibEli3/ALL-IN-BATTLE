@@ -25,26 +25,26 @@ const navItems = [
 ];
 
 const judges: Person[] = [
-  { name: "GLADI", role: "Судья", city: "Симферополь", image: "/event/people/gladi.png" },
-  { name: "PRADAZOMBIE", role: "Судья", city: "Ницца, Франция", image: "/event/people/pradazombie.png" },
-  { name: "KHARKOVSKAYA", role: "Судья", city: "Санкт-Петербург", image: "/event/people/kharkovskaya.png" },
+  { name: "GLADI", role: "Судья", city: "Симферополь", image: "/event/people/gladi-optimized.webp" },
+  { name: "PRADAZOMBIE", role: "Судья", city: "Ницца, Франция", image: "/event/people/pradazombie-optimized.webp" },
+  { name: "KHARKOVSKAYA", role: "Судья", city: "Санкт-Петербург", image: "/event/people/kharkovskaya-optimized.webp" },
 ];
 
 const djs: Person[] = [
-  { name: "CHEREPASHKA", role: "DJ", city: "Санкт-Петербург", image: "/event/people/cherepashka.png" },
-  { name: "WHYDEAP", role: "DJ", city: "Краснодар", image: "/event/people/whydeap.png" },
-  { name: "ALBERT FTH", role: "DJ", city: "Горячий Ключ", image: "/event/people/albert-fth.png" },
+  { name: "CHEREPASHKA", role: "DJ", city: "Санкт-Петербург", image: "/event/people/cherepashka-optimized.webp" },
+  { name: "WHYDEAP", role: "DJ", city: "Краснодар", image: "/event/people/whydeap-optimized.webp" },
+  { name: "ALBERT FTH", role: "DJ", city: "Горячий Ключ", image: "/event/people/albert-fth-optimized.webp" },
 ];
 
 const mcs: Person[] = [
-  { name: "MAVI", role: "MC", city: "Симферополь", image: "/event/people/mavi.png" },
-  { name: "ARTEM TITUKH", role: "MC", city: "Горячий Ключ", image: "/event/people/artem-titukh.png" },
+  { name: "MAVI", role: "MC", city: "Симферополь", image: "/event/people/mavi-optimized.webp" },
+  { name: "ARTEM TITUKH", role: "MC", city: "Горячий Ключ", image: "/event/people/artem-titukh-optimized.webp" },
 ];
 
 const media: Person[] = [
-  { name: "ALESYAAA", role: "Видео", image: "/event/people/alesyaaa.png" },
-  { name: "RADON", role: "Видео", image: "/event/people/radon.png" },
-  { name: "YASHNAYA ELENA", role: "Фото", image: "/event/people/yashnaya-elena.png" },
+  { name: "ALESYAAA", role: "Видео", image: "/event/people/alesyaaa-optimized.webp" },
+  { name: "RADON", role: "Видео", image: "/event/people/radon-optimized.webp" },
+  { name: "YASHNAYA ELENA", role: "Фото", image: "/event/people/yashnaya-elena-optimized.webp" },
 ];
 
 const dayTwoCategories = [
@@ -77,6 +77,7 @@ function PortraitCard({ person, index }: { person: Person; index: number }) {
           height={3306}
           sizes="(max-width: 640px) 92vw, (max-width: 1024px) 44vw, 31vw"
           className="portrait-image"
+          unoptimized
         />
       </div>
       <div className="portrait-caption">
@@ -113,8 +114,8 @@ export default function Home() {
 
       <section className="hero" id="top">
         <HeroNavigation items={navItems} />
-        <Image src="/event/wood.png" alt="" width={1440} height={2560} sizes="40vw" className="hero-wood hero-wood-left" priority />
-        <Image src="/event/background.png" alt="" width={1440} height={2560} sizes="40vw" className="hero-wood hero-wood-right" priority />
+        <Image src="/event/wood.webp" alt="" width={1440} height={2560} sizes="40vw" className="hero-wood hero-wood-left" unoptimized />
+        <Image src="/event/background.webp" alt="" width={1440} height={2560} sizes="40vw" className="hero-wood hero-wood-right" unoptimized />
 
         <div className="hero-copy">
           <p className="hero-meta">24–25 октября 2026 · Краснодар</p>
@@ -123,9 +124,9 @@ export default function Home() {
         </div>
 
         <div className="hero-portraits" aria-label="Судьи ALL IN BATTLE 5">
-          <Image src="/event/people/gladi-cutout.png" alt="GLADI" width={1087} height={1447} sizes="40vw" className="hero-person hero-person-left" priority />
-          <Image src="/event/people/pradazombie-cutout.png" alt="PRADAZOMBIE" width={1087} height={1447} sizes="42vw" className="hero-person hero-person-center" loading="eager" fetchPriority="high" />
-          <Image src="/event/people/kharkovskaya-cutout.png" alt="KHARKOVSKAYA" width={1087} height={1447} sizes="40vw" className="hero-person hero-person-right" priority />
+          <Image src="/event/people/gladi-cutout.webp" alt="GLADI" width={1087} height={1447} sizes="40vw" className="hero-person hero-person-left" loading="eager" unoptimized />
+          <Image src="/event/people/pradazombie-cutout.webp" alt="PRADAZOMBIE" width={1087} height={1447} sizes="42vw" className="hero-person hero-person-center" priority unoptimized />
+          <Image src="/event/people/kharkovskaya-cutout.webp" alt="KHARKOVSKAYA" width={1087} height={1447} sizes="40vw" className="hero-person hero-person-right" loading="eager" unoptimized />
         </div>
 
         <a className="hero-cta" href="#registration">Регистрация <ArrowDownRightIcon className="action-arrow" aria-hidden="true" /></a>
@@ -201,7 +202,7 @@ export default function Home() {
         <SectionHeader kicker="Краснодар / 06" title="Место" />
         <div className="location-layout">
           <div data-reveal><p>Второй день</p><h3>«Бронзовая лошадь»</h3><address>ул. Калинина, 291</address></div>
-          <Image src="/event/logo.png" alt="Логотип ALL IN BATTLE 5" width={1920} height={1920} sizes="(max-width: 768px) 72vw, 34vw" className="location-logo" />
+          <Image src="/event/logo.webp" alt="Логотип ALL IN BATTLE 5" width={1920} height={1920} sizes="(max-width: 768px) 72vw, 34vw" className="location-logo" unoptimized />
         </div>
       </section>
 
@@ -211,7 +212,7 @@ export default function Home() {
       </section>
 
       <footer className="site-footer">
-        <Image src="/event/logo.png" alt="ALL IN BATTLE 5" width={1920} height={1920} className="footer-logo" />
+        <Image src="/event/logo.webp" alt="ALL IN BATTLE 5" width={1920} height={1920} className="footer-logo" unoptimized />
         <p>24–25 октября 2026<br />Краснодар</p>
         <nav aria-label="Социальные сети">
           <a href="https://t.me/all_in_battle" target="_blank" rel="noreferrer"><span>Telegram</span><ArrowUpRightIcon className="external-arrow" aria-hidden="true" /></a>
