@@ -207,6 +207,16 @@ No additional crop was needed for the hero because the title, portraits, edge gr
 - Fidelity surfaces: fonts, copy, colors/tokens, image sharpness, CTA, hero height, and the other two portraits are unchanged. Rules above 640 px remain untouched.
 - Final comparison result: no actionable P0, P1, or P2 differences remain for the user's requested stronger downward adjustment.
 
+### Pass 16 — exact 15 px upward refinement
+
+- Source visual truth: the accepted Pass 15 mobile composition plus the user's explicit request to move only KHARKOVSKAYA 15 px upward.
+- Implementation evidence: `http://localhost:3000/`, captured inline in the Codex in-app browser at 390 × 844 CSS px after the entrance animations settled; the browser surface does not expose a persistent screenshot path.
+- State: home-page hero at the default top position, closed mobile navigation.
+- Fix: increased the right portrait's `bottom` anchor by exactly 15 px in both mobile ranges: `-184px → -169px` at up to 480 px and `-84px → -69px` at 481–640 px.
+- Post-fix evidence: the requested small upward correction is visible without changing scale, crop, CTA clearance, hero height, or the positions of the other portraits.
+- Fidelity surfaces: typography, copy, colors/tokens, image quality, horizontal crop, and desktop/tablet rules remain unchanged.
+- Final comparison result: the requested 15 px refinement is implemented with no actionable P0, P1, or P2 regression.
+
 ## Interaction Verification
 
 - Home route rendered meaningful content with no framework error overlay.
