@@ -232,7 +232,7 @@
 /* Large phones and narrow portrait tablets. */
 @media (min-width: 481px) and (max-width: 640px) {
   .hero {
-    min-height: max(860px, 100svh);
+    min-height: clamp(760px, 88svh, 820px);
   }
 
   .hero-person {
@@ -258,11 +258,11 @@
 /* Phone composition: fixed vertical anchors prevent aspect-ratio drift. */
 @media (max-width: 480px) {
   .hero {
-    min-height: max(800px, 100svh);
+    min-height: clamp(700px, 86svh, 760px);
   }
 
   .hero-copy {
-    top: clamp(248px, calc(310px - 12vw), 270px);
+    top: clamp(112px, 15svh, 132px);
   }
 
   .hero-person {

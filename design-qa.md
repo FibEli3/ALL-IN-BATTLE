@@ -155,6 +155,20 @@ No additional crop was needed for the hero because the title, portraits, edge gr
 - Fidelity surfaces: title typography, palette/tokens, copy, CTA styling, supplied portrait rasters, and all tablet/desktop rules remain unchanged.
 - Final comparison result: no actionable P0, P1, or P2 differences remain for the requested mobile correction.
 
+### Pass 12 — compact mobile hero height
+
+- Source visual truth: `C:\Users\Vadim\Pictures\HcyvHa8bMSOq85LpX9tOaZeedMwH7e-ElJr4ceumV9OA3DQ9uYWISY9KQE6iusfpiTjBYfscJT3pSkoxoaoUBR59.jpg` (1177 × 2560 px device capture). The reported problem state and the user's written direction define the corrected target: remove the large empty band below the navigation and shorten the first screen.
+- Implementation evidence: `http://localhost:3000/`, captured inline in the Codex in-app browser at 390 × 844 and 430 × 932 CSS px after the entrance animations settled; the browser surface does not expose a persistent screenshot path.
+- State: home-page hero at the default top position, closed mobile navigation.
+- [P2] The phone breakpoint forced the hero to at least the full viewport height and placed the copy 248–270 px from the top, producing a large visually empty band below the navigation on tall phones.
+- Fix: changed the phone hero to a bounded responsive height of 700–760 px and moved the copy to a 112–132 px top range. The 481–640 px range now uses a bounded 760–820 px height instead of forcing at least 860 px or the full viewport.
+- Post-fix full-view evidence: at 390 × 844 the hero ends at approximately 700 px and the event metadata begins directly below the navigation with a deliberate breathing gap; the next section is already visible. At 430 × 932 the hero ends at approximately 732 px with the same composition and no title/portrait collision.
+- Focused region evidence: the navigation-to-copy band, title block, portrait heads, CTA, and bottom divider are all legible in the two full mobile captures, so a separate crop was unnecessary.
+- Responsive guard evidence: portrait widths, horizontal offsets, CTA styling, tablet rules, and desktop rules are unchanged. No horizontal overflow or framework overlay was observed at either tested width.
+- Fidelity surfaces: typography, colors/tokens, supplied portrait assets and sharpness, and all copy remain unchanged; only the requested mobile vertical rhythm and section height were adjusted.
+- `npm run lint`, `npm run build`, and `git diff --check` complete successfully.
+- Final comparison result: no actionable P0, P1, or P2 differences remain for the requested compact mobile hero adjustment.
+
 ## Interaction Verification
 
 - Home route rendered meaningful content with no framework error overlay.
