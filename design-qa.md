@@ -253,6 +253,16 @@ No additional crop was needed for the hero because the title, portraits, edge gr
 - Fidelity surfaces: portrait positions, scale, crop, source assets, typography, colors, copy, CTA, and section height are unchanged; only overlap order changed.
 - Final comparison result: no actionable P0, P1, or P2 differences remain for the requested global layer hierarchy.
 
+### Pass 20 — registration refund notice
+
+- Source visual truth: `C:\Users\Vadim\AppData\Local\Temp\codex-clipboard-f217b06a-d4fd-4434-b262-e19a977e7979.png` plus the user's explicit copy and placement request.
+- Implementation evidence: `http://localhost:3000/#registration`, captured inline in the Codex in-app browser at 1366 × 768 and 390 × 844 CSS px; the browser surface does not expose a persistent screenshot path.
+- Fix: inserted “Возврат денежных средств возможен до 10 октября” immediately before the existing legal footnote and presented it as a compact orange-outlined pill with a subtle accent wash and semibold type.
+- Responsive evidence: on desktop the notice remains a compact single line aligned with the total; at 390 px it wraps cleanly to two lines, stays inside the registration card, and leaves clear separation from the legal copy.
+- Fidelity surfaces: total, payment CTA, legal copy, form controls, typography hierarchy, palette, and surrounding section layout remain unchanged.
+- Runtime evidence: the registration section renders meaningful content without a framework error overlay or document-level horizontal overflow.
+- Final comparison result: no actionable P0, P1, or P2 differences remain for the requested refund notice.
+
 ## Interaction Verification
 
 - Home route rendered meaningful content with no framework error overlay.

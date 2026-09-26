@@ -338,6 +338,7 @@ export function RegistrationForm() {
         </button>
       </div>
       {errorMessage ? <p className="form-error" role="alert">{errorMessage}</p> : null}
+      <p className="refund-notice">Возврат денежных средств возможен до 10 октября</p>
       <p className="form-footnote">Нажимая кнопку, вы соглашаетесь на обработку данных для регистрации на мероприятие. Для несовершеннолетних согласие подтверждает законный представитель.</p>
     </form>
   );
