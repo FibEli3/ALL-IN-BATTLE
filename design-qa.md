@@ -243,6 +243,16 @@ No additional crop was needed for the hero because the title, portraits, edge gr
 - Runtime evidence: the browser reports meaningful page content, no Next.js error overlay, and no page errors at the 382 px target.
 - Final comparison result: no actionable P0, P1, or P2 differences remain for the requested multi-device portrait balance.
 
+### Pass 19 — global hero layer order
+
+- Source visual truth: the approved hero composition plus the user's explicit direction that KHARKOVSKAYA must remain behind the other portraits at every responsive size.
+- Implementation evidence: `http://localhost:3000/`, checked in the Codex in-app browser after entrance animations settled.
+- [P2] The base desktop/tablet styles still assigned KHARKOVSKAYA the highest portrait z-index even though the narrow-phone override placed her behind PRADAZOMBIE.
+- Fix: made the portrait hierarchy global: PRADAZOMBIE `z-index: 4`, GLADI `z-index: 2`, and KHARKOVSKAYA `z-index: 1`. Existing phone overrides resolve to the same values.
+- Responsive evidence: computed styles were verified at 1920 × 1080, 1440 × 900, 1024 × 768, 834 × 1112, 540 × 900, and 382 × 766. Every viewport reports the same 4/2/1 center/left/right hierarchy and no document-level horizontal overflow.
+- Fidelity surfaces: portrait positions, scale, crop, source assets, typography, colors, copy, CTA, and section height are unchanged; only overlap order changed.
+- Final comparison result: no actionable P0, P1, or P2 differences remain for the requested global layer hierarchy.
+
 ## Interaction Verification
 
 - Home route rendered meaningful content with no framework error overlay.
