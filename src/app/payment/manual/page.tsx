@@ -5,24 +5,11 @@ import { calculateSelection, EVENT_OPTIONS } from "@/lib/event-options";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 const MAX_RECEIPT_SOURCE_BYTES = 10 * 1024 * 1024;
-const MAX_REQUEST_FILE_BYTES = 2.5 * 1024 * 1024;
-const MAX_RECEIPT_IMAGE_EDGE = 2200;
-
-function fileToBase64(file: File): Promise<string> {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onload = () => {
-      const result = reader.result;
-      if (typeof result !== "string") return reject(new Error("Не удалось прочитать файл"));
-      resolve(result.split(",")[1] ?? "");
-    };
-    reader.onerror = () => reject(new Error("Не удалось прочитать файл"));
-    reader.readAsDataURL(file);
-  });
-}
+const MAX_REQUEST_FILE_BYTES = 1.5 * 1024 * 1024;
+const MAX_RECEIPT_IMAGE_EDGE = 1800;
 
 function loadImage(file: File): Promise<HTMLImageElement> {
   return new Promise((resolve, reject) => {
@@ -71,7 +58,7 @@ async function prepareReceiptForUpload(file: File): Promise<File> {
     context.fillRect(0, 0, width, height);
     context.drawImage(image, 0, 0, width, height);
 
-    for (const quality of [0.86, 0.74, 0.62, 0.5]) {
+    for (const quality of [0.82, 0.7, 0.58, 0.46]) {
       lastBlob = await canvasToJpeg(canvas, quality);
       if (lastBlob.size <= MAX_REQUEST_FILE_BYTES) {
         const safeName = file.name.replace(/\.[^.]+$/, "") || "receipt";
@@ -100,10 +87,13 @@ export default function ManualPaymentPage() {
   const cardNumber = "5469 3003 0678 7307";
   const [draft, setDraft] = useState<PaymentDraft | null>(null);
   const [receiptFile, setReceiptFile] = useState<File | null>(null);
+  const [preparedReceiptFile, setPreparedReceiptFile] = useState<File | null>(null);
+  const [isPreparingReceipt, setIsPreparingReceipt] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [copied, setCopied] = useState(false);
+  const receiptPreparationId = useRef(0);
 
   useEffect(() => {
     const raw = sessionStorage.getItem(MANUAL_PAYMENT_DRAFT_KEY);
@@ -120,19 +110,43 @@ export default function ManualPaymentPage() {
     [draft],
   );
 
-  const selectReceipt = (file: File | null) => {
+  const selectReceipt = async (file: File | null) => {
+    const preparationId = receiptPreparationId.current + 1;
+    receiptPreparationId.current = preparationId;
     setErrorMessage("");
-    if (file && file.size > MAX_RECEIPT_SOURCE_BYTES) {
+    setPreparedReceiptFile(null);
+    setIsPreparingReceipt(false);
+
+    if (!file) {
+      setReceiptFile(null);
+      return;
+    }
+
+    if (file.size > MAX_RECEIPT_SOURCE_BYTES) {
       setReceiptFile(null);
       setErrorMessage("Файл больше 10 МБ. Выберите изображение или PDF меньшего размера.");
       return;
     }
-    if (file && file.type === "application/pdf" && file.size > MAX_REQUEST_FILE_BYTES) {
+    if (file.type === "application/pdf" && file.size > MAX_REQUEST_FILE_BYTES) {
       setReceiptFile(null);
-      setErrorMessage("PDF больше 2,5 МБ. Уменьшите файл или загрузите скриншот чека.");
+      setErrorMessage("PDF больше 1,5 МБ. Уменьшите файл или загрузите скриншот чека.");
       return;
     }
+
     setReceiptFile(file);
+    setIsPreparingReceipt(true);
+
+    try {
+      const prepared = await prepareReceiptForUpload(file);
+      if (receiptPreparationId.current !== preparationId) return;
+      setPreparedReceiptFile(prepared);
+    } catch (error) {
+      if (receiptPreparationId.current !== preparationId) return;
+      setReceiptFile(null);
+      setErrorMessage(error instanceof Error ? error.message : "Не удалось подготовить чек к отправке");
+    } finally {
+      if (receiptPreparationId.current === preparationId) setIsPreparingReceipt(false);
+    }
   };
 
   const copyCard = async () => {
@@ -144,20 +158,17 @@ export default function ManualPaymentPage() {
   };
 
   const submitRegistration = async () => {
-    if (!draft || !receiptFile || isSubmitting) return;
+    if (!draft || !preparedReceiptFile || isPreparingReceipt || isSubmitting) return;
     setIsSubmitting(true);
     setErrorMessage("");
     try {
-      const preparedReceipt = await prepareReceiptForUpload(receiptFile);
+      const formData = new FormData();
+      formData.set("payload", JSON.stringify(draft));
+      formData.set("receipt", preparedReceiptFile);
+
       const response = await fetch("/api/registrations/manual", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          ...draft,
-          receiptFileName: preparedReceipt.name,
-          receiptFileMimeType: preparedReceipt.type || "application/octet-stream",
-          receiptFileBase64: await fileToBase64(preparedReceipt),
-        }),
+        body: formData,
       });
       const responseText = await response.text();
       let payload: { ok?: boolean; message?: string } | null = null;
@@ -223,15 +234,15 @@ export default function ManualPaymentPage() {
             className={`receipt-dropzone ${isDragging ? "is-dragging" : ""}`}
             onDragOver={(event) => { event.preventDefault(); setIsDragging(true); }}
             onDragLeave={() => setIsDragging(false)}
-            onDrop={(event) => { event.preventDefault(); setIsDragging(false); selectReceipt(event.dataTransfer.files?.[0] ?? null); }}
+            onDrop={(event) => { event.preventDefault(); setIsDragging(false); void selectReceipt(event.dataTransfer.files?.[0] ?? null); }}
           >
-            <input type="file" accept="image/*,.pdf,.heic,.HEIC" onChange={(event) => selectReceipt(event.target.files?.[0] ?? null)} />
+            <input type="file" accept="image/*,.pdf,.heic,.HEIC" onChange={(event) => { void selectReceipt(event.target.files?.[0] ?? null); }} />
             <span>{receiptFile ? receiptFile.name : "Нажмите или перетащите сюда изображение / PDF"}</span>
-            <small>Изображения до 10 МБ · PDF до 2,5 МБ</small>
+            <small>{isPreparingReceipt ? "Подготавливаем файл…" : "Изображения до 10 МБ · PDF до 1,5 МБ"}</small>
           </label>
           {errorMessage ? <p className="form-error" role="alert">{errorMessage}</p> : null}
-          <button type="button" className="submit-button payment-submit" disabled={!receiptFile || isSubmitting} onClick={submitRegistration}>
-            {isSubmitting ? "Отправляем…" : "Отправить заявку"}
+          <button type="button" className="submit-button payment-submit" disabled={!preparedReceiptFile || isPreparingReceipt || isSubmitting} onClick={submitRegistration}>
+            {isPreparingReceipt ? "Подготавливаем чек…" : isSubmitting ? "Отправляем…" : "Отправить заявку"}
           </button>
         </section>
       </div>

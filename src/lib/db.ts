@@ -18,6 +18,7 @@ type RegistrationInput = {
   receiptFileName?: string | null;
   receiptFileMimeType?: string | null;
   receiptFileBase64?: string | null;
+  receiptFileBytes?: Uint8Array | null;
 };
 
 type RegistrationRecord = {
@@ -31,6 +32,7 @@ type RegistrationReceiptRecord = {
   receiptFileName: string | null;
   receiptFileMimeType: string | null;
   receiptFileBase64: string | null;
+  receiptFileBytes: Uint8Array | null;
 };
 
 export type RegistrationAdminRecord = {
@@ -135,6 +137,7 @@ async function ensureSchema() {
           receipt_file_name TEXT,
           receipt_file_mime_type TEXT,
           receipt_file_base64 TEXT,
+          receipt_file_bytes BYTEA,
           amount_rub INTEGER,
           created_at TIMESTAMP NOT NULL DEFAULT NOW()
         );
@@ -142,31 +145,14 @@ async function ensureSchema() {
 
       await client.exec(`
         ALTER TABLE registrations
-        ADD COLUMN IF NOT EXISTS nickname TEXT;
-      `);
-      await client.exec(`
-        ALTER TABLE registrations
-        ADD COLUMN IF NOT EXISTS selected_option_ids TEXT;
-      `);
-      await client.exec(`
-        ALTER TABLE registrations
-        ADD COLUMN IF NOT EXISTS age TEXT;
-      `);
-      await client.exec(`
-        ALTER TABLE registrations
-        ADD COLUMN IF NOT EXISTS amount_rub INTEGER;
-      `);
-      await client.exec(`
-        ALTER TABLE registrations
-        ADD COLUMN IF NOT EXISTS receipt_file_name TEXT;
-      `);
-      await client.exec(`
-        ALTER TABLE registrations
-        ADD COLUMN IF NOT EXISTS receipt_file_mime_type TEXT;
-      `);
-      await client.exec(`
-        ALTER TABLE registrations
-        ADD COLUMN IF NOT EXISTS receipt_file_base64 TEXT;
+          ADD COLUMN IF NOT EXISTS nickname TEXT,
+          ADD COLUMN IF NOT EXISTS selected_option_ids TEXT,
+          ADD COLUMN IF NOT EXISTS age TEXT,
+          ADD COLUMN IF NOT EXISTS amount_rub INTEGER,
+          ADD COLUMN IF NOT EXISTS receipt_file_name TEXT,
+          ADD COLUMN IF NOT EXISTS receipt_file_mime_type TEXT,
+          ADD COLUMN IF NOT EXISTS receipt_file_base64 TEXT,
+          ADD COLUMN IF NOT EXISTS receipt_file_bytes BYTEA;
       `);
 
       await client.exec(`
@@ -177,6 +163,10 @@ async function ensureSchema() {
   }
 
   await initialized;
+}
+
+export async function prepareDatabase() {
+  await ensureSchema();
 }
 
 export async function createRegistration(
@@ -202,8 +192,9 @@ export async function createRegistration(
       receipt_file_name,
       receipt_file_mime_type,
       receipt_file_base64,
+      receipt_file_bytes,
       amount_rub
-    ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15)
+    ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16)
     RETURNING
       id,
       created_at as "createdAt",
@@ -223,6 +214,7 @@ export async function createRegistration(
       input.receiptFileName ?? null,
       input.receiptFileMimeType ?? null,
       input.receiptFileBase64 ?? null,
+      input.receiptFileBytes ?? null,
       input.amountRub,
     ],
   );
@@ -251,7 +243,10 @@ export async function listRegistrations(): Promise<RegistrationAdminRecord[]> {
       payment_id as "paymentId",
       receipt_file_name as "receiptFileName",
       receipt_file_mime_type as "receiptFileMimeType",
-      (receipt_file_base64 IS NOT NULL AND receipt_file_base64 <> '') as "hasReceipt",
+      (
+        (receipt_file_bytes IS NOT NULL AND octet_length(receipt_file_bytes) > 0)
+        OR (receipt_file_base64 IS NOT NULL AND receipt_file_base64 <> '')
+      ) as "hasReceipt",
       COALESCE(amount_rub, 0) as "amountRub",
       created_at as "createdAt"
     FROM registrations
@@ -272,7 +267,8 @@ export async function getRegistrationReceiptById(
       id,
       receipt_file_name as "receiptFileName",
       receipt_file_mime_type as "receiptFileMimeType",
-      receipt_file_base64 as "receiptFileBase64"
+      receipt_file_base64 as "receiptFileBase64",
+      receipt_file_bytes as "receiptFileBytes"
     FROM registrations
     WHERE id = $1
     LIMIT 1;`,

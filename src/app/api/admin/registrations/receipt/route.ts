@@ -44,11 +44,13 @@ export async function GET(request: Request) {
     return new Response("Registration not found", { status: 404 });
   }
 
-  if (!receipt.receiptFileBase64) {
+  if (!receipt.receiptFileBytes && !receipt.receiptFileBase64) {
     return new Response("Receipt not found", { status: 404 });
   }
 
-  const buffer = Buffer.from(receipt.receiptFileBase64, "base64");
+  const buffer = receipt.receiptFileBytes
+    ? Buffer.from(receipt.receiptFileBytes)
+    : Buffer.from(receipt.receiptFileBase64 ?? "", "base64");
   const fileName = safeFilename(receipt.receiptFileName ?? `receipt-${id}.bin`);
   const contentType = receipt.receiptFileMimeType || "application/octet-stream";
 
@@ -61,4 +63,3 @@ export async function GET(request: Request) {
     },
   });
 }
-

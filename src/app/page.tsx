@@ -115,7 +115,7 @@ export default function Home() {
       <section className="hero" id="top">
         <HeroNavigation items={navItems} />
         <Image src="/event/wood.webp" alt="" width={1440} height={2560} sizes="40vw" className="hero-wood hero-wood-left" unoptimized />
-        <Image src="/event/background.webp" alt="" width={1440} height={2560} sizes="40vw" className="hero-wood hero-wood-right" unoptimized />
+        <Image src="/event/background.webp" alt="" width={1440} height={2560} sizes="40vw" className="hero-wood hero-wood-right" loading="eager" unoptimized />
 
         <div className="hero-copy">
           <p className="hero-meta">24–25 октября 2026 · Краснодар</p>

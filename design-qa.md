@@ -217,6 +217,18 @@ No additional crop was needed for the hero because the title, portraits, edge gr
 - Fidelity surfaces: typography, copy, colors/tokens, image quality, horizontal crop, and desktop/tablet rules remain unchanged.
 - Final comparison result: the requested 15 px refinement is implemented with no actionable P0, P1, or P2 regression.
 
+### Pass 17 — short-phone portrait alignment and stacking
+
+- Source visual truth: the accepted Pass 16 mobile composition, the earlier supplied iPhone hero captures, and the user's explicit correction that KHARKOVSKAYA still reads too low on shorter phones and must sit behind PRADAZOMBIE.
+- Implementation evidence: `http://localhost:3001/`, captured inline in the Codex in-app browser at 393 × 852 and 393 × 700 CSS px after the entrance animation settled; the browser surface does not expose a persistent screenshot path.
+- State: home-page hero at the default top position, closed mobile navigation.
+- [P2] At short mobile heights, the larger transparent canvas around KHARKOVSKAYA left the visible hood/head line below the center portrait; the original right-side z-index also placed her above PRADAZOMBIE where the images overlap.
+- Fix: added a short-phone correction through 860 px viewport height, raising only the right portrait by 23 px (`-169px → -146px`). On narrow phones the center portrait now uses z-index 4, the left portrait 2, and the right portrait 1.
+- Post-fix full-view evidence: at both tested heights the visible hood apex aligns with the PRADAZOMBIE head line, the portraits still fill the hero bottom edge, and PRADAZOMBIE visibly owns the foreground overlap.
+- Focused region evidence: the complete three-portrait cluster and CTA are legible in the full mobile captures, so an additional crop was not required.
+- Fidelity surfaces: typography, copy, colors/tokens, supplied image sharpness, portrait scale, horizontal crop, hero height, CTA, and rules above 480 px remain unchanged.
+- Final comparison result: no actionable P0, P1, or P2 differences remain for the requested short-phone alignment and layer order.
+
 ## Interaction Verification
 
 - Home route rendered meaningful content with no framework error overlay.
@@ -227,7 +239,9 @@ No additional crop was needed for the hero because the title, portraits, edge gr
 - Receipt upload remains intentionally disabled until a file is selected.
 - No browser console errors were observed. A former LCP warning was addressed with eager/high-priority loading for the central hero portrait.
 - `npm run lint` and `npm run build` both completed successfully after the responsive pass.
-- Final database insertion was not executed because the configured `DATABASE_URL` may point to a live database; route validation and request/response contracts were reviewed without creating a test registration.
+- The optimized multipart flow was exercised against an isolated local PGlite database: POST returned 201, a warm submission reported `parse;dur=1.9` and `db;dur=2.3`, and the admin API reported the new record with `hasReceipt: true`.
+- Backward compatibility was verified with the former JSON/base64 request shape: POST returned 201 with `parse;dur=1.4` and `db;dur=2.8`, so an already-open browser tab will not lose a submission during deployment.
+- The stored binary receipt was downloaded through the admin receipt route with status 200 and the exact original 4,148-byte payload.
 
 ## Follow-up Polish
 
