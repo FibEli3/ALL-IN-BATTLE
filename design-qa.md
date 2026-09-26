@@ -229,6 +229,20 @@ No additional crop was needed for the hero because the title, portraits, edge gr
 - Fidelity surfaces: typography, copy, colors/tokens, supplied image sharpness, portrait scale, horizontal crop, hero height, CTA, and rules above 480 px remain unchanged.
 - Final comparison result: no actionable P0, P1, or P2 differences remain for the requested short-phone alignment and layer order.
 
+### Pass 18 — continuous phone-width portrait balance
+
+- Source visual truth: `C:\Users\Vadim\AppData\Local\Temp\codex-clipboard-a0b0681e-dbef-4772-8ba7-43747950875b.png` (382 × 755 px problem-state capture) plus the user's written direction that KHARKOVSKAYA should remain visually balanced across popular phone sizes.
+- Implementation evidence: `C:\Users\Vadim\Documents\ALLINBATTLE\.layero\qa\qa-mobile-382x766.png` (382 × 766 px, device scale 1) and the normalized side-by-side comparison `C:\Users\Vadim\Documents\ALLINBATTLE\.layero\qa\qa-mobile-382x766-comparison.png`.
+- State: home-page hero at the default top position after entrance animations settle, closed mobile navigation.
+- [P2] The former `104vw` right-portrait size was silently capped by the global image `max-width: 100%`, while a separate `max-height: 860px` correction abruptly changed its vertical anchor. This made the composition sensitive to small device and browser-viewport differences.
+- Fix: removed the height-based switch and replaced the right portrait with a continuous phone-width model: `width: 92vw`, `right: -34vw`, and `bottom: calc(-65px - 16vw)`. The center remains the foreground layer (`z-index: 4`) and KHARKOVSKAYA remains behind it (`z-index: 1`).
+- Full-view comparison evidence: at 382 px the hood apex, central head, and left cap occupy one visual band; KHARKOVSKAYA is slightly less dominant, remains readable, and no longer changes scale or vertical position at an arbitrary height threshold.
+- Responsive matrix: 320 × 568, 360 × 800, 375 × 667, 382 × 766, 390 × 844, 393 × 852, 412 × 915, and 430 × 932 were checked. Across the matrix the computed right portrait scale progresses smoothly from 294 px to 396 px, its bottom anchor from -116 px to -134 px, and the stacking order remains 4/2/1 for center/left/right.
+- Focused region evidence: the full hero comparison clearly exposes all three head lines, the foreground overlap, crop, and CTA clearance, so a separate detail crop was unnecessary.
+- Fidelity surfaces: typography, copy, colors/tokens, original portrait assets and sharpness, hero height, CTA treatment, and all rules above 480 px remain unchanged.
+- Runtime evidence: the browser reports meaningful page content, no Next.js error overlay, and no page errors at the 382 px target.
+- Final comparison result: no actionable P0, P1, or P2 differences remain for the requested multi-device portrait balance.
+
 ## Interaction Verification
 
 - Home route rendered meaningful content with no framework error overlay.
