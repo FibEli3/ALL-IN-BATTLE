@@ -315,7 +315,7 @@ export function RegistrationForm() {
           <Field label="Никнейм" value={values.nickname} placeholder="Ваш танцевальный ник" inputId="registration-nickname" hasError={fieldErrors.nickname} onChange={(nickname) => { clearError("nickname"); setValues((previous) => ({ ...previous, nickname })); }} />
           <Field label="Возраст" value={values.age} placeholder="14" inputMode="numeric" required={false} onChange={(age) => setValues((previous) => ({ ...previous, age: age.replace(/\D/g, "").slice(0, 2) }))} />
           <Field label="Телефон" value={values.phone} placeholder="+7 (999) 000-00-00" inputId="registration-phone" inputMode="tel" hasError={fieldErrors.phone} onChange={(phone) => { clearError("phone"); setValues((previous) => ({ ...previous, phone: maskPhoneInput(phone) })); }} />
-          <Field label="Название команды" value={values.teamName} placeholder={selection.hasContest ? "Название вашей команды" : "Сначала выберите Contest 3×3"} inputId="registration-team-name" hasError={fieldErrors.teamName} required={selection.hasContest} disabled={!selection.hasContest} onChange={(teamName) => { clearError("teamName"); setValues((previous) => ({ ...previous, teamName })); }} />
+          <Field label="Название команды 3x3" value={values.teamName} placeholder={selection.hasContest ? "Название вашей команды" : "Сначала выберите Contest 3×3"} inputId="registration-team-name" hasError={fieldErrors.teamName} required={selection.hasContest} disabled={!selection.hasContest} onChange={(teamName) => { clearError("teamName"); setValues((previous) => ({ ...previous, teamName })); }} />
         </div>
       </section>
 
