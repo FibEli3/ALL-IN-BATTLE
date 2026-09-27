@@ -302,11 +302,11 @@ export default async function AdminRegistrationsPage({ searchParams }: AdminPage
       </section>
 
       <div className="admin-data-panel mt-8 overflow-x-auto rounded-2xl border border-[#dadada] bg-white">
-        <table className="admin-data-table min-w-[1460px] border-collapse text-left text-sm">
+        <table className="admin-data-table w-full min-w-[1180px] table-fixed border-collapse text-left text-sm">
           <thead className="bg-[#f4f4f4] text-[#303030]">
             <tr>
               <th className="px-4 py-3 font-semibold">Дата</th>
-              <th className="w-[140px] px-4 py-3 font-semibold whitespace-nowrap">Сумма</th>
+              <th className="px-4 py-3 font-semibold whitespace-nowrap">Сумма</th>
               <th className="px-4 py-3 font-semibold">ФИО</th>
               <th className="px-4 py-3 font-semibold">Ник</th>
               <th className="px-4 py-3 font-semibold">Команда</th>
@@ -327,7 +327,7 @@ export default async function AdminRegistrationsPage({ searchParams }: AdminPage
                   <td className="px-4 py-3 whitespace-nowrap">
                     {formatDateTimeRu(item.createdAt)}
                   </td>
-                  <td className="w-[140px] px-4 py-3 font-semibold whitespace-nowrap">{rub(item.amountRub)}</td>
+                  <td className="px-4 py-3 font-semibold whitespace-nowrap">{rub(item.amountRub)}</td>
                   <td className="px-4 py-3">{item.fullName}</td>
                   <td className="px-4 py-3">{item.nickname ?? "-"}</td>
                   <td className="px-4 py-3">{item.teamName ?? "-"}</td>
