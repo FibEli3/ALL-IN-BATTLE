@@ -1,7 +1,7 @@
 "use client";
 
 import { MANUAL_PAYMENT_DRAFT_KEY, type PaymentDraft } from "@/lib/payment-draft";
-import { calculateSelection, EVENT_OPTIONS } from "@/lib/event-options";
+import { calculateSelection } from "@/lib/event-options";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -105,10 +105,6 @@ export default function ManualPaymentPage() {
   }, []);
 
   const selection = useMemo(() => calculateSelection(draft?.selectedOptionIds ?? []), [draft?.selectedOptionIds]);
-  const selectedTitles = useMemo(
-    () => draft?.selectedOptionIds.map((id) => EVENT_OPTIONS.find((option) => option.id === id)?.title ?? id) ?? [],
-    [draft],
-  );
 
   const selectReceipt = async (file: File | null) => {
     const preparationId = receiptPreparationId.current + 1;
@@ -224,7 +220,14 @@ export default function ManualPaymentPage() {
           <div className="payment-total"><span>Сумма</span><strong>{formatRub(selection.totalRub)}</strong></div>
           <div className="payment-selection">
             <span>Ваш выбор</span>
-            <ul>{selectedTitles.map((title) => <li key={title}>{title}</li>)}</ul>
+            <ul>
+              {selection.lineItems.map(({ option, priceRub }) => (
+                <li key={option.id}>
+                  <span>{option.title}</span>
+                  <strong>{priceRub === 0 ? "Бесплатно" : formatRub(priceRub)}</strong>
+                </li>
+              ))}
+            </ul>
           </div>
         </section>
 

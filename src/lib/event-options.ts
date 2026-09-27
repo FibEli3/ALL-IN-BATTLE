@@ -150,29 +150,26 @@ export function calculateSelection(optionIds: string[]) {
 
   const contestSelectionCount = selected.filter((option) => option.kind === "contest").length;
   const hasContest = contestSelectionCount > 0;
-  const day1Total = selected
-    .filter((option) => option.day === "day1" && (option.kind === "fixed" || option.kind === "contest"))
-    .reduce(
-      (sum, option) => sum + (option.id === JAM_OPTION_ID && hasContest ? 0 : (option.priceRub ?? 0)),
-      0,
-    );
+  let competitiveOptionIndex = 0;
+  const lineItems = selected.map((option) => {
+    let priceRub = option.priceRub ?? 0;
 
-  const day2SpectatorTotal = selected
-    .filter((option) => option.day === "day2" && option.kind === "spectator")
-    .reduce((sum, option) => sum + (option.priceRub ?? 0), 0);
+    if (option.kind === "competitive") {
+      priceRub = competitiveOptionIndex === 0 ? 1900 : 900;
+      competitiveOptionIndex += 1;
+    } else if (option.id === JAM_OPTION_ID && hasContest) {
+      priceRub = 0;
+    }
 
-  const day2CompetitiveCount = selected.filter(
-    (option) => option.day === "day2" && option.kind === "competitive",
-  ).length;
-
-  const day2CompetitiveTotal =
-    day2CompetitiveCount > 0 ? 1900 + (day2CompetitiveCount - 1) * 900 : 0;
+    return { option, priceRub };
+  });
 
   return {
     selected,
+    lineItems,
     unknownIds,
     hasContest,
     contestSelectionCount,
-    totalRub: day1Total + day2SpectatorTotal + day2CompetitiveTotal,
+    totalRub: lineItems.reduce((sum, item) => sum + item.priceRub, 0),
   };
 }
