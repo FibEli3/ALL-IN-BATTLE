@@ -8,6 +8,7 @@ const registrationSchema = z.object({
   nickname: z.string().trim().min(2, "Укажи никнейм"),
   age: z.string().trim().max(20).optional().or(z.literal("")),
   phone: z.string().trim().min(8, "Проверь номер телефона"),
+  teamName: z.string().trim().max(120, "Название команды слишком длинное").optional().or(z.literal("")),
   email: z.string().trim().email("Проверь email").optional().or(z.literal("")),
   city: z.string().trim().max(120).optional().or(z.literal("")),
   danceExperience: z.string().trim().max(300).optional().or(z.literal("")),
@@ -36,11 +37,19 @@ export async function POST(request: Request) {
       );
     }
 
+    if (selection.hasContest && (payload.teamName?.trim().length ?? 0) < 2) {
+      return NextResponse.json(
+        { ok: false, message: "Укажите название команды для Contest 3×3" },
+        { status: 400 },
+      );
+    }
+
     const created = await createRegistration({
       fullName: payload.fullName,
       nickname: payload.nickname,
       age: payload.age || null,
       phone: payload.phone,
+      teamName: selection.hasContest ? payload.teamName?.trim() || null : null,
       email: payload.email || null,
       city: payload.city || null,
       danceExperience: payload.danceExperience || null,

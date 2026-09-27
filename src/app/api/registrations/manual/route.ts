@@ -8,6 +8,7 @@ const manualRegistrationSchema = z.object({
   nickname: z.string().trim().min(2, "Укажите никнейм"),
   age: z.string().trim().max(3).optional().or(z.literal("")),
   phone: z.string().trim().min(8, "Проверьте номер телефона"),
+  teamName: z.string().trim().max(120, "Название команды слишком длинное").optional().or(z.literal("")),
   participationType: z.enum(["participant", "spectator"]),
   selectedOptionIds: z.array(z.string()).min(1, "Выберите хотя бы одну номинацию"),
 });
@@ -84,6 +85,13 @@ export async function POST(request: Request) {
       );
     }
 
+    if (selection.hasContest && (payload.teamName?.trim().length ?? 0) < 2) {
+      return NextResponse.json(
+        { ok: false, message: "Укажите название команды для Contest 3×3" },
+        { status: 400 },
+      );
+    }
+
     if (selection.totalRub <= 0) {
       return NextResponse.json(
         { ok: false, message: "Сумма оплаты должна быть больше нуля" },
@@ -104,6 +112,7 @@ export async function POST(request: Request) {
       nickname: payload.nickname,
       age: payload.age || null,
       phone: payload.phone,
+      teamName: selection.hasContest ? payload.teamName?.trim() || null : null,
       email: null,
       city: null,
       danceExperience: null,

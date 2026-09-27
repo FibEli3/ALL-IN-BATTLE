@@ -74,6 +74,7 @@ export async function GET(request: Request) {
     { header: "Сумма (₽)", key: "amountRub", width: 15 },
     { header: "ФИО", key: "fullName", width: 28 },
     { header: "Ник", key: "nickname", width: 22 },
+    { header: "Название команды", key: "teamName", width: 28 },
     { header: "Телефон", key: "phone", width: 20 },
     { header: "Возраст", key: "age", width: 12 },
     { header: "Тип участия", key: "participationType", width: 18 },
@@ -93,6 +94,7 @@ export async function GET(request: Request) {
       amountRub: registration.amountRub,
       fullName: registration.fullName,
       nickname: registration.nickname ?? "",
+      teamName: registration.teamName ?? "",
       phone: registration.phone,
       age: registration.age ?? "",
       participationType:
@@ -104,7 +106,7 @@ export async function GET(request: Request) {
   }
 
   styleHeader(registrationsSheet.getRow(1));
-  registrationsSheet.autoFilter = "A1:K1";
+  registrationsSheet.autoFilter = "A1:L1";
   registrationsSheet.getColumn("createdAt").numFmt = "dd.mm.yyyy hh:mm";
   registrationsSheet.getColumn("amountRub").numFmt = '#,##0 "₽"';
   registrationsSheet.eachRow((row, rowNumber) => {

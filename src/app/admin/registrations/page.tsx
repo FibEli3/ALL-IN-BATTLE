@@ -197,7 +197,7 @@ export default async function AdminRegistrationsPage({ searchParams }: AdminPage
             type="search"
             name="q"
             defaultValue={query}
-            placeholder="ФИО, ник или телефон"
+            placeholder="ФИО, ник, команда или телефон"
             className="h-11 rounded-xl border border-[#cfcfcf] bg-white px-3 font-normal outline-none transition focus:border-[#2a6a34]"
           />
         </label>
@@ -302,13 +302,14 @@ export default async function AdminRegistrationsPage({ searchParams }: AdminPage
       </section>
 
       <div className="admin-data-panel mt-8 overflow-x-auto rounded-2xl border border-[#dadada] bg-white">
-        <table className="admin-data-table min-w-[1320px] border-collapse text-left text-sm">
+        <table className="admin-data-table min-w-[1460px] border-collapse text-left text-sm">
           <thead className="bg-[#f4f4f4] text-[#303030]">
             <tr>
               <th className="px-4 py-3 font-semibold">Дата</th>
               <th className="w-[140px] px-4 py-3 font-semibold whitespace-nowrap">Сумма</th>
               <th className="px-4 py-3 font-semibold">ФИО</th>
               <th className="px-4 py-3 font-semibold">Ник</th>
+              <th className="px-4 py-3 font-semibold">Команда</th>
               <th className="px-4 py-3 font-semibold">Телефон</th>
               <th className="px-4 py-3 font-semibold">Возраст</th>
               <th className="px-4 py-3 font-semibold">Опции</th>
@@ -329,6 +330,7 @@ export default async function AdminRegistrationsPage({ searchParams }: AdminPage
                   <td className="w-[140px] px-4 py-3 font-semibold whitespace-nowrap">{rub(item.amountRub)}</td>
                   <td className="px-4 py-3">{item.fullName}</td>
                   <td className="px-4 py-3">{item.nickname ?? "-"}</td>
+                  <td className="px-4 py-3">{item.teamName ?? "-"}</td>
                   <td className="px-4 py-3 whitespace-nowrap">{item.phone}</td>
                   <td className="px-4 py-3">{item.age ?? "-"}</td>
                   <td className="px-4 py-3">{optionTitles.length > 0 ? optionTitles.join(", ") : "-"}</td>
@@ -349,7 +351,7 @@ export default async function AdminRegistrationsPage({ searchParams }: AdminPage
             })}
             {registrations.length === 0 ? (
               <tr>
-                <td className="px-4 py-8 text-center text-[#575757]" colSpan={8}>
+                <td className="px-4 py-8 text-center text-[#575757]" colSpan={9}>
                   По выбранным фильтрам заявок нет.
                 </td>
               </tr>

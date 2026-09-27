@@ -17,11 +17,12 @@ type FormValues = {
   nickname: string;
   age: string;
   phone: string;
+  teamName: string;
   participationType: "participant" | "spectator";
   selectedOptionIds: string[];
 };
 
-type RequiredFieldKey = "fullName" | "nickname" | "phone";
+type RequiredFieldKey = "fullName" | "nickname" | "phone" | "teamName";
 type Day2BaseGroup = "baby" | "beg16" | "kids" | "jun" | null;
 
 const initialForm: FormValues = {
@@ -29,6 +30,7 @@ const initialForm: FormValues = {
   nickname: "",
   age: "",
   phone: "",
+  teamName: "",
   participationType: "participant",
   selectedOptionIds: [],
 };
@@ -49,6 +51,7 @@ const requiredFieldOrder: Array<{ key: RequiredFieldKey; selector: string }> = [
   { key: "fullName", selector: "#registration-full-name" },
   { key: "nickname", selector: "#registration-nickname" },
   { key: "phone", selector: "#registration-phone" },
+  { key: "teamName", selector: "#registration-team-name" },
 ];
 
 function getDay2BaseGroup(id: string): Day2BaseGroup {
@@ -136,11 +139,12 @@ function Field(props: {
   inputMode?: "text" | "numeric" | "tel";
   hasError?: boolean;
   required?: boolean;
+  disabled?: boolean;
   onChange: (value: string) => void;
 }) {
   const isRequired = props.required !== false;
   return (
-    <label className="field">
+    <label className={`field ${props.disabled ? "is-disabled" : ""}`}>
       <span className={props.hasError ? "is-error" : ""}>{props.label}{isRequired ? " *" : ""}</span>
       <input
         id={props.inputId}
@@ -148,7 +152,8 @@ function Field(props: {
         placeholder={props.placeholder}
         inputMode={props.inputMode}
         required={isRequired}
-        aria-required={isRequired}
+        disabled={props.disabled}
+        aria-required={isRequired && !props.disabled}
         aria-invalid={props.hasError || undefined}
         onChange={(event) => props.onChange(event.target.value)}
       />
@@ -197,7 +202,7 @@ export function RegistrationForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [fieldErrors, setFieldErrors] = useState<Record<RequiredFieldKey, boolean>>({
-    fullName: false, nickname: false, phone: false,
+    fullName: false, nickname: false, phone: false, teamName: false,
   });
 
   const selection = useMemo(() => calculateSelection(values.selectedOptionIds), [values.selectedOptionIds]);
@@ -239,13 +244,22 @@ export function RegistrationForm() {
   const clearError = (key: RequiredFieldKey) => setFieldErrors((previous) => ({ ...previous, [key]: false }));
 
   const toggleOption = (optionId: string) => {
+    if (contestOptionIdSet.has(optionId) && values.selectedOptionIds.includes(optionId)) {
+      clearError("teamName");
+    }
     setValues((previous) => {
       if (day2DisabledIds.has(optionId) || contestDisabledIds.has(optionId)) return previous;
       const exists = previous.selectedOptionIds.includes(optionId);
       const next = exists
         ? previous.selectedOptionIds.filter((id) => id !== optionId)
         : [...previous.selectedOptionIds, optionId];
-      return { ...previous, selectedOptionIds: normalizeSelectedOptionIds(next, exists ? undefined : optionId) };
+      const selectedOptionIds = normalizeSelectedOptionIds(next, exists ? undefined : optionId);
+      const hasContest = selectedOptionIds.some((id) => contestOptionIdSet.has(id));
+      return {
+        ...previous,
+        teamName: hasContest ? previous.teamName : "",
+        selectedOptionIds,
+      };
     });
   };
 
@@ -257,6 +271,7 @@ export function RegistrationForm() {
       fullName: values.fullName.trim().length < 2,
       nickname: values.nickname.trim().length < 2,
       phone: values.phone.replace(/\D/g, "").length < 11,
+      teamName: selection.hasContest && values.teamName.trim().length < 2,
     };
     setFieldErrors(nextErrors);
 
@@ -279,6 +294,7 @@ export function RegistrationForm() {
         nickname: values.nickname.trim(),
         age: values.age.trim(),
         phone: values.phone.trim(),
+        teamName: selection.hasContest ? values.teamName.trim() : "",
         participationType: values.participationType,
         selectedOptionIds: selection.selected.map((item) => item.id),
       };
@@ -299,6 +315,7 @@ export function RegistrationForm() {
           <Field label="Никнейм" value={values.nickname} placeholder="Ваш танцевальный ник" inputId="registration-nickname" hasError={fieldErrors.nickname} onChange={(nickname) => { clearError("nickname"); setValues((previous) => ({ ...previous, nickname })); }} />
           <Field label="Возраст" value={values.age} placeholder="14" inputMode="numeric" required={false} onChange={(age) => setValues((previous) => ({ ...previous, age: age.replace(/\D/g, "").slice(0, 2) }))} />
           <Field label="Телефон" value={values.phone} placeholder="+7 (999) 000-00-00" inputId="registration-phone" inputMode="tel" hasError={fieldErrors.phone} onChange={(phone) => { clearError("phone"); setValues((previous) => ({ ...previous, phone: maskPhoneInput(phone) })); }} />
+          <Field label="Название команды" value={values.teamName} placeholder={selection.hasContest ? "Название вашей команды" : "Сначала выберите Contest 3×3"} inputId="registration-team-name" hasError={fieldErrors.teamName} required={selection.hasContest} disabled={!selection.hasContest} onChange={(teamName) => { clearError("teamName"); setValues((previous) => ({ ...previous, teamName })); }} />
         </div>
       </section>
 

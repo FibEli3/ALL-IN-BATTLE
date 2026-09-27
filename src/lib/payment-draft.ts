@@ -5,6 +5,7 @@ export type PaymentDraft = {
   nickname: string;
   age: string;
   phone: string;
+  teamName: string;
   participationType: "participant" | "spectator";
   selectedOptionIds: string[];
 };

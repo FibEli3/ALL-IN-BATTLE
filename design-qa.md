@@ -263,6 +263,18 @@ No additional crop was needed for the hero because the title, portraits, edge gr
 - Runtime evidence: the registration section renders meaningful content without a framework error overlay or document-level horizontal overflow.
 - Final comparison result: no actionable P0, P1, or P2 differences remain for the requested refund notice.
 
+### Pass 21 — conditional Contest team name
+
+- Source visual truth: `C:\Users\Vadim\AppData\Local\Temp\codex-clipboard-d37f66be-b95e-4308-be4c-331ead878c08.png` (579 × 284 px) and the user's written interaction requirements.
+- Implementation evidence: `http://localhost:3000/`, captured inline in the Codex in-app browser at 579 × 700 and 390 × 844 CSS px, device scale 1; the browser surface does not expose a persistent screenshot path.
+- State: registration section with no Contest selected for the disabled state, then Contest 3×3 selected for the enabled and required state.
+- Full-view comparison evidence: the Day 1 option cards retain the source's spacing, rounded borders, warm dark palette, typography hierarchy, prices, and circular checkbox treatment. The new field sits in the existing “Данные” grid without changing the program layout.
+- Focused region evidence: the 390 px capture confirms the active “Название команды *” field uses the same input height, border, label treatment, focus color, and mobile rhythm as the existing fields. At 579 px the disabled field is visibly muted and reads “Сначала выберите Contest 3×3”.
+- Interaction evidence: before Contest selection the field reports disabled and not required; after either Contest category is selected it reports enabled and `aria-required=true`. Submitting the otherwise-complete form with an empty team name marks this field invalid, shows the form error, and prevents navigation. Filling the field allows navigation to the manual payment step.
+- Data-flow evidence: the API rejects a Contest payload without a team name with HTTP 400 and accepts a valid name with HTTP 201. The actual multipart receipt flow also returned 201; an isolated PGlite read returned `MANUAL TEAM`, and the generated Excel workbook contains the “Название команды” column with the updated `A1:L1` filter range.
+- Fidelity surfaces: fonts/typography, layout rhythm, colors/tokens, existing imagery, and all existing copy remain unchanged; only the requested field, required marker, and disabled placeholder were added.
+- Final comparison result: no actionable P0, P1, or P2 differences remain for the requested conditional team-name field and supporting admin data.
+
 ## Interaction Verification
 
 - Home route rendered meaningful content with no framework error overlay.

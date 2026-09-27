@@ -8,6 +8,7 @@ type RegistrationInput = {
   nickname: string;
   age?: string | null;
   phone: string;
+  teamName?: string | null;
   email?: string | null;
   city?: string | null;
   danceExperience?: string | null;
@@ -41,6 +42,7 @@ export type RegistrationAdminRecord = {
   nickname: string | null;
   age: string | null;
   phone: string;
+  teamName: string | null;
   email: string | null;
   city: string | null;
   danceExperience: string | null;
@@ -126,6 +128,7 @@ async function ensureSchema() {
           nickname TEXT,
           age TEXT,
           phone TEXT NOT NULL,
+          team_name TEXT,
           email TEXT,
           city TEXT,
           dance_experience TEXT,
@@ -148,6 +151,7 @@ async function ensureSchema() {
           ADD COLUMN IF NOT EXISTS nickname TEXT,
           ADD COLUMN IF NOT EXISTS selected_option_ids TEXT,
           ADD COLUMN IF NOT EXISTS age TEXT,
+          ADD COLUMN IF NOT EXISTS team_name TEXT,
           ADD COLUMN IF NOT EXISTS amount_rub INTEGER,
           ADD COLUMN IF NOT EXISTS receipt_file_name TEXT,
           ADD COLUMN IF NOT EXISTS receipt_file_mime_type TEXT,
@@ -183,6 +187,7 @@ export async function createRegistration(
       nickname,
       age,
       phone,
+      team_name,
       email,
       city,
       dance_experience,
@@ -194,7 +199,7 @@ export async function createRegistration(
       receipt_file_base64,
       receipt_file_bytes,
       amount_rub
-    ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16)
+    ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17)
     RETURNING
       id,
       created_at as "createdAt",
@@ -205,6 +210,7 @@ export async function createRegistration(
       input.nickname,
       input.age ?? null,
       input.phone,
+      input.teamName ?? null,
       input.email ?? null,
       input.city ?? null,
       input.danceExperience ?? null,
@@ -233,6 +239,7 @@ export async function listRegistrations(): Promise<RegistrationAdminRecord[]> {
       nickname,
       age,
       phone,
+      team_name as "teamName",
       email,
       city,
       dance_experience as "danceExperience",

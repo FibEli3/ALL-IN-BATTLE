@@ -61,6 +61,7 @@ export function filterRegistrations(
       const haystack = [
         registration.fullName,
         registration.nickname,
+        registration.teamName,
         registration.phone,
         registration.email,
         registration.city,
